@@ -1,13 +1,14 @@
 resp = require("../response/response.js");
 request = require("request");
 sync = require('sync-request');
+var UserController=require("../utils/usercontroller.js")
 const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
 const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
 
 const ATTR_LIST = ["interior_floor", "interior_room", "legal", "orientation", "position", "realestate_type", "surrounding_characteristics", "surrounding_name", "surrounding", "transaction_type"];
 const ENTITY_LIST = ["area", "location", "potential", "price", "addr_district"]
 const LOCATION_ATTR_LIST = ["addr_city", "addr_street", "addr_ward", "addr_district"]
-
+var userController = new UserController();
 module.exports = function (controller) {
 
     var promiseBucket = {
@@ -16,7 +17,7 @@ module.exports = function (controller) {
 
     var userMessageCount = {
     }
-    var isGetInfor = false;
+    // var isGetInfor = false;
 
     var isRating = {};
     var star = {};
@@ -24,7 +25,6 @@ module.exports = function (controller) {
     var catched_intents = {}; //arr type
     var edited_intents = {}; // arr type
     var conversation = {}; // arr type
-    var isGetIntent = true;
     function isEmpty(obj) {
         for (var key in obj) {
             if (obj.hasOwnProperty(key))
@@ -86,6 +86,8 @@ module.exports = function (controller) {
 
     function callConversationManager(bot, message) {
 
+        var isGetInfor = false;
+
         var id = message.user;
         var raw_mesg = message.text
         var showCustomButton = false;
@@ -93,6 +95,8 @@ module.exports = function (controller) {
         var remove_more = false;
         var filter_attr = false;
         var filter_all = false;
+        var isGetIntent = true;
+
         console.log(message);
         if (raw_mesg) {
             if (conversation[message.user]) {
@@ -177,7 +181,24 @@ module.exports = function (controller) {
         //     force_show = true;
         //     raw_mesg = "";
         // }
+        if (message.resubmit_infor){
+            userController.searchSession(id).getInfor = false;
+            bot.reply(message, {
+                text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
+            });
+            return;
+        }
 
+        if (message.completed){
+            bot.reply(message, {
+                text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)]
+            });
+            var success = userController.deleteSession(id);
+            if (!success){
+                console.log("Error in delete function");
+            }
+            return;
+        }
         if (!promiseBucket[id]) {
             promiseBucket[id] = []
         }
@@ -401,55 +422,15 @@ module.exports = function (controller) {
         if (raw_mesg && raw_mesg.length > 0) {
             // console.log("say hi")
             // console.log(isGetInfor);
-            if (isGetInfor == true){
-                // console.log("isgetInfor");
-                request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-                    json: {
-                        message: raw_mesg
-                    }
-                }, (error, res, body) =>{
-                    if (error){
-                        console.log(error);
-                        conversation[message.user].push("bot: "+ resp.err );
-                        bot.reply(message, {
-                            graph: {},
-                            text: resp.err
-                        })  
-                        return
-                    }
-                    // console.log(body);
-                    if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
-                        bot.reply(message, {
-                            text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
-                        });
-                    } else {
-                        bot.reply(message, {
-                            text: `${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]} \n
-                                emails: ${body.emails.join(',')} \n
-                                Số điện thoại: ${body.phones.join(',')}`
-                                ,
-                                infor_confirm: [
-                                {
-                                    title: 'Đúng rồi',
-                                    payload: {
-                                        
-                                    }
-                                },
-                                {
-                                    title: 'Sai rồi',
-                                    payload: {
-                                        'resubmit_infor': true,
-                                    },
-                                },
-                            ]
-                        })
-                        isGetInfor = false;
-
-                    }
-                });
+            // console.log(isGetIntent);
+            var user = userController.searchSession(id);
+            
+            if (user == null){
+                user = userController.insertSession(id);
             }
-            if (isGetIntent){
-                console.log("request");
+            if (!user.getIntent){
+
+                console.log("get Intent");
                 request.post(CONVERSATION_MANAGER_ENDPOINT, {
                     json: {
                         message: raw_mesg
@@ -496,11 +477,160 @@ module.exports = function (controller) {
                         });
                     
                 });
-                isGetInfor = true;
-                
-                isGetIntent = false;
+                user.getIntent = true;
+            } else if (!user.getInfor){
+                request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
+                    json: {
+                        message: raw_mesg
+                    }
+                }, (error, res, body) =>{
+                    if (error){
+                        console.log(error);
+                        conversation[message.user].push("bot: "+ resp.err );
+                        bot.reply(message, {
+                            graph: {},
+                            text: resp.err
+                        })  
+                        return
+                    }
+                    // console.log(body);
+                    if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
+                        bot.reply(message, {
+                            text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
+                        });
+                        userController.searchSession(id).getInfor = false;
+                        return;
+                    } else {
+                        bot.reply(message, {
+                                text:`${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]}\n 
+                        emails: ${body.emails.join(',')} \n 
+                        Số điện thoại: ${body.phones.join(',')}`,
+                                force_result: [
+                                {
+                                    title: 'Đúng rồi',
+                                    payload: {
+                                        'completed': true
+                                    }
+                                },
+                                {
+                                    title: 'Sai rồi',
+                                    payload: {
+                                        'resubmit_infor': true,
+                                    },
+                                },
+                            ]
+                        })
 
+                    }
+                });
+                user.getInfor = true;
+                // userController.deleteSession(id);
+
+            } else {
+                userController.deleteSession(id);
+                console.log("last elsess");
             }
+            
+            // if (isGetInfor == true){
+            //     // console.log("isgetInfor");
+            //     request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
+            //         json: {
+            //             message: raw_mesg
+            //         }
+            //     }, (error, res, body) =>{
+            //         if (error){
+            //             console.log(error);
+            //             conversation[message.user].push("bot: "+ resp.err );
+            //             bot.reply(message, {
+            //                 graph: {},
+            //                 text: resp.err
+            //             })  
+            //             return
+            //         }
+            //         // console.log(body);
+            //         if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
+            //             bot.reply(message, {
+            //                 text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
+            //             });
+            //         } else {
+            //             bot.reply(message, {
+            //                 text: `${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]} \n
+            //                     emails: ${body.emails.join(',')} \n
+            //                     Số điện thoại: ${body.phones.join(',')}`
+            //                     ,
+            //                     force_result: [
+            //                     {
+            //                         title: 'Đúng rồi',
+            //                         payload: {
+                                        
+            //                         }
+            //                     },
+            //                     {
+            //                         title: 'Sai rồi',
+            //                         payload: {
+            //                             'resubmit_infor': true,
+            //                         },
+            //                     },
+            //                 ]
+            //             })
+            //             isGetInfor = false;
+
+            //         }
+            //     });
+            // }
+            // if (isGetIntent){
+            //     console.log("get Intent");
+            //     request.post(CONVERSATION_MANAGER_ENDPOINT, {
+            //         json: {
+            //             message: raw_mesg
+            //         }
+            //     }, (error, res, body) => {
+            //         if (error) {
+            //             console.log(error);
+            //             conversation[message.user].push("bot: "+ resp.err );
+            //             bot.reply(message, {
+            //                 graph: {},
+            //                 text: resp.err
+            //             })
+            //             return
+            //         }
+            //         // console.log("type: " + typeof(res.activity));
+            //         var responseSentence;
+            //         switch (body.message){
+            //             case "activity":
+            //                 responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
+            //                 break;
+            //             case "joiner":
+            //                 responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
+            //                 break;
+            //             case "work":
+            //                 responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
+            //                 break;
+            //             case "contact":
+            //                 responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
+            //                 break;
+            //             case "register":
+            //                 responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
+            //                 break;
+            //             default:
+            //                 responseSentence = resp.err
+            //         }
+            //         console.log(responseSentence);
+            //         bot.reply(message, {text: responseSentence});
+                    
+            //         responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
+            //         bot.reply(message, 
+            //             {
+            //                 text:responseSentence,
+            //                 // isGetInfor: true
+            //             });
+                    
+            //     });
+            //     isGetInfor = true;
+                
+            //     isGetIntent = false;
+
+            // }
             
         }
     }

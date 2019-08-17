@@ -12,8 +12,9 @@ this.searchSession=function (inUserid){
 }
 
 this.insertSession=function (inUserid){
-    newSession={userId:inUserid,getInfo:true,getIntent:false};
+    newSession={userId:inUserid,getInfo:false,getIntent:false};
     this.listSession.push(newSession)
+    return newSession
 }
 
 this.deleteSession=function (inUserid){

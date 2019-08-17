@@ -366,7 +366,7 @@ var Botkit = {
     return false;
   },
   sendCustom: function (text, payload, e) {
-    // console.log("here")
+    console.log("here" + text)
     var that = this;
     if (e) e.preventDefault();
     if (!text) {
@@ -1316,43 +1316,51 @@ var Botkit = {
     });
 
 
-    that.on('message', function (message) {
-      that.clearReplies();
-      console.log("outside");
+    // that.on('message', function (message) {
+    //   that.clearReplies();
+    //   // console.log("outside");
+    //   if (message.force_result) {
+    //     console.log("inside" + message.force_result);
+    //     var list = document.createElement('ul');
 
-      if (message.infor_confirm){
-        console.log("HERE");
+    //     var elements = [];
+    //     for (var r = 0; r < message.force_result.length; r++) {
+    //       (function (reply) {
 
-        var list = document.createElement('ul');
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
+            
+            
+            
+    //         el.onclick = function () {
+    //           console.log("inside onclick");
+    //           that.sendCustom(reply.title, reply.payload);
+              
+    //         }
+            
 
-        var elements = [];
-        for (var r = 0 ; r < message.infor_confirm.length; r++){
-          (function (reply){
-            var li = document.createElement('li');
-            var el = document.createElement('a');
-            el.innerHTML = reply.title;
-            el.href = '#';
+    //         console.log("below onclick");
 
-            el.onclick = function () {
-              that.sendCustom(reply.title, reply.payload);
-            }
-            li.appendChild(el);
-            list.appendChild(li);
-            elements.push(li);
-          })(message.infor_confirm[r]);
-        }
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
 
-        that.replies.appendChild(list);
+    //       })(message.force_result[r]);
+    //     }
 
-        if (message.disable_input){
-          that.input.disabled = true;
-        } else {
-          that.input.disabled = false;
-        }
-      } else {
-        that.input.disabled = false;
-      }
-    });
+    //     that.replies.appendChild(list);
+
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
     that.on('message', function (message) {
       that.clearReplies();
       if (message.quick_replies) {
@@ -1391,43 +1399,43 @@ var Botkit = {
       }
     });
 
-    // that.on('message', function (message) {
-    //   that.clearReplies();
-    //   if (message.force_result) {
+    that.on('message', function (message) {
+      that.clearReplies();
+      if (message.force_result) {
 
-    //     var list = document.createElement('ul');
+        var list = document.createElement('ul');
 
-    //     var elements = [];
-    //     for (var r = 0; r < message.force_result.length; r++) {
-    //       (function (reply) {
+        var elements = [];
+        for (var r = 0; r < message.force_result.length; r++) {
+          (function (reply) {
 
-    //         var li = document.createElement('li');
-    //         var el = document.createElement('a');
-    //         el.innerHTML = reply.title;
-    //         el.href = '#';
+            var li = document.createElement('li');
+            var el = document.createElement('a');
+            el.innerHTML = reply.title;
+            el.href = '#';
 
-    //         el.onclick = function () {
-    //           that.sendCustom(reply.title, reply.payload);
-    //         }
+            el.onclick = function () {
+              that.sendCustom(reply.title, reply.payload);
+            }
 
-    //         li.appendChild(el);
-    //         list.appendChild(li);
-    //         elements.push(li);
+            li.appendChild(el);
+            list.appendChild(li);
+            elements.push(li);
 
-    //       })(message.force_result[r]);
-    //     }
+          })(message.force_result[r]);
+        }
 
-    //     that.replies.appendChild(list);
+        that.replies.appendChild(list);
 
-    //     if (message.disable_input) {
-    //       that.input.disabled = true;
-    //     } else {
-    //       that.input.disabled = false;
-    //     }
-    //   } else {
-    //     that.input.disabled = false;
-    //   }
-    // });
+        if (message.disable_input) {
+          that.input.disabled = true;
+        } else {
+          that.input.disabled = false;
+        }
+      } else {
+        that.input.disabled = false;
+      }
+    });
 
     that.on('history_loaded', function (history) {
       if (history) {

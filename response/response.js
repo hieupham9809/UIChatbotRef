@@ -1,5 +1,5 @@
 module.exports = {
-    hello : "Xin chào! Tôi là CSE Assistant phiên bản đơn giản nhất, bạn cần trợ giúp gì vậy 😅😅 👋👋👋👋👋👋👋 ?",
+    hello : "Xin chào 👋👋👋👋👋👋👋 ! Mình là CSE Assistant phiên bản 1.0.0, chuyên tư vấn về các hoạt động xã hội, tình nguyện, sự kiện,... vv và vv. mình có thể giúp gì cho bạn nhỉ 😅😅 ?",
     err: "Có lỗi xảy ra, bạn F5 lại trang giúp mình nhé! 😅😅😅",
     cantfind: "Không tìm được hoạt động nào thỏa các yêu cầu. Hãy bỏ bớt để lấy kết quả.😓😓😓",
     wetried: "Không tìm được bất động sản nào thỏa các yêu cầu. Xin thử lại sau 😓",
@@ -60,5 +60,10 @@ module.exports = {
         "Sorry bạn, mình chưa ý bạn lắm 😖😖😖😖, bạn trả lời lại giùm mình nha 😚😚.",
         "Huhu 😢😢😢, mình không hiểu ý bạn, bạn trả lời lại nha 😅😅😅😅."
 
+    ],
+    goodbye:[
+        "Tạm biệt bạn nghen 👋👋👋. Chúc bạn có một ngày làm việc và học tập vui vẻ 😘😘😘😘.",
+        "Bye bye 👋👋👋! See you again 😘😘😘😘!",
+        "Bye bạn 👋👋👋👋! Hi vọng bạn cảm thấy hữu ích khi nghe mình tư vấn 😘😘😘😘. ahihi"
     ]
 }

@@ -661,12 +661,12 @@ var Botkit = {
         $($("#addr_district").find(".content")[0]).hide();
         needDeactivate.push("addr_district");
       }
-      for (var i = 0; i < needDeactivate.length; i++) {
-        deactivateLine(needDeactivate[i]);
-      }
-      for (var i = 0; i < needActivate.length; i++) {
-        activateLine(needActivate[i]);
-      }
+      // for (var i = 0; i < needDeactivate.length; i++) {
+      //   deactivateLine(needDeactivate[i]);
+      // }
+      // for (var i = 0; i < needActivate.length; i++) {
+      //   activateLine(needActivate[i]);
+      // }
       for (var key in myLine) {
         if (!myLine.hasOwnProperty(key)) continue;
         var obj = myLine[key];

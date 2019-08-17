@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>rLeT BOT</title>
+  <title>Demo intent classification BOT</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,63 +28,11 @@
     <div class="row p-0 h-100">
       <div class="d-none d-lg-block col-lg-7 col-xl-8 p-0">
         <div class="cnt-name" id="cnt-name">
-          Hệ thống tư vấn bất động sản tự động
+          Demo intent
         </div>
-        <div class="animated_pointer">>></div>
-        <div class="graph_name" id="switch_btn">Conceptual Graph</div>
-        <div class="cards">
-          <div class="card_info" id="info">
-            <div class="cnt">
-              <div class="text-bot-1">
-                Xin chào! 👋 Tôi có thể giúp gì được bạn?
-              </div>
-              <div class="text-user n1" id="n1">
-                Tôi muốn mua nhà ở quận 3.
-              </div>
-              <div class="text-bot b1" id="b1">
-                Đây là một số nhà ở quận 3 phù hợp với yêu cầu của bạn.
-              </div>
-              <div class="text-user n2" id="n2">
-                Mua nhà mặt tiền ở quận 1 thì cần bao nhiêu tiền?
-              </div>
-              <div class="text-bot b2" id="b2">
-                Nhà mặt tiền ở quận 1 thì có giá khoảng ...
-              </div>
-              <div class="text-user n3" id="n3">
-                Với 3 tỷ thì tôi mua được đất rộng cỡ bao nhiêu?
-              </div>
-              <div class="text-bot b3" id="b3">
-                Với mức đầu tư đó bạn có thể mua đất rộng cỡ ...
-              </div>
-              <div class="text-user n4" id="n4">
-                Nhà ở quận 2 thì có tiềm năng gì?
-              </div>
-              <div class="text-bot b4" id="b4">
-                Nhà ở khu vực này có các tiềm năng như ...
-              </div>
-              <div class="text-user n5" id="n5">
-                Thuê phòng với giá 2 triệu / tháng thì nên tìm ở đâu?
-              </div>
-              <div class="text-bot b5" id="b5">
-                Bạn có thể thử tìm phòng ở quận ...
-              </div>
-            </div>
-            <div class="bg"></div>
-          </div>
-          <div class="card_info" id="credit">
-            <img src="hcmuttrans.png" width="40px" height="40px" class="logobk">
-            <div class="bk-name">
-              Đại học Bách Khoa - ĐHQG TP.HCM <br>
-              Khoa KH & KT Máy Tính
-            </div>
-            <div class="thay-tho">
-              GVHD: &nbsp; PGS. TS. Quản Thành Thơ​
-            </div>
-            <span id="svth" class="d-none d-xl-block">SVTH</span>
-            <a href="mailto:1513448@hcmut.edu.vn" target="_blank"><span id="nhat">Nguyễn Hữu Anh Tiến</span></a>
-            <a href="mailto:1511849@hcmut.edu.vn" target="_blank"><span id="nhl">Nguyễn Hoàng Lộc</span></a>
-          </div>
-        </div>
+        <!-- <div class="animated_pointer">>></div> -->
+        <!-- <div class="graph_name" id="switch_btn">Conceptual Graph</div> -->
+        
         <div class="graph-wrapper" id="whole_graph">
           <!-- Top Four -->
           <div class="entity" id="area">
@@ -184,7 +132,7 @@
               <span>
                 <img src="hcmut.png" class="avt">
               </span>
-              <div class="name">rLeT BOT</div>
+              <div class="name">intent classification BOT</div>
             </div>
             <div class="disconnected">
               Disconnected... reconnecting!
@@ -296,257 +244,257 @@
     }
   </script>
   <script src="leader-line.min.js"></script>
-  <script type="text/javascript">
-    setTimeout(() => { $("#n1").hide() }, 6400)
-    setTimeout(() => { $("#b1").hide() }, 6400)
+  <script type="text/javascript"> 
+    // setTimeout(() => { $("#n1").hide() }, 6400)
+    // setTimeout(() => { $("#b1").hide() }, 6400)
 
-    setTimeout(() => { $("#n2").hide() }, 11400)
-    setTimeout(() => { $("#b2").hide() }, 11400)
+    // setTimeout(() => { $("#n2").hide() }, 11400)
+    // setTimeout(() => { $("#b2").hide() }, 11400)
 
-    setTimeout(() => { $("#n3").hide() }, 16400)
-    setTimeout(() => { $("#b3").hide() }, 16400)
+    // setTimeout(() => { $("#n3").hide() }, 16400)
+    // setTimeout(() => { $("#b3").hide() }, 16400)
 
-    setTimeout(() => { $("#n4").hide() }, 21400)
-    setTimeout(() => { $("#b4").hide() }, 21400)
+    // setTimeout(() => { $("#n4").hide() }, 21400)
+    // setTimeout(() => { $("#b4").hide() }, 21400)
 
-    var graph_show = false;
-    $("#switch_btn").click(() => {
-      if (graph_show === false) {
-        $(".cards").hide();
-        $("#cnt-name").hide();
-        $("#switch_btn").css("opacity", "1");
-        $("#whole_graph").css("opacity", "1");
-        $("body>svg").css("opacity", "1");
-      } else {
-        setTimeout(() => {
-          $(".cards").show();
-          $("#cnt-name").show();
-        }, 500)
-        $("#switch_btn").css("opacity", ".5");
-        $("#whole_graph").css("opacity", "0");
-        $("body>svg").css("opacity", "0");
-      }
-      graph_show = !graph_show;
+    // var graph_show = false;
+    // $("#switch_btn").click(() => {
+    //   if (graph_show === false) {
+    //     $(".cards").hide();
+    //     $("#cnt-name").hide();
+    //     $("#switch_btn").css("opacity", "1");
+    //     $("#whole_graph").css("opacity", "1");
+    //     $("body>svg").css("opacity", "1");
+    //   } else {
+    //     setTimeout(() => {
+    //       $(".cards").show();
+    //       $("#cnt-name").show();
+    //     }, 500)
+    //     $("#switch_btn").css("opacity", ".5");
+    //     $("#whole_graph").css("opacity", "0");
+    //     $("body>svg").css("opacity", "0");
+    //   }
+    //   graph_show = !graph_show;
 
-    })
+    // })
 
-    function activateLine(key) {
-      if (line_list[key]) {
-        if (key === "area") {
-          $("#top_four_area").css("top", "50px");
-        }
-        if (key === "potential") {
-          $("#top_four_potential").css("top", "130px");
-        }
-        if (key === "price") {
-          $("#top_four_price").css("top", "210px");
-        }
-        if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
-          var offset = $("#" + key).width() / 2;
-          var id = "#bottom_four_" + key
-          var curLen = parseInt($("#" + key).css("left"));
-          curLen += offset
-          // console.log(offset)
-          // console.log($(id).css("left"))
-          // console.log(curLen)
-          $(id).css("left", curLen + "px")
-        }
-        for (var i = 0; i < line_list[key].length; i++) {
-          (function (line) {
-            if (key === "area") // console.log(myLine[line])
-            myLine[line].color = "var(--primary-color)"
-            myLine[line].size = 3
-            myLine[line].position()
-          })(line_list[key][i])
-        }
-      }
-    }
-    function deactivateLine(key) {
-      if (line_list[key]) {
-        if (key === "area") {
-          $("#top_four_area").css("top", "37.5px");
-        }
-        if (key === "potential") {
-          $("#top_four_potential").css("top", "117.5px");
-        }
-        if (key === "price") {
-          $("#top_four_price").css("top", "197.5px");
-        }
-        if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
-          var offset = $("#" + key).width() / 2;
-          var id = "#bottom_four_" + key
-          var curLen = parseInt($("#" + key).css("left"));
-          curLen += offset
-          $(id).css("left", curLen + "px")
+    // function activateLine(key) {
+    //   if (line_list[key]) {
+    //     if (key === "area") {
+    //       $("#top_four_area").css("top", "50px");
+    //     }
+    //     if (key === "potential") {
+    //       $("#top_four_potential").css("top", "130px");
+    //     }
+    //     if (key === "price") {
+    //       $("#top_four_price").css("top", "210px");
+    //     }
+    //     if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
+    //       var offset = $("#" + key).width() / 2;
+    //       var id = "#bottom_four_" + key
+    //       var curLen = parseInt($("#" + key).css("left"));
+    //       curLen += offset
+    //       // console.log(offset)
+    //       // console.log($(id).css("left"))
+    //       // console.log(curLen)
+    //       $(id).css("left", curLen + "px")
+    //     }
+    //     for (var i = 0; i < line_list[key].length; i++) {
+    //       (function (line) {
+    //         if (key === "area") // console.log(myLine[line])
+    //         myLine[line].color = "var(--primary-color)"
+    //         myLine[line].size = 3
+    //         myLine[line].position()
+    //       })(line_list[key][i])
+    //     }
+    //   }
+    // }
+    // function deactivateLine(key) {
+    //   if (line_list[key]) {
+    //     if (key === "area") {
+    //       $("#top_four_area").css("top", "37.5px");
+    //     }
+    //     if (key === "potential") {
+    //       $("#top_four_potential").css("top", "117.5px");
+    //     }
+    //     if (key === "price") {
+    //       $("#top_four_price").css("top", "197.5px");
+    //     }
+    //     if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
+    //       var offset = $("#" + key).width() / 2;
+    //       var id = "#bottom_four_" + key
+    //       var curLen = parseInt($("#" + key).css("left"));
+    //       curLen += offset
+    //       $(id).css("left", curLen + "px")
 
-        }
-        for (var i = 0; i < line_list[key].length; i++) {
-          (function (line) {
-            myLine[line].color = "var(--primary-color-disabled)"
-            myLine[line].size = 2
-            myLine[line].position()
-          })(line_list[key][i])
-        }
-      }
-    }
-    var myLine = {}
-    var line_list = {}
-    const TOP_FOUR_ATTR = ['price', 'location', 'potential', 'area']
-    myLine["top_four"] = new LeaderLine({
-      start: document.getElementById('real_estate'),
-      end: document.getElementById('top_four'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["top_four_location"] = new LeaderLine({
-      start: document.getElementById('top_four'),
-      end: document.getElementById('top_four_location'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["top_four_three_left"] = new LeaderLine({
-      start: document.getElementById('top_four'),
-      end: document.getElementById('top_four_three_left'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["top_four_price"] = new LeaderLine({
-      start: document.getElementById('top_four_three_left'),
-      end: document.getElementById('top_four_price'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["top_four_potential"] = new LeaderLine({
-      start: document.getElementById('top_four_price'),
-      end: document.getElementById('top_four_potential'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["top_four_area"] = new LeaderLine({
-      start: document.getElementById('top_four_potential'),
-      end: document.getElementById('top_four_area'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    for (var i = 0; i < TOP_FOUR_ATTR.length; i++) {
-      myLine[TOP_FOUR_ATTR[i]] = new LeaderLine({
-        start: document.getElementById('top_four_' + TOP_FOUR_ATTR[i]),
-        end: document.getElementById(TOP_FOUR_ATTR[i]),
-        path: 'straight',
-        size: 2,
-        color: "var(--primary-color-disabled)"
-      });
-      line_list[TOP_FOUR_ATTR[i]] = [];
-      line_list[TOP_FOUR_ATTR[i]].push("top_four");
-      if (TOP_FOUR_ATTR[i] != "location") line_list[TOP_FOUR_ATTR[i]].push("top_four_three_left");
-      line_list[TOP_FOUR_ATTR[i]].push("top_four_" + TOP_FOUR_ATTR[i]);
-      line_list[TOP_FOUR_ATTR[i]].push(TOP_FOUR_ATTR[i]);
-    }
-    line_list["potential"].push("top_four_price")
-    line_list["area"].push("top_four_price")
-    line_list["area"].push("top_four_potential")
+    //     }
+    //     for (var i = 0; i < line_list[key].length; i++) {
+    //       (function (line) {
+    //         myLine[line].color = "var(--primary-color-disabled)"
+    //         myLine[line].size = 2
+    //         myLine[line].position()
+    //       })(line_list[key][i])
+    //     }
+    //   }
+    // }
+    // var myLine = {}
+    // var line_list = {}
+    // const TOP_FOUR_ATTR = ['price', 'location', 'potential', 'area']
+    // myLine["top_four"] = new LeaderLine({
+    //   start: document.getElementById('real_estate'),
+    //   end: document.getElementById('top_four'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["top_four_location"] = new LeaderLine({
+    //   start: document.getElementById('top_four'),
+    //   end: document.getElementById('top_four_location'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["top_four_three_left"] = new LeaderLine({
+    //   start: document.getElementById('top_four'),
+    //   end: document.getElementById('top_four_three_left'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["top_four_price"] = new LeaderLine({
+    //   start: document.getElementById('top_four_three_left'),
+    //   end: document.getElementById('top_four_price'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["top_four_potential"] = new LeaderLine({
+    //   start: document.getElementById('top_four_price'),
+    //   end: document.getElementById('top_four_potential'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["top_four_area"] = new LeaderLine({
+    //   start: document.getElementById('top_four_potential'),
+    //   end: document.getElementById('top_four_area'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // for (var i = 0; i < TOP_FOUR_ATTR.length; i++) {
+    //   myLine[TOP_FOUR_ATTR[i]] = new LeaderLine({
+    //     start: document.getElementById('top_four_' + TOP_FOUR_ATTR[i]),
+    //     end: document.getElementById(TOP_FOUR_ATTR[i]),
+    //     path: 'straight',
+    //     size: 2,
+    //     color: "var(--primary-color-disabled)"
+    //   });
+    //   line_list[TOP_FOUR_ATTR[i]] = [];
+    //   line_list[TOP_FOUR_ATTR[i]].push("top_four");
+    //   if (TOP_FOUR_ATTR[i] != "location") line_list[TOP_FOUR_ATTR[i]].push("top_four_three_left");
+    //   line_list[TOP_FOUR_ATTR[i]].push("top_four_" + TOP_FOUR_ATTR[i]);
+    //   line_list[TOP_FOUR_ATTR[i]].push(TOP_FOUR_ATTR[i]);
+    // }
+    // line_list["potential"].push("top_four_price")
+    // line_list["area"].push("top_four_price")
+    // line_list["area"].push("top_four_potential")
 
-    const BOTTOM_FOUR_ATTR = ['position', 'interior_room', 'interior_floor', 'surrounding_characteristics']
-    myLine["bottom_four"] = new LeaderLine({
-      start: document.getElementById('real_estate'),
-      end: document.getElementById('bottom_four'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["bottom_four_interior_room"] = new LeaderLine({
-      start: document.getElementById('bottom_four'),
-      end: document.getElementById('bottom_four_interior_room'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["bottom_four_position"] = new LeaderLine({
-      start: document.getElementById('bottom_four_interior_room'),
-      end: document.getElementById('bottom_four_position'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["bottom_four_interior_floor"] = new LeaderLine({
-      start: document.getElementById('bottom_four'),
-      end: document.getElementById('bottom_four_interior_floor'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    myLine["bottom_four_surrounding_characteristics"] = new LeaderLine({
-      start: document.getElementById('bottom_four_interior_floor'),
-      end: document.getElementById('bottom_four_surrounding_characteristics'),
-      path: 'straight',
-      size: 2,
-      color: "var(--primary-color-disabled)",
-      endPlug: 'behind'
-    });
-    for (var i = 0; i < BOTTOM_FOUR_ATTR.length; i++) {
-      myLine[BOTTOM_FOUR_ATTR[i]] = new LeaderLine({
-        start: document.getElementById('bottom_four_' + BOTTOM_FOUR_ATTR[i]),
-        end: document.getElementById(BOTTOM_FOUR_ATTR[i]),
-        path: 'straight',
-        size: 2,
-        color: "var(--primary-color-disabled)"
-      });
-      line_list[BOTTOM_FOUR_ATTR[i]] = [];
-      line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four");
-      line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four_" + BOTTOM_FOUR_ATTR[i]);
-      line_list[BOTTOM_FOUR_ATTR[i]].push(BOTTOM_FOUR_ATTR[i]);
-    }
-    line_list["position"].push("bottom_four_interior_room")
-    line_list["surrounding_characteristics"].push("bottom_four_interior_floor")
+    // const BOTTOM_FOUR_ATTR = ['position', 'interior_room', 'interior_floor', 'surrounding_characteristics']
+    // myLine["bottom_four"] = new LeaderLine({
+    //   start: document.getElementById('real_estate'),
+    //   end: document.getElementById('bottom_four'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["bottom_four_interior_room"] = new LeaderLine({
+    //   start: document.getElementById('bottom_four'),
+    //   end: document.getElementById('bottom_four_interior_room'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["bottom_four_position"] = new LeaderLine({
+    //   start: document.getElementById('bottom_four_interior_room'),
+    //   end: document.getElementById('bottom_four_position'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["bottom_four_interior_floor"] = new LeaderLine({
+    //   start: document.getElementById('bottom_four'),
+    //   end: document.getElementById('bottom_four_interior_floor'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // myLine["bottom_four_surrounding_characteristics"] = new LeaderLine({
+    //   start: document.getElementById('bottom_four_interior_floor'),
+    //   end: document.getElementById('bottom_four_surrounding_characteristics'),
+    //   path: 'straight',
+    //   size: 2,
+    //   color: "var(--primary-color-disabled)",
+    //   endPlug: 'behind'
+    // });
+    // for (var i = 0; i < BOTTOM_FOUR_ATTR.length; i++) {
+    //   myLine[BOTTOM_FOUR_ATTR[i]] = new LeaderLine({
+    //     start: document.getElementById('bottom_four_' + BOTTOM_FOUR_ATTR[i]),
+    //     end: document.getElementById(BOTTOM_FOUR_ATTR[i]),
+    //     path: 'straight',
+    //     size: 2,
+    //     color: "var(--primary-color-disabled)"
+    //   });
+    //   line_list[BOTTOM_FOUR_ATTR[i]] = [];
+    //   line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four");
+    //   line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four_" + BOTTOM_FOUR_ATTR[i]);
+    //   line_list[BOTTOM_FOUR_ATTR[i]].push(BOTTOM_FOUR_ATTR[i]);
+    // }
+    // line_list["position"].push("bottom_four_interior_room")
+    // line_list["surrounding_characteristics"].push("bottom_four_interior_floor")
 
-    const FIVE_ATTR = ['realestate_type', 'orientation', 'legal', 'transaction_type', 'surrounding_place']
-    for (var i = 0; i < FIVE_ATTR.length; i++) {
-      myLine[FIVE_ATTR[i]] = new LeaderLine({
-        start: document.getElementById('real_estate'),
-        end: document.getElementById(FIVE_ATTR[i]),
-        path: 'straight',
-        size: 2,
-        color: "var(--primary-color-disabled)"
-      });
-      line_list[FIVE_ATTR[i]] = [];
-      line_list[FIVE_ATTR[i]].push(FIVE_ATTR[i]);
-    }
-    const LOCATION_ATTR = ['addr_ward', 'addr_city', 'addr_district', 'addr_street']
-    for (var i = 0; i < LOCATION_ATTR.length; i++) {
-      myLine[LOCATION_ATTR[i]] = new LeaderLine({
-        start: document.getElementById('location'),
-        end: document.getElementById(LOCATION_ATTR[i]),
-        path: 'straight',
-        size: 2,
-        color: "var(--primary-color-disabled)"
-      });
-      line_list[LOCATION_ATTR[i]] = [];
-      line_list[LOCATION_ATTR[i]].push(LOCATION_ATTR[i]);
-    }
-    for (var key in myLine) {
-      if (!myLine.hasOwnProperty(key)) continue;
-      var obj = myLine[key];
-      obj.position();
-    }
-    if (graph_show === false) {
-      $("body>svg").css("opacity", "0.0")
-    }
+    // const FIVE_ATTR = ['realestate_type', 'orientation', 'legal', 'transaction_type', 'surrounding_place']
+    // for (var i = 0; i < FIVE_ATTR.length; i++) {
+    //   myLine[FIVE_ATTR[i]] = new LeaderLine({
+    //     start: document.getElementById('real_estate'),
+    //     end: document.getElementById(FIVE_ATTR[i]),
+    //     path: 'straight',
+    //     size: 2,
+    //     color: "var(--primary-color-disabled)"
+    //   });
+    //   line_list[FIVE_ATTR[i]] = [];
+    //   line_list[FIVE_ATTR[i]].push(FIVE_ATTR[i]);
+    // }
+    // const LOCATION_ATTR = ['addr_ward', 'addr_city', 'addr_district', 'addr_street']
+    // for (var i = 0; i < LOCATION_ATTR.length; i++) {
+    //   myLine[LOCATION_ATTR[i]] = new LeaderLine({
+    //     start: document.getElementById('location'),
+    //     end: document.getElementById(LOCATION_ATTR[i]),
+    //     path: 'straight',
+    //     size: 2,
+    //     color: "var(--primary-color-disabled)"
+    //   });
+    //   line_list[LOCATION_ATTR[i]] = [];
+    //   line_list[LOCATION_ATTR[i]].push(LOCATION_ATTR[i]);
+    // }
+    // for (var key in myLine) {
+    //   if (!myLine.hasOwnProperty(key)) continue;
+    //   var obj = myLine[key];
+    //   obj.position();
+    // }
+    // if (graph_show === false) {
+    //   $("body>svg").css("opacity", "0.0")
+    // }
   </script>
   <script src="client.js"></script>
 </body>

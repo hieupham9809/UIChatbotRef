@@ -16,7 +16,6 @@ module.exports = function (controller) {
 
     var userMessageCount = {
     }
-    var isGetInfor = false;
 
     var isRating = {};
     var star = {};
@@ -24,7 +23,7 @@ module.exports = function (controller) {
     var catched_intents = {}; //arr type
     var edited_intents = {}; // arr type
     var conversation = {}; // arr type
-    var isGetIntent = true;
+
     function isEmpty(obj) {
         for (var key in obj) {
             if (obj.hasOwnProperty(key))
@@ -38,10 +37,10 @@ module.exports = function (controller) {
         bot.startConversation(message, function (err, convo) {
             var id = message.user
             console.log(id)
-            // if (id) {
-            //     var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);
-            //     console.log("DELETE GRAPH CODE:" + delete_body.statusCode);
-            // }
+            if (id) {
+                var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);
+                console.log("DELETE GRAPH CODE:" + delete_body.statusCode);
+            }
             convo.say({
                 text: resp.hello,
             });
@@ -101,82 +100,82 @@ module.exports = function (controller) {
                 conversation[message.user] = ["user: " + raw_mesg];
             }
         }
-        // if (message.rating_prop) {
-        //     console.log(message.rating_prop)
-        //     if (message.rating_prop.star) star[message.user] = message.rating_prop.star;
-        //     if (message.rating_prop.appropriate) appropriate[message.user] = message.rating_prop.appropriate;
-        //     if (message.rating_prop.catched_intents) edited_intents[message.user] = message.rating_prop.catched_intents;
-        //     return;
-        // }
-        // if (message.continue) {
-        //     conversation[message.user].push("bot: "+ resp.whatyourattr );
-        //     bot.reply(message, resp.whatyourattr);
-        //     return;
-        // }
-        // if (message.start_rating) {
-        //     isRating[message.user] = true;
-        //     star[message.user] = -1;
-        //     appropriate[message.user] = "phu_hop"; // "khong_phu_hop", "hoi_thieu", "phu_hop", "hoi_du"
-        //     catched_intents[message.user] = message.catched_intents;
-        //     edited_intents[message.user] = message.catched_intents;
-        //     conversation[message.user].push("bot: "+  resp.start_rating );
-        //     bot.reply(message, {
-        //         text: resp.start_rating,
-        //         start_rating: true,
-        //         catched_intents: catched_intents[message.user],
-        //         force_result: [
-        //             {
-        //                 title: 'Save',
-        //                 payload: {
-        //                     'quit': true,
-        //                     'save': true
-        //                 }
-        //             },
-        //             {
-        //                 title: 'Cancel',
-        //                 payload: {
-        //                     'quit': true,
-        //                     'save': false
-        //                 },
-        //             },
-        //         ]
-        //     });
-        //     return;
-        // }
+        if (message.rating_prop) {
+            console.log(message.rating_prop)
+            if (message.rating_prop.star) star[message.user] = message.rating_prop.star;
+            if (message.rating_prop.appropriate) appropriate[message.user] = message.rating_prop.appropriate;
+            if (message.rating_prop.catched_intents) edited_intents[message.user] = message.rating_prop.catched_intents;
+            return;
+        }
+        if (message.continue) {
+            conversation[message.user].push("bot: "+ resp.whatyourattr );
+            bot.reply(message, resp.whatyourattr);
+            return;
+        }
+        if (message.start_rating) {
+            isRating[message.user] = true;
+            star[message.user] = -1;
+            appropriate[message.user] = "phu_hop"; // "khong_phu_hop", "hoi_thieu", "phu_hop", "hoi_du"
+            catched_intents[message.user] = message.catched_intents;
+            edited_intents[message.user] = message.catched_intents;
+            conversation[message.user].push("bot: "+  resp.start_rating );
+            bot.reply(message, {
+                text: resp.start_rating,
+                start_rating: true,
+                catched_intents: catched_intents[message.user],
+                force_result: [
+                    {
+                        title: 'Save',
+                        payload: {
+                            'quit': true,
+                            'save': true
+                        }
+                    },
+                    {
+                        title: 'Cancel',
+                        payload: {
+                            'quit': true,
+                            'save': false
+                        },
+                    },
+                ]
+            });
+            return;
+        }
         if (message.quit) {
             restartConversation(bot, message);
             return;
         }
-        // if (message.force_show) {
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.remove_more) {
-        //     remove_more = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.clearAttr) {
+        if (message.force_show) {
+            force_show = true;
+            raw_mesg = "";
+        }
+        if (message.remove_more) {
+            remove_more = true;
+            force_show = true;
+            raw_mesg = "";
+        }
+        if (message.clearAttr) {
 
-        //     // sync.delete(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key, (error, res, body) => {
-        //     //     console.log(body)
-        //     // })
-        //     var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key);
-        //     console.log("DELETE GRAPH KEY [" + message.clearAttr.key + "] CODE:" + delete_body.statusCode);
+            // sync.delete(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key, (error, res, body) => {
+            //     console.log(body)
+            // })
+            var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key);
+            console.log("DELETE GRAPH KEY [" + message.clearAttr.key + "] CODE:" + delete_body.statusCode);
 
-        //     showCustomButton = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.filterAttr) {
-        //     filter_attr = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.filter_all) {
-        //     filter_all = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
+            showCustomButton = true;
+            raw_mesg = "";
+        }
+        if (message.filterAttr) {
+            filter_attr = true;
+            force_show = true;
+            raw_mesg = "";
+        }
+        if (message.filter_all) {
+            filter_all = true;
+            force_show = true;
+            raw_mesg = "";
+        }
 
         if (!promiseBucket[id]) {
             promiseBucket[id] = []
@@ -190,15 +189,15 @@ module.exports = function (controller) {
             if (bucket.every(ele => { return ele.value === false })) {
                 // + "&force_get_results=true"
                 var postfix_force_show = "";
-                // if (force_show === true) {
-                //     postfix_force_show = "&force_get_results=true"
-                // }
-                // if (filter_attr === true) {
-                //     postfix_force_show += "&key_filter=" + message.filterAttr.key + "&value_filter=" + message.filterAttr.value
-                // }
-                // if (filter_all === true) {
-                //     postfix_force_show += "&key_filter=all";
-                // }
+                if (force_show === true) {
+                    postfix_force_show = "&force_get_results=true"
+                }
+                if (filter_attr === true) {
+                    postfix_force_show += "&key_filter=" + message.filterAttr.key + "&value_filter=" + message.filterAttr.value
+                }
+                if (filter_all === true) {
+                    postfix_force_show += "&key_filter=all";
+                }
                 console.log(postfix_force_show)
                 request.get(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + postfix_force_show, {}, (error, res, body) => {
                     // console.log(body)
@@ -399,83 +398,29 @@ module.exports = function (controller) {
         }
 
         if (raw_mesg && raw_mesg.length > 0) {
-            // console.log("say hi")
-            console.log(isGetInfor);
-            if (isGetInfor == true){
-                console.log("isgetInfor");
-                request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-                    json: {
-                        message: raw_mesg
-                    }
-                }, (error, res, body) =>{
-                    if (error){
-                        console.log(error);
-                        conversation[message.user].push("bot: "+ resp.err );
-                        bot.reply(message, {
-                            graph: {},
-                            text: resp.err
-                        })
-                        return
-                    }
-                    console.log(body);
-                });
-            }
-            if (isGetIntent){
-                console.log("request");
-                request.post(CONVERSATION_MANAGER_ENDPOINT, {
-                    json: {
-                        message: raw_mesg
-                    }
-                }, (error, res, body) => {
-                    if (error) {
-                        console.log(error);
-                        conversation[message.user].push("bot: "+ resp.err );
-                        bot.reply(message, {
-                            graph: {},
-                            text: resp.err
-                        })
-                        return
-                    }
-                    // console.log("type: " + typeof(res.activity));
-                    var responseSentence;
-                    switch (body.message){
-                        case "activity":
-                            responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
-                            break;
-                        case "joiner":
-                            responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
-                            break;
-                        case "work":
-                            responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
-                            break;
-                        case "contact":
-                            responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
-                            break;
-                        case "register":
-                            responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
-                            break;
-                        default:
-                            responseSentence = resp.err
-                    }
-                    console.log(responseSentence);
-                    bot.reply(message, {text: responseSentence});
-                    
-                    responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-                    bot.reply(message, 
-                        {
-                            text:responseSentence,
-                            // isGetInfor: true
-                        });
-                    
-                });
-                isGetInfor = true;
-                
-                isGetIntent = false;
-
-            }
-            
+            request.post(CONVERSATION_MANAGER_ENDPOINT, {
+                json: {
+                    graph_id: message.user,
+                    message: raw_mesg
+                }
+            }, (error, res, body) => {
+                if (error) {
+                    console.log(error);
+                    conversation[message.user].push("bot: "+ resp.err );
+                    bot.reply(message, {
+                        graph: {},
+                        text: resp.err
+                    })
+                    return
+                }
+                console.log("FILL: " + JSON.stringify(body));
+                requestGET()
+            })
+        } else {
+            requestGET()
         }
     }
+
     controller.on('hello', conductOnboarding);
     controller.on('welcome_back', conductOnboarding);
     controller.on('message_received', callConversationManager);

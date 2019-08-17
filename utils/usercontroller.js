@@ -1,5 +1,5 @@
 module.exports = function(){ 
-this.listSession=[{userId:"abc",getInfo:false,getIntent:true},{userId:"aloha",getInfo:false,getIntent:true}];
+this.listSession=[];
 
 this.searchSession=function (inUserid){
     // console.log(this.listSession)

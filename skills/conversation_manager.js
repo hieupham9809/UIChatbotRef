@@ -400,9 +400,9 @@ module.exports = function (controller) {
 
         if (raw_mesg && raw_mesg.length > 0) {
             // console.log("say hi")
-            console.log(isGetInfor);
+            // console.log(isGetInfor);
             if (isGetInfor == true){
-                console.log("isgetInfor");
+                // console.log("isgetInfor");
                 request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
                     json: {
                         message: raw_mesg
@@ -414,10 +414,38 @@ module.exports = function (controller) {
                         bot.reply(message, {
                             graph: {},
                             text: resp.err
-                        })
+                        })  
                         return
                     }
-                    console.log(body);
+                    // console.log(body);
+                    if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
+                        bot.reply(message, {
+                            text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
+                        });
+                    } else {
+                        bot.reply(message, {
+                            text: `${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]} \n
+                                emails: ${body.emails.join(',')} \n
+                                Số điện thoại: ${body.phones.join(',')}`
+                                ,
+                                infor_confirm: [
+                                {
+                                    title: 'Đúng rồi',
+                                    payload: {
+                                        
+                                    }
+                                },
+                                {
+                                    title: 'Sai rồi',
+                                    payload: {
+                                        'resubmit_infor': true,
+                                    },
+                                },
+                            ]
+                        })
+                        isGetInfor = false;
+
+                    }
                 });
             }
             if (isGetIntent){

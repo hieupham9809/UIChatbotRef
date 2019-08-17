@@ -349,7 +349,6 @@ var Botkit = {
       type: 'outgoing',
       text: text
     };
-
     this.clearReplies();
     that.renderMessage(message);
 
@@ -396,6 +395,8 @@ var Botkit = {
     return false;
   },
   deliverMessage: function (message) {
+    // console.log("deliver");
+
     if (this.options.use_sockets) {
       this.socket.send(JSON.stringify(message));
     } else {
@@ -1317,6 +1318,43 @@ var Botkit = {
 
     that.on('message', function (message) {
       that.clearReplies();
+      console.log("outside");
+
+      if (message.infor_confirm){
+        console.log("HERE");
+
+        var list = document.createElement('ul');
+
+        var elements = [];
+        for (var r = 0 ; r < message.infor_confirm.length; r++){
+          (function (reply){
+            var li = document.createElement('li');
+            var el = document.createElement('a');
+            el.innerHTML = reply.title;
+            el.href = '#';
+
+            el.onclick = function () {
+              that.sendCustom(reply.title, reply.payload);
+            }
+            li.appendChild(el);
+            list.appendChild(li);
+            elements.push(li);
+          })(message.infor_confirm[r]);
+        }
+
+        that.replies.appendChild(list);
+
+        if (message.disable_input){
+          that.input.disabled = true;
+        } else {
+          that.input.disabled = false;
+        }
+      } else {
+        that.input.disabled = false;
+      }
+    });
+    that.on('message', function (message) {
+      that.clearReplies();
       if (message.quick_replies) {
 
         var list = document.createElement('ul');
@@ -1353,43 +1391,43 @@ var Botkit = {
       }
     });
 
-    that.on('message', function (message) {
-      that.clearReplies();
-      if (message.force_result) {
+    // that.on('message', function (message) {
+    //   that.clearReplies();
+    //   if (message.force_result) {
 
-        var list = document.createElement('ul');
+    //     var list = document.createElement('ul');
 
-        var elements = [];
-        for (var r = 0; r < message.force_result.length; r++) {
-          (function (reply) {
+    //     var elements = [];
+    //     for (var r = 0; r < message.force_result.length; r++) {
+    //       (function (reply) {
 
-            var li = document.createElement('li');
-            var el = document.createElement('a');
-            el.innerHTML = reply.title;
-            el.href = '#';
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
 
-            el.onclick = function () {
-              that.sendCustom(reply.title, reply.payload);
-            }
+    //         el.onclick = function () {
+    //           that.sendCustom(reply.title, reply.payload);
+    //         }
 
-            li.appendChild(el);
-            list.appendChild(li);
-            elements.push(li);
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
 
-          })(message.force_result[r]);
-        }
+    //       })(message.force_result[r]);
+    //     }
 
-        that.replies.appendChild(list);
+    //     that.replies.appendChild(list);
 
-        if (message.disable_input) {
-          that.input.disabled = true;
-        } else {
-          that.input.disabled = false;
-        }
-      } else {
-        that.input.disabled = false;
-      }
-    });
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
 
     that.on('history_loaded', function (history) {
       if (history) {

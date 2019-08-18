@@ -49,6 +49,46 @@ module.exports = function (controller) {
         });
     }
 
+    function continueConversation(bot, message) {
+
+        var id = message.user;
+        console.log("welcome back-------------------------" + id);
+        var user = userController.searchSession(id);
+        if (user != null){
+            // refresh at getIntent
+            if (!user.getIntent){
+                bot.reply(message, {
+                    text: resp.hello
+                });
+            // refresh at getInfor
+            } else if (!user.getInfor){
+                bot.reply(message, {
+                    text: resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)]
+                });
+            // refresh at confirm infor
+            } else {
+                var success = userController.deleteSession(id);
+                if (!success){
+                    console.log("Error in delete function");
+                } else {
+                    console.log("Delete success");
+                }
+                bot.reply(message, {
+                    text: resp.hello
+                });
+
+            }
+            
+        } else {
+            bot.startConversation(message, function (err, convo) {
+                // var id = message.user
+                // console.log(id)
+                convo.say({
+                    text: resp.hello,
+                });
+            });
+        }
+    }
     function restartConversation(bot, message) {
         var id = message.user
         if (isRating[id] && message.save) {
@@ -71,6 +111,13 @@ module.exports = function (controller) {
         }
         isRating[id] = false;
         bot.reply(message, { graph: {}, text: resp.thank });
+        var success = userController.deleteSession(id);
+        if (!success){
+            console.log("Error in delete function");
+        } else {
+            console.log("Delete success");
+        }
+
         console.log(id)
         if (id) {
             conversation[id] = [];
@@ -80,6 +127,7 @@ module.exports = function (controller) {
         setTimeout(() => {
             bot.reply(message, resp.hello)
             userMessageCount[id] = 0;
+            userController.deleteSession(id);
         }, 1000)
 
     }
@@ -191,12 +239,28 @@ module.exports = function (controller) {
 
         if (message.completed){
             bot.reply(message, {
-                text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)]
+                text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
+                force_result: [
+                    {
+                        title: 'Bắt đầu hội thoại mới',
+                        payload: {
+                            'restart_conversation': true
+                        }
+                    }
+                ]
             });
             var success = userController.deleteSession(id);
             if (!success){
                 console.log("Error in delete function");
+            } else {
+                console.log("Delete success");
             }
+            return;
+        }
+        if (message.restart_conversation){
+            bot.reply(message, {
+                text: resp.hello
+            });
             return;
         }
         if (!promiseBucket[id]) {
@@ -423,6 +487,19 @@ module.exports = function (controller) {
             // console.log("say hi")
             // console.log(isGetInfor);
             // console.log(isGetIntent);
+            if (raw_mesg == "bye"){
+                bot.reply(message, {
+                    text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)]
+                });
+                
+                var success = userController.deleteSession(id);
+                if (!success){
+                    console.log("Error in delete function");
+                } else {
+                    console.log("Delete success");
+                }
+                return;
+            }
             var user = userController.searchSession(id);
             
             if (user == null){
@@ -527,8 +604,13 @@ module.exports = function (controller) {
                 // userController.deleteSession(id);
 
             } else {
-                userController.deleteSession(id);
-                console.log("last elsess");
+                
+                var success = userController.deleteSession(id);
+                if (!success){
+                    console.log("Error in delete function");
+                } else {
+                    console.log("Delete success");
+                }
             }
             
             // if (isGetInfor == true){
@@ -635,7 +717,7 @@ module.exports = function (controller) {
         }
     }
     controller.on('hello', conductOnboarding);
-    controller.on('welcome_back', conductOnboarding);
+    controller.on('welcome_back', continueConversation);
     controller.on('message_received', callConversationManager);
 
 }

@@ -489,7 +489,15 @@ module.exports = function (controller) {
             // console.log(isGetIntent);
             if (raw_mesg == "bye"){
                 bot.reply(message, {
-                    text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)]
+                    text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
+                    force_result: [
+                        {
+                            title: 'Bắt đầu hội thoại mới',
+                            payload: {
+                                'restart_conversation': true
+                            }
+                        }
+                    ]
                 });
                 
                 var success = userController.deleteSession(id);

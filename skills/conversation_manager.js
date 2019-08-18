@@ -184,7 +184,7 @@ module.exports = function (controller) {
         if (message.resubmit_infor){
             userController.searchSession(id).getInfor = false;
             bot.reply(message, {
-                text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
+                text: resp.wrong[Math.floor(Math.random() * resp.wrong.length)]
             });
             return;
         }

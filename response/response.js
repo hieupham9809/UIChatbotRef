@@ -57,7 +57,7 @@ module.exports = {
     confuse:[
         "Xin lỗi mình không hiểu ý bạn 😩😩😩😩, bạn trả lời lại giúp mình với 😅😅😅. ",
         "Chà, mình không hiểu lắm 😩😩😩😩, bạn trả lời lại giúp mình nha 😅😅. ",
-        "Sorry bạn, mình chưa ý bạn lắm 😖😖😖😖, bạn trả lời lại giùm mình nha 😚😚.",
+        "Sorry bạn, mình chưa hiểu ý bạn lắm 😖😖😖😖, bạn trả lời lại giùm mình nha 😚😚.",
         "Huhu 😢😢😢, mình không hiểu ý bạn, bạn trả lời lại nha 😅😅😅😅."
 
     ],
@@ -65,5 +65,10 @@ module.exports = {
         "Tạm biệt bạn nghen 👋👋👋. Chúc bạn có một ngày làm việc và học tập vui vẻ 😘😘😘😘.",
         "Bye bye 👋👋👋! See you again 😘😘😘😘!",
         "Bye bạn 👋👋👋👋! Hi vọng bạn cảm thấy hữu ích khi nghe mình tư vấn 😘😘😘😘. ahihi"
+    ],
+    wrong:[
+        "Ops, thật là xấu hổ quá, bạn nhập lại giúp mình với 😅",
+        "Vậy hả 😓, mình xin lỗi. Bạn nhập lại cho rõ hơn giúp mình với 😓",
+        "Hic, mình xin lỗi, bạn nhập lại rõ hơn giúp tấm thân nhỏ bé này với 😓"
     ]
 }

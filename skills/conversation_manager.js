@@ -287,14 +287,7 @@ module.exports = function (controller) {
         if (message.correct_intent){
             bot.reply(message, {
                 text:resp.correct_intent,
-                force_result: [
-                    {
-                        title: 'Bắt đầu hội thoại mới',
-                        payload: {
-                            'restart_conversation': true
-                        }
-                    }
-                ]
+            
             });
             user.data.is_correct = true;
             saveToDatabase(user, bot, message);
@@ -342,7 +335,9 @@ module.exports = function (controller) {
                             'choose_intent': "contact"
                         }
                     }
-                ]
+                ].filter((obj)=>{
+                    return (obj.title != user.data.intent);
+                })
             });
             return;
         }

@@ -43,7 +43,7 @@ module.exports = function (controller) {
             //     console.log("DELETE GRAPH CODE:" + delete_body.statusCode);
             // }
             convo.say({
-                text: resp.hello,
+                text: resp.input,
             });
             userMessageCount[id] = 0;
         });
@@ -52,13 +52,14 @@ module.exports = function (controller) {
     function continueConversation(bot, message) {
 
         var id = message.user;
-        console.log("welcome back-------------------------" + id);
         var user = userController.searchSession(id);
         if (user != null){
+            console.log("welcome back-------------------------" + id);
+
             // refresh at getIntent
             if (!user.getIntent){
                 bot.reply(message, {
-                    text: resp.hello
+                    text: resp.input
                 });
             // refresh at getInfor
             } else if (!user.getInfor){
@@ -74,7 +75,7 @@ module.exports = function (controller) {
                     console.log("Delete success");
                 }
                 bot.reply(message, {
-                    text: resp.hello
+                    text: resp.input
                 });
 
             }
@@ -84,7 +85,7 @@ module.exports = function (controller) {
                 // var id = message.user
                 // console.log(id)
                 convo.say({
-                    text: resp.hello,
+                    text: resp.input,
                 });
             });
         }
@@ -132,6 +133,56 @@ module.exports = function (controller) {
 
     }
 
+    function saveToDatabase(user, bot, message){
+        temp = {
+            message: user.data.message,
+            intent:user.data.intent,
+            is_correct:user.data.is_correct,
+            user_id:message.user
+        }
+        console.log(temp);
+        request.post(CONVERSATION_MANAGER_ENDPOINT + "/messages", {
+            json: {
+                message: user.data.message,
+                intent:user.data.intent,
+                is_correct:user.data.is_correct,
+                user_id:message.user
+            }
+            
+        }, (error, res, body) =>{
+            if (error){
+                console.log(error);
+                conversation[message.user].push("bot: "+ resp.err );
+                bot.reply(message, {
+                    graph: {},
+                    text: "có lỗi xảy ra khi lưu vào database"
+                })  
+                return
+            }
+
+            console.log(body);
+
+            bot.reply(message, {
+                text:resp.thank,
+                force_result: [
+                    {
+                        title: 'Bắt đầu hội thoại mới',
+                        payload: {
+                            'restart_conversation': true
+                        }
+                    }
+                ]
+            });
+            var success = userController.deleteSession(message.user);
+            if (!success){
+                console.log("Error in delete function");
+            } else {
+                console.log("Delete success");
+            }
+            return;
+            
+        });
+    }
     function callConversationManager(bot, message) {
 
         var isGetInfor = false;
@@ -145,6 +196,10 @@ module.exports = function (controller) {
         var filter_all = false;
         var isGetIntent = true;
 
+        var user = userController.searchSession(id);
+        if (user == null){
+            user = userController.insertSession(id);
+        }
         console.log(message);
         if (raw_mesg) {
             if (conversation[message.user]) {
@@ -229,13 +284,82 @@ module.exports = function (controller) {
         //     force_show = true;
         //     raw_mesg = "";
         // }
-        if (message.resubmit_infor){
-            userController.searchSession(id).getInfor = false;
+        if (message.correct_intent){
             bot.reply(message, {
-                text: resp.wrong[Math.floor(Math.random() * resp.wrong.length)]
+                text:resp.correct_intent,
+                force_result: [
+                    {
+                        title: 'Bắt đầu hội thoại mới',
+                        payload: {
+                            'restart_conversation': true
+                        }
+                    }
+                ]
+            });
+            user.data.is_correct = true;
+            saveToDatabase(user, bot, message);
+            return;
+            // var success = userController.deleteSession(id);
+            // if (!success){
+            //     console.log("Error in delete function");
+            // } else {
+            //     console.log("Delete success");
+            // }
+            // return;
+        }
+        if (message.wrong_intent){
+            user.data.is_correct = false;
+            bot.reply(message, {
+                text: resp.wrong_intent,
+                force_result: [
+                    {
+                        title: 'activity',
+                        payload: {
+                            'choose_intent': "activity"
+                        }
+                    },
+                    {
+                        title: 'joiner',
+                        payload: {
+                            'choose_intent': "joiner"
+                        }
+                    },
+                    {
+                        title: 'work',
+                        payload: {
+                            'choose_intent': "work"
+                        }
+                    },
+                    {
+                        title: 'register',
+                        payload: {
+                            'choose_intent': "register"
+                        }
+                    },
+                    {
+                        title: 'contact',
+                        payload: {
+                            'choose_intent': "contact"
+                        }
+                    }
+                ]
             });
             return;
         }
+        if (message.choose_intent){
+            user.data.intent = message.choose_intent;
+            console.log("user select " + user.data.intent);
+            saveToDatabase(user, bot, message);
+            return;
+
+        }
+        // if (message.resubmit_infor){
+        //     userController.searchSession(id).getInfor = false;
+        //     bot.reply(message, {
+        //         text: resp.wrong[Math.floor(Math.random() * resp.wrong.length)]
+        //     });
+        //     return;
+        // }
 
         if (message.completed){
             bot.reply(message, {
@@ -259,7 +383,7 @@ module.exports = function (controller) {
         }
         if (message.restart_conversation){
             bot.reply(message, {
-                text: resp.hello
+                text: resp.input
             });
             return;
         }
@@ -508,11 +632,11 @@ module.exports = function (controller) {
                 }
                 return;
             }
-            var user = userController.searchSession(id);
+            // var user = userController.searchSession(id);
             
-            if (user == null){
-                user = userController.insertSession(id);
-            }
+            // if (user == null){
+            //     user = userController.insertSession(id);
+            // }
             if (!user.getIntent){
 
                 console.log("get Intent");
@@ -534,32 +658,51 @@ module.exports = function (controller) {
                     var responseSentence;
                     switch (body.message){
                         case "activity":
-                            responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
+                            responseSentence = "Bạn vừa hỏi về  \"activity\" - thông tin chung chung về toàn bộ hoạt động đúng không?";
                             break;
                         case "joiner":
-                            responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
+                            responseSentence = "Bạn vừa hỏi về thông tin \"joiner\" - người tham gia đúng không?";
                             break;
                         case "work":
-                            responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
+                            responseSentence = "Bạn vừa hỏi về  \"work\" - các công việc có trong hoạt động đúng không?";
                             break;
                         case "contact":
-                            responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
+                            responseSentence = "Bạn vừa hỏi về  \"contact\" - thông tin liên hệ ban tổ chức hoạt động đúng không?";
                             break;
                         case "register":
-                            responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
+                            responseSentence = "Bạn vừa hỏi về  \"register\" - thông tin đăng ký tham gia hoạt động đúng không?";
                             break;
                         default:
                             responseSentence = resp.err
                     }
+                    user.data.message = raw_mesg;
+                    user.data.intent = body.message;
                     console.log(responseSentence);
-                    bot.reply(message, {text: responseSentence});
+                    bot.reply(message, {
+                        text: responseSentence,
+                        force_result: [
+                            {
+                                title: 'Đúng rồi',
+                                payload: {
+                                    'correct_intent': true
+                                }
+                            },
+                            {
+                                title: 'Sai rồi',
+                                payload: {
+                                    'wrong_intent': true,
+                                },
+                            },
+                        ]
                     
-                    responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-                    bot.reply(message, 
-                        {
-                            text:responseSentence,
-                            // isGetInfor: true
-                        });
+                    });
+                    
+                    // responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
+                    // bot.reply(message, 
+                    //     {
+                    //         text:responseSentence,
+                    //         // isGetInfor: true
+                    //     });
                     
                 });
                 user.getIntent = true;

@@ -1316,6 +1316,45 @@ var Botkit = {
     });
 
 
+    
+    // that.on('message', function (message) {
+    //   that.clearReplies();
+    //   if (message.quick_replies) {
+
+    //     var list = document.createElement('ul');
+
+    //     var elements = [];
+    //     for (var r = 0; r < message.quick_replies.length; r++) {
+    //       (function (reply) {
+
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
+
+    //         el.onclick = function () {
+    //           that.quickReply(reply.payload);
+    //         }
+
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
+
+    //       })(message.quick_replies[r]);
+    //     }
+
+    //     that.replies.appendChild(list);
+
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
+
     // that.on('message', function (message) {
     //   that.clearReplies();
     //   // console.log("outside");
@@ -1361,44 +1400,6 @@ var Botkit = {
     //     that.input.disabled = false;
     //   }
     // });
-    that.on('message', function (message) {
-      that.clearReplies();
-      if (message.quick_replies) {
-
-        var list = document.createElement('ul');
-
-        var elements = [];
-        for (var r = 0; r < message.quick_replies.length; r++) {
-          (function (reply) {
-
-            var li = document.createElement('li');
-            var el = document.createElement('a');
-            el.innerHTML = reply.title;
-            el.href = '#';
-
-            el.onclick = function () {
-              that.quickReply(reply.payload);
-            }
-
-            li.appendChild(el);
-            list.appendChild(li);
-            elements.push(li);
-
-          })(message.quick_replies[r]);
-        }
-
-        that.replies.appendChild(list);
-
-        if (message.disable_input) {
-          that.input.disabled = true;
-        } else {
-          that.input.disabled = false;
-        }
-      } else {
-        that.input.disabled = false;
-      }
-    });
-
     that.on('message', function (message) {
       that.clearReplies();
       if (message.force_result) {

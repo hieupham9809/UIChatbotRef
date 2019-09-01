@@ -71,23 +71,50 @@ module.exports = {
         "Vậy hả 😓, mình xin lỗi. Bạn nhập lại cho rõ hơn giúp mình với 😓",
         "Hic, mình xin lỗi, bạn nhập lại rõ hơn giúp tấm thân nhỏ bé này với 😓"
     ],
+    agree: [
+        "OK 😘😘.",
+        "Uhm",
+        "Oh vậy à :3",
+        "Ồ thế à :3",
+        "Ồ :3 :3 :3",
+        "Ra là vậy. :3"
+
+    ],
+    bot_wants_to_ask: [
+        "Hic 😚😚. Nãy giờ mình trả lời hơi nhiều rồi. Bây giờ mình hỏi lại bạn vài câu nhen.",
+        "Nãy giờ tui trả lời hơi nhiều rồi nhen :3 . Giờ tới lượt mình hỏi bạn nha. ",
+        "Bây giờ mình hỏi bạn vài câu nha :3. Chứ nãy giờ bị hỏi nhiều quá hic hic."
+
+    ],
+    bot_wants_to_answer: [
+        "Ax ax. Nãy giờ hình như mình hỏi hơi nhiều 😓😓😓 Sori bạn nha. Bạn có muốn hỏi gì mình hem ? ",
+        "Huhu nãy giờ mình hỏi hơi nhiều thì phải. Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. :3",
+        "Ahuhu. Thật xin lỗi hình như mình hỏi bạn hơi nhiều, giờ bạn có thể hỏi mình câu gì cũng được nha. :3"
+
+    ],
+    intent_list: [
+        "name_activity", "type_activity", "holder", "clock_time", "date_time", "city", "district",
+        "name_place", "building", "room", "street", "reward", "contact", "register", "work", "joiner"
+    ],
     intent_question: [
         {
             name_activity: [
-                "Ở trường cấp 3 bạn đã từng tham gia những hoạt động xã hội nào nhỉ, có thể kể  cho mình biết được không 😅😅😅 ? ",
+                "Ở trường cấp 3 bạn đã từng tham gia những hoạt động xã hội nào nhỉ, có thể kể  cho mình biết được không 😅 ? ",
                 "Bạn đã từng tham gia những hoạt động nào khi còn là học sinh nhỉ 🤔🤔?",
-                "Sắp tới bạn có dự định tham gia hoạt động nào không, có thể kể cho mình biết với 😅😅😅"
+                "Sắp tới bạn có dự định tham gia hoạt động nào không, có thể kể cho mình biết với 😅",
+                "Từ lúc mới vào trường đến giờ bạn thích hoạt động nào nhất? Hoạt động đó của khoa nào vậy?"
             ]
         },
         {
             type_activity: [
-                "Bạn thích tham gia những loại hoạt động gì nhỉ (tình nguyện, cuộc thi, sự kiện,...)?🤔🤔🤔",
+                "Bạn thích tham gia những loại hoạt động gì nhỉ (tình nguyện, cuộc thi, hội thảo kỹ năng mềm,...)?🤔🤔🤔",
                 "Bạn đã từng tham gia những loại hoạt động nào khi còn là học sinh nhỉ 🤔🤔?"
             ]
         },
         {
             holder: [
                 "Bạn đến từ Khoa nào của trường mình nhỉ 😅😅😅 ? ",
+                "Bạn thấy khoa nào của trường mình có nhiề u hoạt động bổ ích cho sinh viên ?",
                 "Theo ban thì Khoa nào của trường mình là nhiều nữ nhất nhỉ 🤔🤔?",
                 "Bạn sẽ dự định tham gia những câu lạc bộ, hội nhóm nào của trường mình nhỉ? 😚😚😚😚😚😚"
             ]
@@ -96,21 +123,25 @@ module.exports = {
             clock_time: [
                 "Hì, ngại quá, mình không có đồng hồ ở đây. 😅😅😅 Bạn cho mình hỏi mấy giờ rồi được không? Cảm ơn bạn nhiều.",
                 "Hôm nay bạn học từ mấy giờ đến mấy giờ nhỉ ?? 😅😅😅😅",
-                "Thường bạn đi ngủ lúc mấy giờ nhỉ 🤔🤔🤔🤔??"
+                "Thường bạn đi ngủ lúc mấy giờ nhỉ 🤔🤔🤔🤔??",
+                "Hôm nay bạn ăn sáng lúc mấy giờ :D ?",
+                "Đố bạn tiết 1 của Bách Khoa bắt đầu với kết thúc khi nào?"
             ]
         },
         {
             date_time: [
-                "Hì, sinh nhật của bạn là ngày nào nhỉ 🤔🤔, sắp tới chưa?",
+                "Hì, sinh nhật của bạn là ngày nào nhỉ 🤔🤔 ?, nói cho mình đi có gì mình mai mối cho 😎",
                 "Bạn vào Đoàn thanh niên ngày nào thế ?😅😅",
-                "Bạn với người yêu bạn quen nhau từ ngày nào zậy 🤔🤔🤔🤔?"
+                "Bạn với người yêu bạn quen nhau từ ngày nào zậy 🤔🤔🤔🤔?",
+                "Bạn nhập học vào Bách Khoa khi nào vậy?"
             ]
         },
         {
             city: [
                 "Quê mình ở vùng đất học Nghệ An nè, còn quê bạn ở đâu thế 😁😁😁😁?",
                 "Mình đến từ vùng đất mũi Cà Mau, còn bạn thì sao 🤔🤔🤔🤔?",
-                "Bạn đã từng đi du lịch đến những tỉnh thành nào của Việt Nam thế 😅😅?"
+                "Bạn đã từng đi du lịch đến những tỉnh thành nào của Việt Nam thế 😅😅?",
+                "Bạn đến từ thành phố  hay thị xã nào vậy?"
             ]
         },
         {
@@ -138,7 +169,7 @@ module.exports = {
         {
             room: [
                 "Bây giờ bạn đang học môn gì ? ở phòng nào vậy ? 🤔🤔🤔🤔",
-                "Theo bạn thì ở cơ sở 1 thì tòa nhà nào là đẹp nhất nhỉ :3 ??",
+
                 "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?"
             ]
         },
@@ -146,9 +177,41 @@ module.exports = {
             street: [
                 "Hiện tại bạn đang trọ ở đường nào 🤔🤔🤔🤔?",
                 "Theo bạn thì ở cơ sở 1 thì tòa nhà nào là đẹp nhất nhỉ :3 ??",
-                "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?"
+                "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?",
+
+            ]
+        },
+        {
+            reward: [
+                "CTXH là một trong những điều kiện để xét tốt nghiệp. Đi những hoạt động tình nguyện thì bạn muốn mình được bao nhiêu ngày CTXH 🤔?",
+                "Điểm rèn luyện rất quan trọng ở mỗi học kì. Đi những sự kiện của Khoa thì bạn muốn mình được nhận bao nhiêu điểm rèn luyện 🤔🤔?"
+            ]
+        },
+        {
+            contact: [
+                "Bạn có thể cho mình xin email hay là số điện thoại được không để mình tiện liên lạc với bạn  :3?",
+                "Thầy đẹp trai nào dạy bạn môn Nhập môn điện toán thế 🤔?",
+                "Bạn hâm mộ ca sĩ thần tượng nào 🤔🤔?"
+            ]
+        },
+        {
+            register: [
+                "Cho mình xin link facebook của bạn được hem 🤔?",
+                "Bạn muốn đăng ký tham gia các hoạt động theo hình thức nào 🤔🤔?"
+            ]
+        },
+        {
+            work: [
+                "Một ngày của bạn gồm những hoạt động nào, hay là chỉ có học với học thôi hẻ 🤔🤔?",
+                "Bạn có biết nấu ăn hông 🤔🤔? Bạn nấu được những món nào nè ?",
+                "Chỉ mình các bước để chinh phục 1 bạn nữ với 🤔🤔🤔🤔?"
+            ]
+        },
+        {
+            joiner: [
+                "Theo bạn thì một hoạt động tình nguyện nên hướng đến những đối tượng nào 🤔🤔?",
+                "Đố bạn Mùa hè xanh là dành cho ai tham gia nè 😅😅😅😅?",
             ]
         }
-
     ]
 }

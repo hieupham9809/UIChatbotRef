@@ -29,13 +29,22 @@
   background-size: cover;">
     <div class="row p-0 h-100">
       <div class="d-none d-lg-block col-lg-7 col-xl-8 p-0">
-        <!-- <div class="cnt-name" id="cnt-name">
-          Demo intent
-        </div> -->
+
+        <!-- <div style="background-color: aliceblue;"> -->
+
+        <!-- </div> -->
+        <div class="cnt-name" id="cnt-name">
+            <h2 style="padding:5%;">HƯỚNG DẪN SỬ DỤNG CSE ASSISTANT 1.0.0</h2>
+            <p style="padding:5%;">Chatbot hiện có thể hỏi/trả lời tin nhắn người dùng đồng thời lưu lại tất cả tin nhắn người dùng vào database để dùng cho việc label sau này. Cụ thể:
+            Nếu người dùng nhập vào một câu hỏi, chatbot sẽ đưa câu hỏi vào model để nhận diện 5 intent đã định nghĩa trước
+            Nếu người dùng nhập vào không phải câu hỏi, chatbot sẽ chủ động đặt câu hỏi gợi ý cho người dùng trả lời để lấy các thông tin chứa cả các entity để sau này label.
+            Trong khi hội thoại diễn ra, nếu người dùng hay chatbot hỏi quá 3 lần liên tục thì chatbot sẽ chủ động đề nghị đổi vai trò người hỏi - trả lời bất kỳ lúc nào trong hội thoại, người dùng có thể nhập "bye" để kết thúc trò chuyện với chatbot</p>
+        </div>
         <!-- <div class="animated_pointer">>></div> -->
         <!-- <div class="graph_name" id="switch_btn">Conceptual Graph</div> -->
         
         <div class="graph-wrapper" id="whole_graph">
+
           <!-- Top Four -->
           <div class="entity" id="area">
             <div class="name">Area</div>

@@ -1,5 +1,6 @@
 module.exports = {
-    hello: "Xin chào 👋👋👋👋👋👋👋 ! Mình là CSE Assistant phiên bản 1.0.0, mình có thể cung cấp cho bạn một số thông tin về các hoạt động sắp tới của khoa (hoạt động, đối tượng tham gia, các công việc trong hoạt động, cách thức đăng ký, ... ). Bạn muốn hỏi gì nào? 😋😋",
+    hello1: "Xin chào 👋👋👋👋👋👋👋 ! Mình là CSE Assistant phiên bản 1.0.0, mình có thể cung cấp cho bạn một số thông tin về các hoạt động sắp tới của khoa (hoạt động, đối tượng tham gia, các công việc trong hoạt động, cách thức đăng ký, ... ). Bạn muốn hỏi gì nào? 😋😋",
+    hello: "Xin chào, mình là CSE Assistant phiên bản phát triển. Mình cô đơn và có thể chém gió với bạn để giúp bạn giải trí nè 😝 Mình cũng muốn được thông minh giống như bạn 😊. Bạn có gì muốn nói nè 😘 (nhập vô \"bye\" để dừng trò chuyện nha)",
     err: "Có lỗi xảy ra, bạn F5 lại trang giúp mình nhé! 😅😅😅",
     cantfind: "Không tìm được hoạt động nào thỏa các yêu cầu. Hãy bỏ bớt để lấy kết quả.😓😓😓",
     wetried: "Không tìm được bất động sản nào thỏa các yêu cầu. Xin thử lại sau 😓",
@@ -128,7 +129,8 @@ module.exports = {
                 "Hôm nay bạn học từ mấy giờ đến mấy giờ nhỉ ?? 😅😅😅😅",
                 "Thường bạn đi ngủ lúc mấy giờ nhỉ 🤔🤔🤔🤔??",
                 "Hôm nay bạn ăn sáng lúc mấy giờ :D ? Bữa sáng là vô cùng quan trọng đó nha.",
-                "Bữa trưa cũng rất chi là quan trọng. Hôm nay mấy giờ bạn ăn trưa 🤔🤔? Mình đi ăn chung với nhau nha :3 :3 ."
+                "Bữa trưa cũng rất chi là quan trọng. Hôm nay bạn định mấy giờ bạn ăn trưa 🤔🤔? Mình giới thiệu 1 bạn đi ăn chung với bạn nha :3 :3 .",
+                "Bạn hay ăn tối lúc mấy giờ? Để mình nói crush đi ăn với bạn nè 😘"
             ]
         },
         {

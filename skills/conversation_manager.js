@@ -609,7 +609,7 @@ module.exports = function (controller) {
             // console.log("say hi")
             // console.log(isGetInfor);
             // console.log(isGetIntent);
-            if (raw_mesg == "bye") {
+            if (raw_mesg.trim().toLowerCase() == "bye") {
                 bot.reply(message, {
                     text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
                     force_result: [

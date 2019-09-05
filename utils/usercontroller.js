@@ -19,8 +19,8 @@ this.insertSession=function (inUserid){
             message:null,
             intent:null,
             is_correct:null,
-            ask_count:2,
-            asw_count:2
+            ask_count:0,
+            asw_count:0
         }
     };
     this.listSession.push(newSession)

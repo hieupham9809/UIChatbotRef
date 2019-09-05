@@ -906,11 +906,12 @@ td {
 
 .cnt-name {
   position: absolute;
+  height: 50%;
   border-radius: var(--entity-radius);
-  top: 20px;
+  top: 300px;
   left: 20px;
   font-size: 16px!important;
-  padding: 7px 50px;
+  
   /* font-weight: 500; */
   display: block;
   text-align: center;
@@ -970,22 +971,21 @@ td {
 .cards {
   position: absolute;
   width: 100%;
-  padding: 20px;
-  height: 100%;
+  padding: 10px;
+  height: 50%;
   z-index: 1001;
 }
 
 .card_info {
   box-sizing: border-box;
-  height: 20%;
+  height: 100%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24), 0 0 15px rgba(45, 65, 108, .25);
   border-radius: 10px;
-  padding: 20px;
 }
 
 #info {
-  margin-top: 60px;
-  height: 64%;
+  
+  height: 90%;
   padding: 0;
   position: relative;
 }
@@ -1055,10 +1055,10 @@ td {
 }
 
 .text-bot-1 {
-  font-size: 17px;
+  font-size: 13px;
   width: 260px;
   color: #18191a;
-  padding: 20px;
+  padding: 10px;
   -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -1069,12 +1069,12 @@ td {
 }
 
 .text-user {
-  font-size: 17px;
+  font-size: 13px;
   position: absolute;
   right: -40px;
   width: 260px;
   color: #18191a;
-  padding: 20px;
+  padding: 10px;
   -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -1139,12 +1139,12 @@ td {
 }
 
 .text-bot {
-  font-size: 17px;
+  font-size: 13px;
   position: absolute;
-  top: 200px;
+  top: 150px;
   width: 260px;
   color: #18191a;
-  padding: 20px;
+  padding: 10px;
   -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -1165,7 +1165,6 @@ td {
 
 .b2 {
   opacity: 0;
-  top: 230px;
   left: -60px;
   -webkit-animation: slide_left 0.5s forwards;
   -webkit-animation-delay: 3s;
@@ -1175,7 +1174,6 @@ td {
 
 .b3 {
   opacity: 0;
-  top: 230px;
   left: -60px;
   -webkit-animation: slide_left 0.5s forwards;
   -webkit-animation-delay: 3s;
@@ -1185,7 +1183,6 @@ td {
 
 .b4 {
   opacity: 0;
-  top: 230px;
   left: -60px;
   -webkit-animation: slide_left 0.5s forwards;
   -webkit-animation-delay: 3s;
@@ -1195,7 +1192,6 @@ td {
 
 .b5 {
   opacity: 0;
-  top: 230px;
   left: -60px;
   -webkit-animation: slide_left 0.5s forwards;
   -webkit-animation-delay: 3s;

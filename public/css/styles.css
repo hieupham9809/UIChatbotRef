@@ -1073,13 +1073,13 @@ td {
   position: absolute;
   right: -40px;
   width: 260px;
-  color: #18191a;
+  color: #FFFFFF;
   padding: 10px;
   -webkit-box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
   border-radius: 15px;
-  background: #E9EAEE;
+  background: #0538e0;
   margin-bottom: 20px;
   border: 1px transparent solid;
 }

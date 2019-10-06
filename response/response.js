@@ -79,13 +79,19 @@ module.exports = {
         "Ồ thế à :3",
         "Ồ :3 :3 :3",
         "Ra là vậy. :3",
-        "Ồ thì ra là thế ^_^"
+        "Ồ thì ra là thế ^_^",
+        "Hihihi. OK :3",
+        "I got it =)))))",
+        "Trời đang mưa thì phải hic hic :'("
 
     ],
     bot_wants_to_ask: [
         "Hic 😚😚. Nãy giờ mình trả lời hơi nhiều rồi. Bây giờ mình hỏi lại bạn vài câu nhen.",
         "Nãy giờ tui trả lời hơi nhiều rồi nhen :3 . Giờ tới lượt mình hỏi bạn nha. ",
-        "Bây giờ mình hỏi bạn vài câu nha :3. Chứ nãy giờ bị hỏi nhiều quá hic hic."
+        "Bây giờ mình hỏi bạn vài câu nha :3. Chứ nãy giờ bị hỏi nhiều quá hic hic.",
+        "Giờ tới mình hỏi nè =))))))))))))",
+        "Ờ giờ tới mình hỏi nha :3 ",
+        "Nãy giờ bị hỏi hơi nhiều rồi nghen =)) Mình hỏi lại vài câu nè."
 
     ],
     bot_wants_to_answer: [
@@ -104,7 +110,9 @@ module.exports = {
                 "Ở trường cấp 3 bạn đã từng tham gia những hoạt động xã hội nào nhỉ, có thể kể  cho mình biết được không 😅 ? ",
                 "Bạn đã từng tham gia những hoạt động nào khi còn là học sinh nhỉ 🤔🤔?",
                 "Sắp tới bạn có dự định tham gia hoạt động nào không, có thể kể cho mình biết với 😅",
-                "Từ lúc mới vào trường đến giờ bạn thích hoạt động nào nhất? Hoạt động đó của khoa nào vậy 🤔?"
+                "Từ lúc mới vào trường đến giờ bạn thích hoạt động nào nhất? Hoạt động đó của khoa nào vậy 🤔?",
+                "Kể cho mình tên một vài cuộc thi học thuật mà bạn biết. Bạn có dự định tham gia những cuộc thi đó không nè :3 ?",
+                "Bạn đã từng tham gia vào những sự kiện nào rồi ? có thể kể cho mình biết với nha ^_^"
             ]
         },
         {
@@ -120,7 +128,9 @@ module.exports = {
                 "Bạn thấy khoa nào của trường mình có nhiề u hoạt động bổ ích cho sinh viên ?",
                 "Theo ban thì Khoa nào của trường mình là nhiều nữ nhất nhỉ 🤔🤔?",
                 "Bạn sẽ dự định tham gia những câu lạc bộ, hội nhóm nào của trường mình nhỉ? 😚😚😚😚😚😚",
-                "Bạn có thể kể tên một số câu lạc bộ, hội nhóm của trường mình mà bạn biết không 🤔🤔?"
+                "Bạn có thể kể tên một số câu lạc bộ, hội nhóm của trường mình mà bạn biết không 🤔🤔?",
+                "Câu lạc bộ học thuật yêu thích của bạn là gì?",
+                "Kể tên một vài đội nhóm ở trường mình mà bạn biết cho mình nghe với :3."
             ]
         },
         {
@@ -130,7 +140,8 @@ module.exports = {
                 "Thường bạn đi ngủ lúc mấy giờ nhỉ 🤔🤔🤔🤔??",
                 "Hôm nay bạn ăn sáng lúc mấy giờ :D ? Bữa sáng là vô cùng quan trọng đó nha.",
                 "Bữa trưa cũng rất chi là quan trọng. Hôm nay bạn định mấy giờ bạn ăn trưa 🤔🤔? Mình giới thiệu 1 bạn đi ăn chung với bạn nha :3 :3 .",
-                "Bạn hay ăn tối lúc mấy giờ? Để mình nói crush đi ăn với bạn nè 😘"
+                "Bạn hay ăn tối lúc mấy giờ? Để mình nói crush đi ăn với bạn nè 😘",
+                "Bây giờ là mấy giờ rồi ta ? :'( tự dưng thấy đói bụng ghê."
             ]
         },
         {
@@ -138,7 +149,17 @@ module.exports = {
                 "Hì, sinh nhật của bạn là ngày nào nhỉ 🤔🤔 ?, nói cho mình đi có gì mình mai mối cho 😎",
                 "Bạn vào Đoàn thanh niên ngày nào thế ?😅😅",
                 "Bạn với người yêu bạn quen nhau từ ngày nào zậy 🤔🤔🤔🤔?",
-                "Bạn mới năm nhất đúng hem 😅😅 ? Hôm bữa bạn ngày mấy nhập học zậy ?"
+                "Bạn mới năm nhất đúng hem 😅😅 ? Hôm bữa bạn ngày mấy nhập học zậy ?",
+                "Đố bạn ngày giải phóng miền Nam là ngày nào nè :D ?",
+                "Đố bạn Việt Nam gia nhập WTO vào ngày tháng năm nào ? :3",
+                "Bạn biết Việt Nam vô địch AFF Cup 2018 vào ngày tháng năm nào hemmm :D ?",
+                "Bạn biết ngày Quốc tế lao động là ngày nào hem :3 ?",
+                "Ngày nào là ngày học sinh sinh viên Việt Nam bạn biết hem :3 ?",
+                "Mình đố bạn cầu thủ Quang Hải sinh ngày tháng năm nào ? :3 ",
+                "Mình đố bạn Đoàn Văn Hậu sinh ngày tháng năm nào ? :3 ",
+                "Bạn biết Messi không? Mình fan cứng của M10 đó. Đố bạn Messi sinh ngày tháng năm nào :3 ?",
+                "Ronaldo là cầu thủ đẹp trai nhất. Đố bạn biết ngày sinh của anh ta ? :3",
+                "Đố bạn biết sinh nhật của thầy Nguyên đẹp trai :3 "
             ]
         },
         {
@@ -146,14 +167,20 @@ module.exports = {
                 "Quê mình ở vùng đất học Nghệ An nè, còn quê bạn ở đâu thế 😁😁😁😁?",
                 "Mình đến từ vùng đất mũi Cà Mau, còn bạn thì sao 🤔🤔🤔🤔?",
                 "Bạn đã từng đi du lịch đến những tỉnh thành nào của Việt Nam thế 😅😅?",
-                "Bạn đến từ thành phố  hay thị xã nào vậy? ^-^"
+                "Bạn đến từ thành phố  hay thị xã nào vậy? ^-^",
+                "Đố bạn ca sĩ Mỹ Tâm quê ở đâu nè :3 ?",
+                "Bạn biết Alan Turing không ? Ông ấy là cha đẻ của ngành KHoa học máy tính. Đố bạn biết quê ông ở đâu ?",
+                "Đố bạn ca sĩ Sơn Tùng MTP quê ở đâu nè :3 :3 ?",
+                "Quang Hải sinh ra và lớn lên ở đâu nè :D ?"
             ]
         },
         {
             district: [
                 "Hiên tại bạn đang ở Kí túc xá hả ? Nếu ở trọ thì bạn đang trọ ở quận/huyện nào 🤔🤔🤔🤔?",
                 "Bữa mình có ghé phố đi bộ ở quận 1 nè. Ở đó thì đông đúc và nhộn nhịp thôi rồi luôn. Bạn đã từng đi đến những quận nào của TPHCM rồi 😅😅😅😅 ?",
-                "Bạn ở huyện nào ở nơi bạn đang sống vậy 😅😅?"
+                "Bạn ở huyện nào ở nơi bạn đang sống vậy 😅😅?",
+                "Nhà bạn ở quận nào vậy :3 ? ",
+                "Kể tên cho mình tên một số quận ở quê bạn được không :3 Cảm ơn bạn nhiều "
             ]
         },
         {
@@ -161,13 +188,22 @@ module.exports = {
                 "Bạn đã từng đi đến những địa danh nào ở Bình Dương nhỉ 😅😅?",
                 "Bạn đã từng đi du lịch đến những địa danh nổi tiếng nào của Việt Nam nhỉ 😅😅?",
                 "Làng đại học có nhiều trường lắm, bạn đã từng đến những trường nào ngoài trường Bách Khoa mình chưa 🤔🤔🤔🤔? Kể mình biết với.",
-                "Bạn ở kí túc xá khu A hay B hay là ở trọ vậy? Phòng bạn gồm những sinh viên của trường nào nhỉ ? 🤔🤔🤔🤔"
+                "Bạn ở kí túc xá khu A hay B hay là ở trọ vậy? Phòng bạn gồm những sinh viên của trường nào nhỉ ? 🤔🤔🤔🤔",
+                "Kể tên cho mình một số trường chuyên cấp 3 nổi tiếng mà bạn biết nha :3",
+                "Bạn kể cho mình tên một số trường cấp 3 ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
+                "Bạn kể cho mình tên một số trường cấp 2 ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
+                "Bạn kể cho mình tên một số trường tiểu học ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
+                "Bạn kể cho mình tên một số trường đại học hoặc cao đẳng/trung cấp nghề ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
+                "Ở TPHCM hoặc Bình Dương bạn đã biết những trường đại học nào nè :D . Kể mình biết với nha. Cảm ơn bạn nhiều."
             ]
         },
         {
             building: [
                 "Trường mình rộng lắm đúng không :3 Bạn đã ghé qua những tòa nào của trường mình rồi ?",
                 "Theo bạn thì ở cơ sở 1 thì tòa nhà nào là đẹp nhất nhỉ :3 ??",
+                "Theo bạn thì ở cơ sở 2 thì tòa nhà nào là đẹp nhất nhỉ :3 ??",
+                "Bạn kể cho mình tên các toà nhà mà bạn biết ở trường mình được hemm :3 cảm ơn bạn nhiều.",
+                "Bạn kể cho mình tên các toà nhà mà bạn biết ở kĩ túc xá khu A được hemm :3 cảm ơn bạn nhiều.",
                 "Đố bạn tòa nhà nào là lớn nhất ở trường mình 🤔🤔🤔🤔?"
             ]
         },
@@ -175,21 +211,30 @@ module.exports = {
             room: [
                 "Bây giờ bạn đang học môn gì ? ở phòng nào vậy ? 🤔🤔🤔🤔",
                 "Tuần này bạn học những môn gì ? có nhớ số phòng hem :3 ? Nói mình biết với, có gì mình vô học chui chung nè. ",
-                "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?"
+                "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?",
+                "Bạn đã từng học những phòng học nào ở trường mình rồi :3 kể cho mình biết với. Mình cảm ơn nhiều nè.",
+                "Bạn học các môn mà có tiết thực hành ở những phòng nào nhỉ :3 kể cho mình nghe được hemm. cảm ơn bạn nhiều nè."
             ]
         },
         {
             street: [
                 "Hiện tại bạn đang trọ ở đường nào 🤔🤔🤔🤔?",
                 "Đố bạn trường Bách Khoa cơ sở 1 nằm trên mấy con đường? Đó là những đường nào ? :3",
-                "Bạn và bạn bè bạn có hay đi ăn hay đi chơi ở đâu đó không ? Ở đường nào vậy, giới thiệu để mình dẫn bạn đi với ^_^ Tại mình cũng mới năm nhất hà."
+                "Bạn và bạn bè bạn có hay đi ăn hay đi chơi ở đâu đó không ? Ở đường nào vậy, giới thiệu để mình dẫn bạn đi với ^_^ Tại mình cũng mới năm nhất hà.",
+                "Bạn có thể kể cho mình một số tên đường ở quê bạn được không ^^ . cảm ơn bạn nhiều nha.",
+                "Từ lúc mới lên đây bạn biết được tên những con đường nào rồi nè ? ^^ kể cho mình biết với nha. cảm ơn bạn nhiều nè."
 
             ]
         },
         {
             reward: [
                 "CTXH là một trong những điều kiện để xét tốt nghiệp. Đi những hoạt động tình nguyện thì bạn muốn mình được bao nhiêu ngày CTXH 🤔?",
-                "Điểm rèn luyện rất quan trọng ở mỗi học kì. Đi những sự kiện của Khoa thì bạn muốn mình được nhận bao nhiêu điểm rèn luyện 🤔🤔?"
+                "Điểm rèn luyện rất quan trọng ở mỗi học kì. Đi những sự kiện của Khoa thì bạn muốn mình được nhận bao nhiêu điểm rèn luyện 🤔🤔?",
+                "Nếu đi mùa hè xanh thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè. ^_^ ",
+                "Nếu đi xuân tình nguyện thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
+                "Nếu đi tiếp sức mùa thi thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
+                "Nếu đi đêm hội trăng rằm thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
+                "Nếu đi các sự kiện tư vấn của các doanh nghiệp thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ "
             ]
         },
         {
@@ -199,24 +244,34 @@ module.exports = {
                 "Thầy đẹp trai nào dạy bạn môn Giải tích vậy :3?",
                 "Ai dạy bạn môn Cấu trúc rời rạc thế 🤔?",
                 "Bạn hâm mộ ca sĩ thần tượng nào 🤔🤔?",
-                "Bạn có xem đá banh hông? Trong đội tuyển Việt Nam bạn hâm mộ cầu thủ nào nhất 🤔🤔??"
+                "Bạn có xem đá banh hông? Trong đội tuyển Việt Nam bạn hâm mộ cầu thủ nào nhất 🤔🤔??",
+                "Thầy đẹp trai nào dạy bạn môn Lý 1 vậy :3?",
+                "Thầy đẹp trai nào dạy bạn môn Hóa đại cương vậy :3?",
+                "Kể cho mình tên một số ca sĩ nổi tiếng mà bạn biết được không :3 ? cảm ơn bạn nhiều nè.",
+                "Kể cho mình tên một số cầu thủ đá bóng nổi tiếng mà bạn biết được không :3 ? cảm ơn bạn nhiều nè.",
+                "Kể cho mình tên các thầy cô trường mình mà bạn biết được không :3 ? cảm ơn bạn nhiều nè."
             ]
         },
         {
             register: [
                 "Cho mình xin link facebook của bạn được hem 🤔?",
-                "Bạn muốn đăng ký tham gia các hoạt động theo hình thức nào 🤔🤔?"
+                "Bạn muốn đăng ký tham gia các hoạt động theo hình thức nào 🤔🤔?",
+                "Bạn hay xem tin tức ở trang web nào vậy :3 share link cho mình với nha. cảm ơn bạn nè ^^",
+                "Bạn hay giải trí ở những trang web nào vậy :3 share link cho mình với nha. cảm ơn bạn nè ^^"
             ]
         },
         {
             work: [
                 "Một ngày của bạn gồm những hoạt động nào, hay là chỉ có học với học thôi hẻ 🤔🤔?",
                 "Bạn có biết nấu ăn hông 🤔🤔? Bạn nấu được những món nào nè ?",
-                "Chỉ mình các bước để chinh phục 1 bạn nữ với :( ? Mình bị nhát gái đó hic hic."
+                "Chỉ mình các bước để chinh phục 1 bạn nữ với :( ? Mình bị nhát gái đó hic hic.",
+                "Theo bạn thì một hoạt động tình nguyện thì nên có những công việc cụ thể nào ? Mình muốn khảo sát chút ấy mà ^^. cảm ơn bạn nhiều nè.",
+                "Hãy kể cho mình những công việc mà bạn hay làm trong 1 ngày. Mình muốn nghe lắm ^^. Cảm ơn bạn nhiều."
             ]
         },
         {
             joiner: [
+                "Bạn muốn một hoạt động tình nguyện sẽ bao gồm những đối tượng tham gia nào ? ^^",
                 "Theo bạn thì một hoạt động tình nguyện nên hướng đến những đối tượng nào 🤔🤔?",
                 "Đố bạn Mùa hè xanh là dành cho ai tham gia nè 😅😅😅😅?",
                 "Đố bạn Xuân tình nguyện là dành cho ai tham gia nè 😅😅😅😅?"

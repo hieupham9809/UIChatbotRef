@@ -89,9 +89,9 @@ module.exports = {
 
     ],
     bot_wants_to_answer: [
-        "Ax ax. Nãy giờ hình như mình hỏi hơi nhiều 😓😓😓 Sori bạn nha. Bạn có muốn hỏi gì mình hem ? ",
-        "Huhu nãy giờ mình hỏi hơi nhiều thì phải. Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. ^_^",
-        "Ahuhu. Thật xin lỗi hình như mình hỏi bạn hơi nhiều, giờ bạn có thể hỏi mình câu gì cũng được nha. ^_^"
+        "Bạn có muốn hỏi gì mình nữa không ? ",
+        "Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. ^_^"
+        
 
     ],
     intent_list: [
@@ -220,6 +220,99 @@ module.exports = {
                 "Theo bạn thì một hoạt động tình nguyện nên hướng đến những đối tượng nào 🤔🤔?",
                 "Đố bạn Mùa hè xanh là dành cho ai tham gia nè 😅😅😅😅?",
                 "Đố bạn Xuân tình nguyện là dành cho ai tham gia nè 😅😅😅😅?"
+            ]
+        }
+    ],
+    intent_question_response: [
+        {
+            name_activity: [
+                "Hoạt động nghe có vẻ thú vị đấy 😅 ! "
+               
+            ]
+        },
+        {
+            type_activity: [
+                "Mình cũng thích các loại hoạt động này ;) "
+            ]
+        },
+        {
+            holder: [
+                "Ở những đó cũng vui đấy! ",
+                
+            ]
+        },
+        {
+            clock_time: [
+                "Cảm ơn bạn nha, mình cũng đang học để phân biệt giờ giấc 😁😁"
+            ]
+        },
+        {
+            date_time: [
+                "uhm ngày đó hả, để mình lưu lại 😁"
+            ]
+        },
+        {
+            city: [
+                "Ở đó đẹp nhỉ? <3"
+            ]
+        },
+        {
+            district: [
+                "Ở đó cũng gần mình nè :)) "
+            ]
+        },
+        {
+            name_place: [
+                "uhm, mình nghe nói mấy chỗ đó thú vị lắm! "
+                
+            ]
+        },
+        {
+            building: [
+                "uhm bạn, tòa đó thì công nhận ",
+                "cũng còn nhiều tòa nữa bạn nhỉ :)) "                
+            ]
+        },
+        {
+            room: [
+                "À phòng đó hả "
+                
+            ]
+        },
+        {
+            street: [
+                "Uhm đường đó mình biết",
+                "Cảm ơn bạn nha, để mình lưu đường đó lại :D "               
+            ]
+        },
+        {
+            reward: [
+                "Điểm rèn luyện với ngày CTXH quan trọng, ai cũng muốn được đầy đủ càng sớm càng tốt nhỉ :D"                
+            ]
+        },
+        {
+            contact: [
+                "Cảm ơn nha, để mình lưu thông tin liên hệ đó lại :D"
+                
+            ]
+        },
+        {
+            register: [
+                "Thank bạn, mình sẽ lưu lại nè :D"
+               
+            ]
+        },
+        {
+            work: [
+                "Mấy việc đó khó với một robot như mình quá :( "
+               
+            ]
+        },
+        {
+            joiner: [
+                "Ừa mình nghĩ nên để mọi người đều được tham gia thì sẽ tốt hơn!",
+                "uhm nên vậy :D"
+                
             ]
         }
     ]

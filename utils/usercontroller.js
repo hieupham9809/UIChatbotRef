@@ -20,7 +20,8 @@ this.insertSession=function (inUserid){
             intent:null,
             is_correct:null,
             ask_count:0,
-            asw_count:0
+            asw_count:0,
+            prev_bot_ask:null
         }
     };
     this.listSession.push(newSession)

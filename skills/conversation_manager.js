@@ -10,7 +10,7 @@ const ATTR_LIST = ["interior_floor", "interior_room", "legal", "orientation", "p
 const ENTITY_LIST = ["area", "location", "potential", "price", "addr_district"]
 const LOCATION_ATTR_LIST = ["addr_city", "addr_street", "addr_ward", "addr_district"]
 const AGREE_THRESHOLD = 0.5;
-const NUM_ASK_THRESHOLD = 3;
+const NUM_ASK_THRESHOLD = 1;
 const NUM_ASW_THRESHOLD = 3;
 var userController = new UserController();
 module.exports = function (controller) {
@@ -647,6 +647,8 @@ module.exports = function (controller) {
 
                 console.log("is question: " + body.is_question);
                 if (body.is_question) {
+                    user.data.prev_bot_ask = null;
+
                     intent = body.intent;
                     var responseSentence;
                     switch (intent) {
@@ -687,7 +689,19 @@ module.exports = function (controller) {
                         bot.reply(message, {
                             text: resp.agree[Math.floor(Math.random() * resp.agree.length)]
                         });
+                    } 
+                    // response a message which is relevant to user's answer before
+                    if (user.data.prev_bot_ask != null){
+                        var responseIndex = user.data.prev_bot_ask;
+                        console.log(`response to user, previous is ${resp.intent_list[responseIndex]}`);
+                        var ansList = (resp.intent_question_response[responseIndex])[`${resp.intent_list[responseIndex]}`];
+                        var responseSentence = ansList[Math.floor(Math.random() * ansList.length)];
+                        bot.reply(message, {
+                            text: responseSentence
+                        });
+                        user.data.prev_bot_ask = null;
                     }
+
                     // now ask an question for user
                     var randomIndex = Math.floor(Math.random() * resp.intent_question.length);
                     var askList = (resp.intent_question[randomIndex])[`${resp.intent_list[randomIndex]}`];
@@ -702,6 +716,8 @@ module.exports = function (controller) {
                             text: question
                         });
                         user.data.ask_count++;
+                        user.data.prev_bot_ask = randomIndex;
+                        console.log(`save ${user.data.prev_bot_ask} - ${resp.intent_list[randomIndex]} to controller`);
 
                     }
 

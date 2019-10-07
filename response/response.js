@@ -1,6 +1,6 @@
 module.exports = {
     hello1: "Xin chào 👋👋👋👋👋👋👋 ! Mình là CSE Assistant phiên bản 1.0.0, mình có thể cung cấp cho bạn một số thông tin về các hoạt động sắp tới của khoa (hoạt động, đối tượng tham gia, các công việc trong hoạt động, cách thức đăng ký, ... ). Bạn muốn hỏi gì nào? 😋😋",
-    hello: "Xin chào, mình là CSE Assistant phiên bản phát triển. Mình cô đơn và có thể chém gió với bạn để giúp bạn giải trí và mình cũng muốn được thông minh giống như bạn 😊. Bạn có gì muốn nói nè (viết đầy đủ tiếng việt có dấu giúp mình nhé 😘)",
+    hello: "Xin chào, mình là CSE Assistant phiên bản phát triển. Bạn có gì muốn nói nè (viết đầy đủ tiếng việt có dấu giúp mình nhé 😘)",
     err: "Có lỗi xảy ra, bạn F5 lại trang giúp mình nhé! 😅😅😅",
     cantfind: "Không tìm được hoạt động nào thỏa các yêu cầu. Hãy bỏ bớt để lấy kết quả.😓😓😓",
     wetried: "Không tìm được bất động sản nào thỏa các yêu cầu. Xin thử lại sau 😓",
@@ -42,6 +42,34 @@ module.exports = {
         "ặc ặc 😖😖,  hình như mình chưa được cập nhật thông tin Ban tổ chức hoạt động này, bạn vào đây hỏi admin giúp mình nhé 😅😅😅😅 : https://www.facebook.com/BKCSE.Multimedia 🔗  ",
         "à bạn có thể liên hệ trực tiếp với mình luôn nghen 😘😘, sdt mình đây: 0329581621 ☎☎☎",
         "bạn có thể nhắn trực tiếp vào fb của mình để đăng ký nhé 😚😚, fb của mình: https://www.facebook.com/duongcc.uranus 🔗 "
+    ],
+    location: [
+        "Ở sảnh H6 nhé bạn!",
+        "Ở khu tự học Hela bạn nhé"
+    ],
+    time: [
+        "Lúc 07h00 ngày 20/11/2019 đó bạn!"
+    ],
+    holder:[
+        "Sự kiện được tổ chức bởi Đoàn Khoa KH&KT Máy tính bạn nhé!",
+        "Đoàn TN - Hội SV Khoa KH&KT Máy tính hỗ trợ BCN Khoa đứng ra tổ chức nha bạn :)) "
+    ],
+    reward:[
+        "Tham gia mình sẽ được 0.5 ngày CTXH, không có điểm rèn luyện bạn nhé :("
+
+    ],
+    yes_no:[
+        "Bạn có gì muốn hỏi nữa không? :D"
+
+    ],
+    dont_care:[
+        "Vậy bạn hỏi mình cái gì khác nữa đi!"
+
+    ],
+    hello_again:[
+        "CSE Assistant xin chào bạn nè <3 Bạn muốn mình tư vấn gì nè :))",
+        "hé lô bạn! Bạn có gì muốn hỏi nè :D"
+
     ],
     ask_infor: [
         "à, phiền bạn để lại thông tin liên lạc của bạn (email 📧📧📧 hoặc số điện thoại ☎☎☎ hoặc cả hai) cho mình đi 😘😊😊! ",
@@ -292,7 +320,7 @@ module.exports = {
         },
         {
             holder: [
-                "Ở những đó cũng vui đấy! ",
+                "Ở những tổ chức đó cũng vui đấy! ",
                 
             ]
         },

@@ -646,7 +646,10 @@ module.exports = function (controller) {
                 }
 
                 console.log("is question: " + body.is_question);
-                if (body.is_question) {
+                if (body.is_question || body.intent == "hello" 
+                                    || body.intent == "yes_no"
+                                    || body.intent == "dont_care"
+                ) {
                     user.data.prev_bot_ask = null;
 
                     intent = body.intent;
@@ -666,6 +669,27 @@ module.exports = function (controller) {
                             break;
                         case "register":
                             responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
+                            break;
+                        case "location":
+                            responseSentence = resp.location[Math.floor(Math.random() * resp.location.length)];
+                            break;
+                        case "time":
+                            responseSentence = resp.time[Math.floor(Math.random() * resp.time.length)];
+                            break;
+                        case "holder":
+                            responseSentence = resp.holder[Math.floor(Math.random() * resp.holder.length)];
+                            break;
+                        case "reward":
+                            responseSentence = resp.reward[Math.floor(Math.random() * resp.reward.length)];
+                            break;
+                        case "yes_no":
+                            responseSentence = resp.yes_no[Math.floor(Math.random() * resp.yes_no.length)];
+                            break;
+                        case "dont_care":
+                            responseSentence = resp.dont_care[Math.floor(Math.random() * resp.dont_care.length)];
+                            break;
+                        case "hello":
+                            responseSentence = resp.hello_again[Math.floor(Math.random() * resp.hello_again.length)];
                             break;
                         default:
                             responseSentence = resp.err

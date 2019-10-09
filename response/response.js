@@ -45,21 +45,26 @@ module.exports = {
     ],
     location: [
         "Ở sảnh H6 nhé bạn!",
-        "Ở khu tự học Hela bạn nhé"
+        "Ở khu tự học Hela bạn nhé",
+        "Ở sảnh trước sân H6 nha bạn"
     ],
     time: [
-        "Lúc 07h00 ngày 20/11/2019 đó bạn!"
+        "Lúc 07h00 ngày 20/11/2019 đó bạn!",
+        "Sự kiện sẽ được tổ chức vào 08h30 ngày 26/12/2019 nha bạn"
     ],
     holder:[
         "Sự kiện được tổ chức bởi Đoàn Khoa KH&KT Máy tính bạn nhé!",
         "Đoàn TN - Hội SV Khoa KH&KT Máy tính hỗ trợ BCN Khoa đứng ra tổ chức nha bạn :)) "
     ],
     reward:[
-        "Tham gia mình sẽ được 0.5 ngày CTXH, không có điểm rèn luyện bạn nhé :("
+        "Tham gia mình sẽ được 0.5 ngày CTXH, không có điểm rèn luyện bạn nhé :(",
+        "Được 1 ngày CTXH bạn nha!",
+        "Tham gia sẽ được cộng 5 điểm rèn luyện nè bạn"
 
     ],
     yes_no:[
-        "Bạn có gì muốn hỏi nữa không? :D"
+        "Bạn có gì muốn hỏi nữa không? :D",
+        "Bạn hỏi mình tiếp đi nè 😚"
 
     ],
     dont_care:[
@@ -104,10 +109,6 @@ module.exports = {
         "OK 😘😘.",
         "Uhm",
         "Oh vậy à :3",
-        "Ồ thế à :3",
-        "Ồ :3 :3 :3",
-        "Ra là vậy. :3",
-        "Ồ thì ra là thế ^_^",
         "Hihihi. OK :3",
         "I got it =)))))",
         "Trời đang mưa thì phải hic hic :'("
@@ -124,7 +125,8 @@ module.exports = {
     ],
     bot_wants_to_answer: [
         "Bạn có muốn hỏi gì mình nữa không ? ",
-        "Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. ^_^"
+        "Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. ^_^",
+        "Bạn hỏi mình đi, nếu biết mình sẽ trả lời cho bạn!"
         
 
     ],
@@ -178,8 +180,6 @@ module.exports = {
                 "Bạn vào Đoàn thanh niên ngày nào thế ?😅😅",
                 "Bạn với người yêu bạn quen nhau từ ngày nào zậy 🤔🤔🤔🤔?",
                 "Bạn mới năm nhất đúng hem 😅😅 ? Hôm bữa bạn ngày mấy nhập học zậy ?",
-                "Đố bạn ngày giải phóng miền Nam là ngày nào nè :D ?",
-                "Đố bạn Việt Nam gia nhập WTO vào ngày tháng năm nào ? :3",
                 "Bạn biết Việt Nam vô địch AFF Cup 2018 vào ngày tháng năm nào hemmm :D ?",
                 "Bạn biết ngày Quốc tế lao động là ngày nào hem :3 ?",
                 "Ngày nào là ngày học sinh sinh viên Việt Nam bạn biết hem :3 ?",
@@ -208,7 +208,7 @@ module.exports = {
                 "Bữa mình có ghé phố đi bộ ở quận 1 nè. Ở đó thì đông đúc và nhộn nhịp thôi rồi luôn. Bạn đã từng đi đến những quận nào của TPHCM rồi 😅😅😅😅 ?",
                 "Bạn ở huyện nào ở nơi bạn đang sống vậy 😅😅?",
                 "Nhà bạn ở quận nào vậy :3 ? ",
-                "Kể tên cho mình tên một số quận ở quê bạn được không :3 Cảm ơn bạn nhiều "
+                "Kể tên cho mình tên một số quận huyện ở quê bạn được không :3 Cảm ơn bạn nhiều "
             ]
         },
         {
@@ -292,8 +292,8 @@ module.exports = {
             work: [
                 "Một ngày của bạn gồm những hoạt động nào, hay là chỉ có học với học thôi hẻ 🤔🤔?",
                 "Bạn có biết nấu ăn hông 🤔🤔? Bạn nấu được những món nào nè ?",
-                "Chỉ mình các bước để chinh phục 1 bạn nữ với :( ? Mình bị nhát gái đó hic hic.",
-                "Theo bạn thì một hoạt động tình nguyện thì nên có những công việc cụ thể nào ? Mình muốn khảo sát chút ấy mà ^^. cảm ơn bạn nhiều nè.",
+                "Chỉ mình các bước để tỏ tình với 1 bạn nữ với :( ? Mình bị nhát gái đó hic hic.",
+                "Theo bạn thì một hoạt động tình nguyện thì nên có những công việc cụ thể nào ? ",
                 "Hãy kể cho mình những công việc mà bạn hay làm trong 1 ngày. Mình muốn nghe lắm ^^. Cảm ơn bạn nhiều."
             ]
         },
@@ -309,29 +309,35 @@ module.exports = {
     intent_question_response: [
         {
             name_activity: [
-                "Hoạt động nghe có vẻ thú vị đấy 😅 ! "
+                "Hoạt động nghe có vẻ thú vị đấy 😅 ! ",
+                "Nghe cũng thú vị đó :D"
                
             ]
         },
         {
             type_activity: [
-                "Mình cũng thích các loại hoạt động này ;) "
+                "Mình cũng thích các loại hoạt động này ;) ",
+                "Khoa mình cũng hay tổ chức các loại hoạt động này nè bạn"
             ]
         },
         {
             holder: [
                 "Ở những tổ chức đó cũng vui đấy! ",
+                "Ở đó vui mà đúng không? :))"
                 
             ]
         },
         {
             clock_time: [
-                "Cảm ơn bạn nha, mình cũng đang học để phân biệt giờ giấc 😁😁"
+                "Cảm ơn bạn nha, mình cũng đang học để phân biệt giờ giấc 😁😁",
+                "Giờ đó luôn à"
+
             ]
         },
         {
             date_time: [
-                "uhm ngày đó hả, để mình lưu lại 😁"
+                "ngày đó hả, để mình lưu lại 😁",
+                "mình sẽ lưu ngày này lại"
             ]
         },
         {
@@ -346,19 +352,22 @@ module.exports = {
         },
         {
             name_place: [
-                "uhm, mình nghe nói mấy chỗ đó thú vị lắm! "
+                "mình nghe nói mấy chỗ đó thú vị lắm! ",
+                "chỗ này thú vị lắm đúng không bạn"
                 
             ]
         },
         {
             building: [
-                "uhm bạn, tòa đó thì công nhận ",
-                "cũng còn nhiều tòa nữa bạn nhỉ :)) "                
+                "tòa đó cũng nhiều người học nè ",
+                "cũng còn nhiều tòa nữa bạn nhỉ :)) ",
+                "Theo mình biết thì tòa B2 trường mình chắc là lớn nhất"               
             ]
         },
         {
             room: [
-                "À phòng đó hả "
+                "À phòng đó hả ",
+                "phòng đó không biết có gần văn phòng Đoàn Hội Khoa Máy tính không ta"
                 
             ]
         },
@@ -370,31 +379,35 @@ module.exports = {
         },
         {
             reward: [
-                "Điểm rèn luyện với ngày CTXH quan trọng, ai cũng muốn được đầy đủ càng sớm càng tốt nhỉ :D"                
+                "Điểm rèn luyện với ngày CTXH đều quan trọng, ai cũng muốn được đầy đủ càng sớm càng tốt nhỉ :D"                ,
+                "Chừng đó cũng không tồi"
             ]
         },
         {
             contact: [
-                "Cảm ơn nha, để mình lưu thông tin liên hệ đó lại :D"
+                "Cảm ơn nha, để mình lưu thông tin liên hệ đó lại :D",
+                "mình sẽ lưu lại thông tin liên hệ đó"
                 
             ]
         },
         {
             register: [
-                "Thank bạn, mình sẽ lưu lại nè :D"
+                "Thank bạn, mình sẽ lưu lại nè :D",
+                "mình sẽ lưu lại thông tin đăng ký đó"
                
             ]
         },
         {
             work: [
-                "Mấy việc đó khó với một robot như mình quá :( "
+                "Mấy việc đó khó với một robot như mình quá :( ",
+                "Mình cũng muốn làm những thứ đó lắm"
                
             ]
         },
         {
             joiner: [
-                "Ừa mình nghĩ nên để mọi người đều được tham gia thì sẽ tốt hơn!",
-                "uhm nên vậy :D"
+                "mình nghĩ nên để mọi người đều được tham gia thì sẽ tốt hơn!",
+                "nên vậy :D"
                 
             ]
         }

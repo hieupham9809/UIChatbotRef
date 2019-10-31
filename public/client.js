@@ -438,7 +438,7 @@ var Botkit = {
 
       user.timezone_offset = new Date().getTimezoneOffset();
       that.current_user = user;
-      // console.log('CONNECT WITH USER', user);
+      console.log('CONNECT WITH USER', user);
     }
 
     // connect to the chat server!
@@ -459,6 +459,7 @@ var Botkit = {
       Botkit.setCookie('botkit_guid', that.guid, 1);
     }
 
+    setId(that.guid);
     that.getHistory();
 
     // connect immediately
@@ -484,6 +485,8 @@ var Botkit = {
       Botkit.setCookie('botkit_guid', that.guid, 1);
     }
 
+    setId(that.guid);
+    
     that.getHistory();
 
     // Connection opened
@@ -1156,6 +1159,7 @@ var Botkit = {
         break;
       case 'connect':
         Botkit.connect(event.data.user);
+        console.log("event data user " + event.data.user);
         break;
       default:
     }
@@ -1236,8 +1240,12 @@ var Botkit = {
     }
     return elements;
   },
+  setId: function(userId){
+    document.getElementById("user-id").innerHTML = userId;
+  },
   boot: function (user) {
 
+    this.setId(this.guid);
     var that = this;
 
     that.message_window = document.getElementById("message_window");
@@ -1466,9 +1474,13 @@ var Botkit = {
   }
 };
 
+var setId = function(id){
+  document.getElementById("user-id").innerHTML = id;
+};
 
 (function () {
   Botkit.boot();
+  // Botkit.setId();
 })();
 
 

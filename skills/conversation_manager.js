@@ -1,6 +1,7 @@
 resp = require("../response/response.js");
 request = require("request");
 sync = require('sync-request');
+
 var UserController = require("../utils/usercontroller.js")
 const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
 const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
@@ -41,7 +42,9 @@ module.exports = function (controller) {
 
         bot.startConversation(message, function (err, convo) {
             var id = message.user
-            console.log(id)
+            // console.log("id "+ id);
+
+            // document.getElementById("user-id").innerHTML = id;
             // if (id) {
             //     var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);
             //     console.log("DELETE GRAPH CODE:" + delete_body.statusCode);
@@ -56,10 +59,13 @@ module.exports = function (controller) {
     function continueConversation(bot, message) {
 
         var id = message.user;
+        // console.log("id "+ id);
+        
+
         var user = userController.searchSession(id);
         if (user != null) {
             console.log("welcome back-------------------------" + id);
-
+            
             // refresh at getIntent
             if (!user.getIntent) {
                 bot.reply(message, {
@@ -123,7 +129,7 @@ module.exports = function (controller) {
             console.log("Delete success");
         }
 
-        console.log(id)
+        console.log("id "+ id);
         if (id) {
             conversation[id] = [];
             var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);

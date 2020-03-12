@@ -3,7 +3,10 @@ request = require("request");
 sync = require('sync-request');
 
 var UserController = require("../utils/usercontroller.js")
-const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
+
 const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
 const IS_QUESTION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/classify-message"
 const SAVE_MESSAGE_TO_DB = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/messages";
@@ -220,6 +223,40 @@ module.exports = function (controller) {
             return;
 
         });
+    }
+    function handleInformResponse(bot, message, body){
+        bot.reply(message, {
+                text: body.message,
+                enableResponseToConfirm: [
+                    {
+                        title: 'Đồng ý',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': true,
+                                'userAction': body.agent_action
+                            }
+                        },
+                    },
+                    {
+                        title: 'Sao cũng được',
+                        payload: {
+                            'userResponeToInform': {
+                                'anything': true,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    },
+                    {
+                        title: 'Không',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': false,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    }
+                ]
+            })
     }
     function callConversationManager(bot, message) {
 
@@ -636,10 +673,41 @@ module.exports = function (controller) {
                 }
                 return;
             }
-
-            request.post(IS_QUESTION_ENDPOINT, {
+            var messageBack = raw_mesg;
+            if (message.userResponeToInform != null){
+                if (message.userResponeToInform.anything){
+                    userAction = message.userResponeToInform.userAction;
+                    for (var prop in userAction.inform_slots){
+                        // if (userAction.inform_slots.hasOwnProperty(prop)){
+                        //     userAction.inform_slots.prop = 'anything'
+                        // }
+                        userAction.inform_slots[prop] = 'anything'
+                    }
+                    delete userAction.round
+                    delete userAction.speaker
+                    messageBack = userAction
+                }
+                else if (message.userResponeToInform.acceptInform){
+                    userAction = message.userResponeToInform.userAction;
+                    delete userAction.round
+                    delete userAction.speaker
+                    messageBack = userAction
+                } else {
+                    userAction = message.userResponeToInform.userAction;
+                    slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]]
+                    var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`
+                    bot.reply(message, {
+                            text: msg
+                        });
+                    return;
+                    
+                }
+            }
+            console.log(messageBack)
+            request.post(CONVERSATION_MANAGER_ENDPOINT, {
                 json: {
-                    message: raw_mesg
+                    message: messageBack,
+                    state_tracker_id: id
                 }
             }, (error, res, body) => {
                 intent = null;
@@ -650,351 +718,47 @@ module.exports = function (controller) {
                     });
                     return;
                 }
-
-                console.log("is question: " + body.is_question);
-                if (body.is_question || body.intent == "hello" 
-                                    || body.intent == "yes_no"
-                                    || body.intent == "dont_care"
-                ) {
-                    user.data.prev_bot_ask = null;
-
-                    intent = body.intent;
-                    var responseSentence;
-                    switch (intent) {
-                        case "activity":
-                            responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
-                            break;
-                        case "joiner":
-                            responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
-                            break;
-                        case "work":
-                            responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
-                            break;
-                        case "contact":
-                            responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
-                            break;
-                        case "register":
-                            responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
-                            break;
-                        case "location":
-                            responseSentence = resp.location[Math.floor(Math.random() * resp.location.length)];
-                            break;
-                        case "time":
-                            responseSentence = resp.time[Math.floor(Math.random() * resp.time.length)];
-                            break;
-                        case "holder":
-                            responseSentence = resp.holder[Math.floor(Math.random() * resp.holder.length)];
-                            break;
-                        case "reward":
-                            responseSentence = resp.reward[Math.floor(Math.random() * resp.reward.length)];
-                            break;
-                        case "yes_no":
-                            responseSentence = resp.yes_no[Math.floor(Math.random() * resp.yes_no.length)];
-                            break;
-                        case "dont_care":
-                            responseSentence = resp.dont_care[Math.floor(Math.random() * resp.dont_care.length)];
-                            break;
-                        case "hello":
-                            responseSentence = resp.hello_again[Math.floor(Math.random() * resp.hello_again.length)];
+                console.log(body)
+                if (body != null && body.agent_action != null){
+                    switch (body.agent_action.intent){
+                        case "inform":
+                            handleInformResponse(bot, message, body);
                             break;
                         default:
-                            responseSentence = resp.err
-                    }
-                    console.log(responseSentence);
-                    bot.reply(message, { text: responseSentence });
-
-                    user.data.asw_count++;
-                    if (user.data.asw_count > NUM_ASW_THRESHOLD) {
-                        bot.reply(message, {
-                            text: resp.bot_wants_to_ask[Math.floor(Math.random() * resp.bot_wants_to_ask.length)]
-                        });
-                        user.data.asw_count = 0;
+                            bot.reply(message, {
+                                text: body.message
+                            })
                     }
 
-
-
-                } else {
-                    // it's an answer, agree
-                    if (parseFloat(Math.random()) > AGREE_THRESHOLD) {
-                        bot.reply(message, {
-                            text: resp.agree[Math.floor(Math.random() * resp.agree.length)]
-                        });
-                    } 
-                    // response a message which is relevant to user's answer before
-                    if (user.data.prev_bot_ask != null){
-                        var responseIndex = user.data.prev_bot_ask;
-                        console.log(`response to user, previous is ${resp.intent_list[responseIndex]}`);
-                        var ansList = (resp.intent_question_response[responseIndex])[`${resp.intent_list[responseIndex]}`];
-                        var responseSentence = ansList[Math.floor(Math.random() * ansList.length)];
-                        bot.reply(message, {
-                            text: responseSentence
-                        });
-                        user.data.prev_bot_ask = null;
-                    }
-
-                    // now ask an question for user
-                    var randomIndex = Math.floor(Math.random() * resp.intent_question.length);
-                    var askList = (resp.intent_question[randomIndex])[`${resp.intent_list[randomIndex]}`];
-                    var question = askList[Math.floor(Math.random() * askList.length)];
-                    if (user.data.ask_count > NUM_ASK_THRESHOLD) {
-                        bot.reply(message, {
-                            text: resp.bot_wants_to_answer[Math.floor(Math.random() * resp.bot_wants_to_answer.length)]
-                        });
-                        user.data.ask_count = 0;
-                    } else {
-                        bot.reply(message, {
-                            text: question
-                        });
-                        user.data.ask_count++;
-                        user.data.prev_bot_ask = randomIndex;
-                        console.log(`save ${user.data.prev_bot_ask} - ${resp.intent_list[randomIndex]} to controller`);
-
-                    }
-
+                    return;
                 }
-
-                user.data.message = raw_mesg;
-                user.data.intent = intent;
-
-                saveMessageToDatabase(user, bot, message);
+                // console.log("agent: " + body)
+                // bot.reply(message, {
+                //     text: body.message
+                // })
+               
 
 
             });
 
-            // var user = userController.searchSession(id);
-
-            // if (user == null){
-            //     user = userController.insertSession(id);
-            // }
-
-
-            // if (!user.getIntent){
-
-            //     console.log("get Intent");
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT, {
-            //         json: {
-            //             message: raw_mesg
+            // bot.reply(message, {
+            //     text: response_body.question,
+            //     graph: graph,
+            //     force_result: [
+            //         {
+            //             title: 'Bỏ tiếp yêu cầu',
+            //             payload: {
+            //                 'remove_more': true
+            //             },
+            //         },
+            //         {
+            //             title: 'In luôn kết quả',
+            //             payload: {
+            //                 'force_show': true
+            //             }
             //         }
-            //     }, (error, res, body) => {
-            //         if (error) {
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })
-            //             return
-            //         }
-            //         // console.log("type: " + typeof(res.activity));
-            //         var responseSentence;
-            //         switch (body.message){
-            //             case "activity":
-            //                 responseSentence = "Bạn vừa hỏi về  \"activity\" - thông tin chung chung về toàn bộ hoạt động đúng không?";
-            //                 break;
-            //             case "joiner":
-            //                 responseSentence = "Bạn vừa hỏi về thông tin \"joiner\" - người tham gia đúng không?";
-            //                 break;
-            //             case "work":
-            //                 responseSentence = "Bạn vừa hỏi về  \"work\" - các công việc có trong hoạt động đúng không?";
-            //                 break;
-            //             case "contact":
-            //                 responseSentence = "Bạn vừa hỏi về  \"contact\" - thông tin liên hệ ban tổ chức hoạt động đúng không?";
-            //                 break;
-            //             case "register":
-            //                 responseSentence = "Bạn vừa hỏi về  \"register\" - thông tin đăng ký tham gia hoạt động đúng không?";
-            //                 break;
-            //             default:
-            //                 responseSentence = resp.err
-            //         }
-            //         user.data.message = raw_mesg;
-            //         user.data.intent = body.message;
-            //         console.log(responseSentence);
-            //         bot.reply(message, {
-            //             text: responseSentence,
-            //             force_result: [
-            //                 {
-            //                     title: 'Đúng rồi',
-            //                     payload: {
-            //                         'correct_intent': true
-            //                     }
-            //                 },
-            //                 {
-            //                     title: 'Sai rồi',
-            //                     payload: {
-            //                         'wrong_intent': true,
-            //                     },
-            //                 },
-            //             ]
-
-            //         });
-
-            //         // responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-            //         // bot.reply(message, 
-            //         //     {
-            //         //         text:responseSentence,
-            //         //         // isGetInfor: true
-            //         //     });
-
-            //     });
-            //     user.getIntent = true;
-            // } else if (!user.getInfor){
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-            //         json: {
-            //             message: raw_mesg
-            //         }
-            //     }, (error, res, body) =>{
-            //         if (error){
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })  
-            //             return
-            //         }
-            //         // console.log(body);
-            //         if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
-            //             bot.reply(message, {
-            //                 text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
-            //             });
-            //             userController.searchSession(id).getInfor = false;
-            //             return;
-            //         } else {
-            //             bot.reply(message, {
-            //                     text:`${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]}\n 
-            //             emails: ${body.emails.join(',')} \n 
-            //             Số điện thoại: ${body.phones.join(',')}`,
-            //                     force_result: [
-            //                     {
-            //                         title: 'Đúng rồi',
-            //                         payload: {
-            //                             'completed': true
-            //                         }
-            //                     },
-            //                     {
-            //                         title: 'Sai rồi',
-            //                         payload: {
-            //                             'resubmit_infor': true,
-            //                         },
-            //                     },
-            //                 ]
-            //             })
-
-            //         }
-            //     });
-            //     user.getInfor = true;
-            //     // userController.deleteSession(id);
-
-            // } else {
-
-            //     var success = userController.deleteSession(id);
-            //     if (!success){
-            //         console.log("Error in delete function");
-            //     } else {
-            //         console.log("Delete success");
-            //     }
-            // }
-
-            // if (isGetInfor == true){
-            //     // console.log("isgetInfor");
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-            //         json: {
-            //             message: raw_mesg
-            //         }
-            //     }, (error, res, body) =>{
-            //         if (error){
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })  
-            //             return
-            //         }
-            //         // console.log(body);
-            //         if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
-            //             bot.reply(message, {
-            //                 text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
-            //             });
-            //         } else {
-            //             bot.reply(message, {
-            //                 text: `${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]} \n
-            //                     emails: ${body.emails.join(',')} \n
-            //                     Số điện thoại: ${body.phones.join(',')}`
-            //                     ,
-            //                     force_result: [
-            //                     {
-            //                         title: 'Đúng rồi',
-            //                         payload: {
-
-            //                         }
-            //                     },
-            //                     {
-            //                         title: 'Sai rồi',
-            //                         payload: {
-            //                             'resubmit_infor': true,
-            //                         },
-            //                     },
-            //                 ]
-            //             })
-            //             isGetInfor = false;
-
-            //         }
-            //     });
-            // }
-            // if (isGetIntent){
-            //     console.log("get Intent");
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT, {
-            //         json: {
-            //             message: raw_mesg
-            //         }
-            //     }, (error, res, body) => {
-            //         if (error) {
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })
-            //             return
-            //         }
-            //         // console.log("type: " + typeof(res.activity));
-            //         var responseSentence;
-            //         switch (body.message){
-            //             case "activity":
-            //                 responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
-            //                 break;
-            //             case "joiner":
-            //                 responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
-            //                 break;
-            //             case "work":
-            //                 responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
-            //                 break;
-            //             case "contact":
-            //                 responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
-            //                 break;
-            //             case "register":
-            //                 responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
-            //                 break;
-            //             default:
-            //                 responseSentence = resp.err
-            //         }
-            //         console.log(responseSentence);
-            //         bot.reply(message, {text: responseSentence});
-
-            //         responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-            //         bot.reply(message, 
-            //             {
-            //                 text:responseSentence,
-            //                 // isGetInfor: true
-            //             });
-
-            //     });
-            //     isGetInfor = true;
-
-            //     isGetIntent = false;
-
-            // }
+            //     ]
+            // })
 
         }
     }

@@ -9,6 +9,20 @@ module.exports = {
     showall: "Bạn có muốn xem thêm kết quả không?😅",
     dontunderstand: "Tôi không hiểu ý của bạn lắm. Xin hãy nhập lại. 😩😩😩",
     start_rating: "Xin hãy giúp chúng tôi đánh giá rLeT Bot.😸😸😸",
+    "AGENT_INFORM_OBJECT" : {
+        "name_activity": "tên hoạt động",
+        "type_activity": "loại hoạt động",
+        "holder": "ban tổ chức",
+        "time": "thời gian",
+        "address": "địa chỉ",
+        "name_place": "tên địa điểm",
+        "works": "các công việc trong hoạt động",
+        "reward": "lợi ích",
+        "contact": "liên hệ",
+        "register": "đăng ký",
+        "joiner": "đối tượng tham gia",
+        "activity": "hoạt động"
+    },
     joiner: [
         "đối tượng tham gia là ai cũng tham gia được nha bạn. ahihi 😝😝😝",
         "không giới hạn đối tượng nhe bạn, ahihi! 😘 😘 😘 ",

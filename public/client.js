@@ -366,7 +366,7 @@ var Botkit = {
     return false;
   },
   sendCustom: function (text, payload, e) {
-    console.log("here" + text)
+    
     var that = this;
     if (e) e.preventDefault();
     if (!text) {
@@ -1204,9 +1204,9 @@ var Botkit = {
   renderResultMessages: function (results, concerned_attributes) {
     var elements = [];
     var len = Math.min(10, results.length);
-    console.log("RESULT");
-    console.log(results);
-    console.log(concerned_attributes);
+    // console.log("RESULT");
+    // console.log(results);
+    // console.log(concerned_attributes);
     for (var r = 0; r < len; r++) {
       (function (result) {
 
@@ -1408,15 +1408,17 @@ var Botkit = {
     //     that.input.disabled = false;
     //   }
     // });
-    that.on('message', function (message) {
-      that.clearReplies();
-      if (message.force_result) {
+    that.on('message', function (message){
+      console.log("HEREEEEEEEEEEEEEEEEEEEEEEEEE")
 
+      that.clearReplies();
+      if (message.enableResponseToConfirm){
         var list = document.createElement('ul');
 
         var elements = [];
-        for (var r = 0; r < message.force_result.length; r++) {
+        for (var r = 0; r < message.enableResponseToConfirm.length; r++) {
           (function (reply) {
+            console.log("create element")
 
             var li = document.createElement('li');
             var el = document.createElement('a');
@@ -1431,7 +1433,7 @@ var Botkit = {
             list.appendChild(li);
             elements.push(li);
 
-          })(message.force_result[r]);
+          })(message.enableResponseToConfirm[r]);
         }
 
         that.replies.appendChild(list);
@@ -1441,10 +1443,46 @@ var Botkit = {
         } else {
           that.input.disabled = false;
         }
-      } else {
-        that.input.disabled = false;
       }
     });
+    // that.on('message', function (message) {
+    //   console.log("FORCE")
+    //   if (message.force_result) {
+    //     that.clearReplies();
+
+    //     var list = document.createElement('ul');
+
+    //     var elements = [];
+    //     for (var r = 0; r < message.force_result.length; r++) {
+    //       (function (reply) {
+
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
+
+    //         el.onclick = function () {
+    //           that.sendCustom(reply.title, reply.payload);
+    //         }
+
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
+
+    //       })(message.force_result[r]);
+    //     }
+
+    //     that.replies.appendChild(list);
+
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
 
     that.on('history_loaded', function (history) {
       if (history) {

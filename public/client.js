@@ -1,5 +1,7 @@
 var converter = new showdown.Converter();
 converter.setOption('openLinksInNewWindow', true);
+
+
 const RESULT_MESSAGE_WIDTH_TRANS = 310;
 const price_formatter = new Intl.NumberFormat('it-IT', {
   style: 'currency',
@@ -279,7 +281,20 @@ const norm2vn = {
   "mo phong kham":"mở phòng khám",
   "mo tiem":"mở tiệm"
 }
-
+const AGENT_INFORM_OBJECT = {
+  "name_activity": "tên hoạt động",
+  "type_activity": "loại hoạt động",
+  "holder": "ban tổ chức",
+  "time": "thời gian",
+  "address": "địa chỉ",
+  "name_place": "tên địa điểm",
+  "works": "các công việc trong hoạt động",
+  "reward": "lợi ích",
+  "contact": "liên hệ",
+  "register": "đăng ký",
+  "joiner": "đối tượng tham gia",
+  "activity": "hoạt động"
+}
 const MAX_ATTR = 5;
 
 var Botkit = {
@@ -541,6 +556,92 @@ var Botkit = {
   focus: function () {
     this.input.focus();
   },
+  renderEditInform: function(message){
+    var that = this;
+    if (message.enableEditInform != 'null'){
+
+    }
+  },
+  renderResults: function(message){
+    var that = this;
+    if (message.enableResponseToMathfound)
+    {
+      if (!that.next_line) {
+        that.next_line = document.createElement('div');
+        that.message_list.appendChild(that.next_line);
+      }
+      // if (message.show_results) {
+
+        message.resultSliderId = 'items-' + this.slider_message_count;
+        this.slider_message_count += 1;
+      // }
+      that.next_line.className += " message-result-margin"
+      that.next_line.innerHTML = that.message_slider_template({
+        message: message
+      });
+      // if (message.show_results) {
+        var list = this.renderResultMessages(message.listResults);
+
+        // if (message.text) {
+        //   var parentDiv = $(`#mask-${message.resultSliderId}`).parent()[0]
+        //   // console.log(parentDiv);
+        //   var t = $(`<div class="message-text-slider">${message.text[0]}</div>`)[0];
+        //   var u = $(`<div class="message-text-slider">${message.text[1]}</div>`)[0];
+        //   parentDiv.prepend(t);
+        //   parentDiv.append(u);
+        // }
+        var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
+        list.forEach(function (element) {
+          sliderContainer.appendChild(element);
+        })
+        sliderContainer.setAttribute("max-width", list.length * 310);
+        var a_left = $('<div class="carousel-prev"></div>')[0]
+        var a_right = $('<div class="carousel-next"></div>')[0]
+        var left = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path> <path d="M0-.5h24v24H0z" fill="none"></path></svg>')[0]
+        var right = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path> <path d="M0-.25h24v24H0z" fill="none"></path></svg>')[0]
+        a_left.append(left)
+        a_right.append(right)
+        var mask = document.getElementById(`mask-${message.resultSliderId}`);
+        // console.log(a_left)
+        $(a_left).hide();
+        $(a_right).click(() => {
+          var id = `wrapper-${message.resultSliderId}`;
+          var wrapperWidth = parseInt($("#" + id).attr("max-width"));
+          var marginLeft = parseInt($("#" + id).css('margin-left'));
+          var offset = RESULT_MESSAGE_WIDTH_TRANS;
+          marginLeft -= offset;
+          if (marginLeft >= (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
+            var str = marginLeft + "px !important";
+            $("#" + id).attr('style', 'margin-left: ' + str);
+            if (marginLeft - offset < (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
+              $(a_right).hide();
+            }
+          }
+          $(a_left).show();
+        })
+        $(a_left).click(() => {
+          var id = `wrapper-${message.resultSliderId}`;
+          var marginLeft = parseInt($("#" + id).css('margin-left'));
+          var offset = RESULT_MESSAGE_WIDTH_TRANS;
+          marginLeft += offset;
+          if (marginLeft >= 0) {
+            marginLeft = 0;
+            $(a_left).hide();
+          }
+          var str = marginLeft + "px !important";
+          $("#" + id).attr('style', 'margin-left: ' + str);
+          $(a_right).show();
+        })
+        mask.appendChild(a_left);
+        mask.appendChild(a_right);
+      // }
+      if (!message.isTyping) {
+        delete (that.next_line);
+      }
+    }
+  }
+  ,
+
   renderMessage: function (message) {
     var that = this;
     // console.log(message)
@@ -1201,7 +1302,7 @@ var Botkit = {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
       s4() + '-' + s4() + s4() + s4();
   },
-  renderResultMessages: function (results, concerned_attributes) {
+  renderResultMessages: function (results) {
     var elements = [];
     var len = Math.min(10, results.length);
     // console.log("RESULT");
@@ -1210,36 +1311,68 @@ var Botkit = {
     for (var r = 0; r < len; r++) {
       (function (result) {
 
-        var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+        // var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+        var title = `<div class="tittle">ID: ${result['_id']}</div></marquee>`
+
         var list_row = '';
         var count = 0;
-        for (var i = 0; i < concerned_attributes.length; i++)
-          if (result[concerned_attributes[i]] && count < MAX_ATTR) {
-            let raw_key = concerned_attributes[i] + "_raw";
-            if (concerned_attributes[i] === "interior_floor" || concerned_attributes[i] === "interior_room") {
-              raw_key = concerned_attributes[i];
-            }
-            if (concerned_attributes[i] === "orientation" & result[concerned_attributes[i]] === "Không xác định") {
-              continue;
-            }
-            if (concerned_attributes[i] === "addr_district" || concerned_attributes[i] === "potential") {
-              continue;
-            }
-            count += 1;
-            var val = result[raw_key] ? result[raw_key] : result[concerned_attributes[i]]
-            var row = `<tr><th>${key2vn[concerned_attributes[i]]}</th><td>: ${val}</td></tr>`;
-            list_row += row;
+        for (var slot in result){
+          if ( Array.isArray(result[slot]) && result[slot].length > 0){
+            var value = "<li>" + result[slot].join("</li><li>") + "</li>";
+            list_row += `<tr><th>${AGENT_INFORM_OBJECT[slot]}</th><td>${value}</td></tr>`;
+
+          } else {
+            continue;
           }
-        list_row += `<tr><th>Địa chỉ</th><td>: ${result["address"]}</td></tr>`;
-        list_row += `<tr><th>Ngày đăng</th><td>: ${result["publish_date"]}</td></tr>`;
+        }
+        
         var table = `<table>${list_row}</table>`
 
-        var li = $('<div class="message-result">' + title + table + '</div>')[0]
+        var li = $('<div class="message-result" style="overflow-x: scroll;">' + title + table + '</div>')[0]
         elements.push(li);
       })(results[r]);
     }
     return elements;
   },
+  // renderResultMessages: function (results, concerned_attributes) {
+  //   var elements = [];
+  //   var len = Math.min(10, results.length);
+  //   // console.log("RESULT");
+  //   // console.log(results);
+  //   // console.log(concerned_attributes);
+  //   for (var r = 0; r < len; r++) {
+  //     (function (result) {
+
+  //       var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+  //       var list_row = '';
+  //       var count = 0;
+  //       for (var i = 0; i < concerned_attributes.length; i++)
+  //         if (result[concerned_attributes[i]] && count < MAX_ATTR) {
+  //           let raw_key = concerned_attributes[i] + "_raw";
+  //           if (concerned_attributes[i] === "interior_floor" || concerned_attributes[i] === "interior_room") {
+  //             raw_key = concerned_attributes[i];
+  //           }
+  //           if (concerned_attributes[i] === "orientation" & result[concerned_attributes[i]] === "Không xác định") {
+  //             continue;
+  //           }
+  //           if (concerned_attributes[i] === "addr_district" || concerned_attributes[i] === "potential") {
+  //             continue;
+  //           }
+  //           count += 1;
+  //           var val = result[raw_key] ? result[raw_key] : result[concerned_attributes[i]]
+  //           var row = `<tr><th>${key2vn[concerned_attributes[i]]}</th><td>: ${val}</td></tr>`;
+  //           list_row += row;
+  //         }
+  //       list_row += `<tr><th>Địa chỉ</th><td>: ${result["address"]}</td></tr>`;
+  //       list_row += `<tr><th>Ngày đăng</th><td>: ${result["publish_date"]}</td></tr>`;
+  //       var table = `<table>${list_row}</table>`
+
+  //       var li = $('<div class="message-result">' + title + table + '</div>')[0]
+  //       elements.push(li);
+  //     })(results[r]);
+  //   }
+  //   return elements;
+  // },
   setId: function(userId){
     document.getElementById("user-id").innerHTML = userId;
   },
@@ -1314,7 +1447,8 @@ var Botkit = {
     that.on('message', function (message) {
 
       that.renderMessage(message);
-
+      that.renderResults(message);
+      // that.renderEditInform(message);
     });
 
     that.on('message', function (message) {
@@ -1409,16 +1543,17 @@ var Botkit = {
     //   }
     // });
     that.on('message', function (message){
-      console.log("HEREEEEEEEEEEEEEEEEEEEEEEEEE")
+      
 
-      that.clearReplies();
       if (message.enableResponseToConfirm){
+        that.clearReplies();
+
         var list = document.createElement('ul');
 
         var elements = [];
         for (var r = 0; r < message.enableResponseToConfirm.length; r++) {
           (function (reply) {
-            console.log("create element")
+            console.log("create element confirm")
 
             var li = document.createElement('li');
             var el = document.createElement('a');
@@ -1434,6 +1569,44 @@ var Botkit = {
             elements.push(li);
 
           })(message.enableResponseToConfirm[r]);
+        }
+
+        that.replies.appendChild(list);
+
+        if (message.disable_input) {
+          that.input.disabled = true;
+        } else {
+          that.input.disabled = false;
+        }
+      }
+    });
+    that.on('message', function (message){
+      
+
+      if (message.enableResponseToMathfound){
+        that.clearReplies();
+
+        var list = document.createElement('ul');
+
+        var elements = [];
+        for (var r = 0; r < message.enableResponseToMathfound.length; r++) {
+          (function (reply) {
+            console.log("create element match found")
+
+            var li = document.createElement('li');
+            var el = document.createElement('a');
+            el.innerHTML = reply.title;
+            el.href = '#';
+
+            el.onclick = function () {
+              that.sendCustom(reply.title, reply.payload);
+            }
+
+            li.appendChild(el);
+            list.appendChild(li);
+            elements.push(li);
+
+          })(message.enableResponseToMathfound[r]);
         }
 
         that.replies.appendChild(list);

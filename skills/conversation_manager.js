@@ -5,8 +5,8 @@ sync = require('sync-request');
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
 const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
-
 const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
 const IS_QUESTION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/classify-message"
 const SAVE_MESSAGE_TO_DB = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/messages";
@@ -224,39 +224,88 @@ module.exports = function (controller) {
 
         });
     }
-    function handleInformResponse(bot, message, body){
-        bot.reply(message, {
-                text: body.message,
-                enableResponseToConfirm: [
-                    {
-                        title: 'Đồng ý',
-                        payload: {
-                            'userResponeToInform': {
-                                'acceptInform': true,
-                                'userAction': body.agent_action
-                            }
-                        },
-                    },
-                    {
-                        title: 'Sao cũng được',
-                        payload: {
-                            'userResponeToInform': {
-                                'anything': true,
-                                'userAction': body.agent_action
-                            }
+    function handleMatchfoundResponse(bot, message, body){
+        var matchFoundSlot = 'activity';
+        var enableResponseToMathfound = null;
+        var enableEditInform = null;
+        var listResults = null;
+        if (body.agent_action.inform_slots[matchFoundSlot] != 'no match available'){
+            keyListResults = body.agent_action.inform_slots[matchFoundSlot]
+            listResults = body.agent_action.inform_slots[keyListResults]
+            enableResponseToMathfound = [
+                {
+                    title: 'Cảm ơn',
+                    payload: {
+                        'userResponeToMatchfound': {
+                            'acceptMatchfound': true,
+                            'userAction': body.agent_action
                         }
                     },
-                    {
-                        title: 'Không',
-                        payload: {
-                            'userResponeToInform': {
-                                'acceptInform': false,
-                                'userAction': body.agent_action
-                            }
+                },
+                {
+                    title: 'Không thỏa mãn',
+                    payload: {
+                        'userResponeToMatchfound': {
+                            'acceptMatchfound': false,
+                            'userAction': body.agent_action
                         }
                     }
-                ]
-            })
+                }
+            ]
+        } else {
+            enableEditInform = body.current_informs
+        }
+        bot.reply(message, {
+            text: body.message,
+            enableResponseToMathfound: enableResponseToMathfound,
+            listResults : listResults,
+            enableEditInform: enableEditInform
+        });
+    }
+    function handleInformResponse(bot, message, body){
+        var slot = Object.keys(body.agent_action.inform_slots)[0]
+        var enableResponseToConfirm = null;
+        var enableEditInform = null;
+
+        if (body.agent_action.inform_slots[slot] != 'no match available'){
+            enableResponseToConfirm = [
+                {
+                    title: 'Đồng ý',
+                    payload: {
+                        'userResponeToInform': {
+                            'acceptInform': true,
+                            'userAction': body.agent_action
+                        }
+                    },
+                },
+                {
+                    title: 'Sao cũng được',
+                    payload: {
+                        'userResponeToInform': {
+                            'anything': true,
+                            'userAction': body.agent_action
+                        }
+                    }
+                },
+                {
+                    title: 'Không',
+                    payload: {
+                        'userResponeToInform': {
+                            'acceptInform': false,
+                            'userAction': body.agent_action
+                        }
+                    }
+                }
+            ]
+            console.log("RESPONSE CONFIRM")
+        } else {
+            enableEditInform = body.current_informs;
+        }
+        bot.reply(message, {
+            text: body.message,
+            enableResponseToConfirm: enableResponseToConfirm,
+            enableEditInform : enableEditInform
+        });
     }
     function callConversationManager(bot, message) {
 
@@ -703,7 +752,14 @@ module.exports = function (controller) {
                     
                 }
             }
-            console.log(messageBack)
+            if (message.userResponeToMatchfound != null){
+                if (message.userResponeToMatchfound.acceptMatchfound){
+                    messageBack = {intent: "thanks", inform_slots:{}, request_slots: {}}
+                } else {
+                    messageBack = {intent: "reject", inform_slots:{}, request_slots: {}}
+                }
+            }
+            
             request.post(CONVERSATION_MANAGER_ENDPOINT, {
                 json: {
                     message: messageBack,
@@ -718,11 +774,16 @@ module.exports = function (controller) {
                     });
                     return;
                 }
-                console.log(body)
                 if (body != null && body.agent_action != null){
+                    console.log(body.agent_action)
                     switch (body.agent_action.intent){
                         case "inform":
                             handleInformResponse(bot, message, body);
+                            break;
+                        case "match_found":
+                            console.log(body.agent_action.inform_slots[body.agent_action.inform_slots['activity']])
+
+                            handleMatchfoundResponse(bot, message, body);
                             break;
                         default:
                             bot.reply(message, {

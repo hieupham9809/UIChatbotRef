@@ -527,15 +527,18 @@ a.button:hover {
 
 table {
   font-size: 14px;
-  margin: 5px 5px 5px 10px;
+  margin: 5px 5px 5px 0px;
 }
-
+th {
+  border: 1px solid rgb(206, 205, 205);
+  text-align: center;
+}
 td {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow: auto;
+  
+  border: 1px solid rgb(206, 205, 205);
   max-width: 180px;
-  padding: 3px 0;
+  padding: 4px ;
 }
 
 .header {

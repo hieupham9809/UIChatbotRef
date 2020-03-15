@@ -4,9 +4,13 @@ sync = require('sync-request');
 
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
-const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
-// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_matchfound"
+
+
 const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
 const IS_QUESTION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/classify-message"
 const SAVE_MESSAGE_TO_DB = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/messages";
@@ -299,7 +303,8 @@ module.exports = function (controller) {
             ]
             console.log("RESPONSE CONFIRM")
         } else {
-            enableEditInform = body.current_informs;
+            if (body.current_informs != 'null')
+                enableEditInform = body.current_informs;
         }
         bot.reply(message, {
             text: body.message,
@@ -379,77 +384,7 @@ module.exports = function (controller) {
             return;
         }
 
-        // if (message.correct_intent){
-        //     bot.reply(message, {
-        //         text:resp.correct_intent,
-
-        //     });
-        //     user.data.is_correct = true;
-        //     saveToDatabase(user, bot, message);
-        //     return;
-        //     // var success = userController.deleteSession(id);
-        //     // if (!success){
-        //     //     console.log("Error in delete function");
-        //     // } else {
-        //     //     console.log("Delete success");
-        //     // }
-        //     // return;
-        // }
-        // if (message.wrong_intent){
-        //     user.data.is_correct = false;
-        //     bot.reply(message, {
-        //         text: resp.wrong_intent,
-        //         force_result: [
-        //             {
-        //                 title: 'activity',
-        //                 payload: {
-        //                     'choose_intent': "activity"
-        //                 }
-        //             },
-        //             {
-        //                 title: 'joiner',
-        //                 payload: {
-        //                     'choose_intent': "joiner"
-        //                 }
-        //             },
-        //             {
-        //                 title: 'work',
-        //                 payload: {
-        //                     'choose_intent': "work"
-        //                 }
-        //             },
-        //             {
-        //                 title: 'register',
-        //                 payload: {
-        //                     'choose_intent': "register"
-        //                 }
-        //             },
-        //             {
-        //                 title: 'contact',
-        //                 payload: {
-        //                     'choose_intent': "contact"
-        //                 }
-        //             }
-        //         ].filter((obj)=>{
-        //             return (obj.title != user.data.intent);
-        //         })
-        //     });
-        //     return;
-        // }
-        // if (message.choose_intent){
-        //     user.data.intent = message.choose_intent;
-        //     console.log("user select " + user.data.intent);
-        //     saveToDatabase(user, bot, message);
-        //     return;
-
-        // }
-        // if (message.resubmit_infor){
-        //     userController.searchSession(id).getInfor = false;
-        //     bot.reply(message, {
-        //         text: resp.wrong[Math.floor(Math.random() * resp.wrong.length)]
-        //     });
-        //     return;
-        // }
+       
 
         if (message.completed) {
             bot.reply(message, {
@@ -730,21 +665,21 @@ module.exports = function (controller) {
                         // if (userAction.inform_slots.hasOwnProperty(prop)){
                         //     userAction.inform_slots.prop = 'anything'
                         // }
-                        userAction.inform_slots[prop] = 'anything'
+                        userAction.inform_slots[prop] = 'anything';
                     }
-                    delete userAction.round
-                    delete userAction.speaker
-                    messageBack = userAction
+                    delete userAction.round;
+                    delete userAction.speaker;
+                    messageBack = userAction;
                 }
                 else if (message.userResponeToInform.acceptInform){
                     userAction = message.userResponeToInform.userAction;
-                    delete userAction.round
-                    delete userAction.speaker
-                    messageBack = userAction
+                    delete userAction.round;
+                    delete userAction.speaker;
+                    messageBack = userAction;
                 } else {
                     userAction = message.userResponeToInform.userAction;
-                    slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]]
-                    var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`
+                    slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]];
+                    var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`;
                     bot.reply(message, {
                             text: msg
                         });
@@ -759,7 +694,12 @@ module.exports = function (controller) {
                     messageBack = {intent: "reject", inform_slots:{}, request_slots: {}}
                 }
             }
-            
+            if (message.userEditedInformSlot != null){
+                userAction = {intent: "inform", request_slots: {}, inform_slots:message.userEditedInformSlot.userInform};
+                messageBack = userAction;
+            }
+            console.log("request action::#########")
+            console.log(messageBack)
             request.post(CONVERSATION_MANAGER_ENDPOINT, {
                 json: {
                     message: messageBack,

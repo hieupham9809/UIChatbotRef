@@ -409,6 +409,35 @@ var Botkit = {
 
     return false;
   },
+  sendCustomAction: function (text, payload, e) {
+    
+    var that = this;
+    if (e) e.preventDefault();
+    if (!text) {
+      return;
+    }
+    var message = {
+      type: 'outgoing',
+      text: text
+    };
+
+    this.clearReplies();
+  
+
+    that.deliverMessage({
+      ...payload,
+      type: 'message',
+      text: text,
+      user: this.guid,
+      channel: this.options.use_sockets ? 'socket' : 'webhook'
+    });
+
+    this.input.value = '';
+
+    this.trigger('sent', message);
+
+    return false;
+  },
   deliverMessage: function (message) {
     // console.log("deliver");
 
@@ -558,10 +587,85 @@ var Botkit = {
   },
   renderEditInform: function(message){
     var that = this;
-    if (message.enableEditInform != 'null'){
+    if (message.enableEditInform != null){
+      
+      if (!that.next_line) {
+        that.next_line = document.createElement('div');
+        that.message_list.appendChild(that.next_line);
+      }
+      
 
+      message.resultSliderId = 'items-' + this.slider_message_count;
+      this.slider_message_count += 1;
+
+      that.next_line.className += " message-result-margin"
+      that.next_line.innerHTML = that.message_slider_template({
+        message: message
+      });
+
+      var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
+      var informEditTableContainer = this.renderInformEditTable(message.enableEditInform)
+      sliderContainer.appendChild(informEditTableContainer)
+      sliderContainer.setAttribute("max-width", 310);
+      
+      var list = document.createElement('ul');
+
+      var li = document.createElement('li');
+      var el = document.createElement('a');
+      el.innerHTML = "Áp dụng";
+      el.href = '#';
+
+      el.onclick = function () {
+        // that.sendCustom(reply.title, reply.payload);
+        var informEditTable = informEditTableContainer.getElementsByTagName('table')[0]
+        console.log("table length: " + informEditTable.rows.length)
+        var totalRows = informEditTable.rows.length;
+        var informObj = {};
+        for (var i = 0 ; i < totalRows; i++) {
+          
+          var currentRow = informEditTable.rows.item(i);
+          var currentSlot;
+          var currentValue;
+          for (var j = 0; j < currentRow.cells.length; j++) {
+            
+
+            if (currentRow.cells.item(j).getElementsByTagName("textarea").length > 0){
+              console.log(currentRow.cells.item(j).getElementsByTagName("textarea")[0].value);
+              currentValue = that.getInformValueHelper(currentRow.cells.item(j).getElementsByTagName("textarea")[0].value);
+            } else {
+              currentSlot = Object.keys(AGENT_INFORM_OBJECT).find(key => AGENT_INFORM_OBJECT[key] === currentRow.cells.item(j).innerHTML);
+              console.log("title: " + currentRow.cells.item(j).innerHTML)
+            }
+          }
+          informObj[currentSlot] = currentValue;
+        }
+        
+        that.sendCustom(el.innerHTML, {userEditedInformSlot:{userInform:informObj}})
+      }
+
+      li.appendChild(el);
+      list.appendChild(li);
+      that.replies.appendChild(list);
+      
+      if (!message.isTyping) {
+        delete (that.next_line);
+      }
     }
   },
+  getInformValueHelper: function(rawValue){
+    rawValue = rawValue.trim()
+    if (rawValue !== ""){
+      listValue = rawValue.split(",")
+      for (var i = 0; i < listValue.length; i++){
+        listValue[i] = listValue[i].trim()
+      }
+
+      return listValue
+    } else {
+      return "anything"
+    }
+  }
+  ,
   renderResults: function(message){
     var that = this;
     if (message.enableResponseToMathfound)
@@ -572,68 +676,61 @@ var Botkit = {
       }
       // if (message.show_results) {
 
-        message.resultSliderId = 'items-' + this.slider_message_count;
-        this.slider_message_count += 1;
+      message.resultSliderId = 'items-' + this.slider_message_count;
+      this.slider_message_count += 1;
       // }
       that.next_line.className += " message-result-margin"
       that.next_line.innerHTML = that.message_slider_template({
         message: message
       });
-      // if (message.show_results) {
-        var list = this.renderResultMessages(message.listResults);
+      
+      var list = this.renderResultMessages(message.listResults);
 
-        // if (message.text) {
-        //   var parentDiv = $(`#mask-${message.resultSliderId}`).parent()[0]
-        //   // console.log(parentDiv);
-        //   var t = $(`<div class="message-text-slider">${message.text[0]}</div>`)[0];
-        //   var u = $(`<div class="message-text-slider">${message.text[1]}</div>`)[0];
-        //   parentDiv.prepend(t);
-        //   parentDiv.append(u);
-        // }
-        var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
-        list.forEach(function (element) {
-          sliderContainer.appendChild(element);
-        })
-        sliderContainer.setAttribute("max-width", list.length * 310);
-        var a_left = $('<div class="carousel-prev"></div>')[0]
-        var a_right = $('<div class="carousel-next"></div>')[0]
-        var left = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path> <path d="M0-.5h24v24H0z" fill="none"></path></svg>')[0]
-        var right = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path> <path d="M0-.25h24v24H0z" fill="none"></path></svg>')[0]
-        a_left.append(left)
-        a_right.append(right)
-        var mask = document.getElementById(`mask-${message.resultSliderId}`);
-        // console.log(a_left)
-        $(a_left).hide();
-        $(a_right).click(() => {
-          var id = `wrapper-${message.resultSliderId}`;
-          var wrapperWidth = parseInt($("#" + id).attr("max-width"));
-          var marginLeft = parseInt($("#" + id).css('margin-left'));
-          var offset = RESULT_MESSAGE_WIDTH_TRANS;
-          marginLeft -= offset;
-          if (marginLeft >= (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
-            var str = marginLeft + "px !important";
-            $("#" + id).attr('style', 'margin-left: ' + str);
-            if (marginLeft - offset < (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
-              $(a_right).hide();
-            }
-          }
-          $(a_left).show();
-        })
-        $(a_left).click(() => {
-          var id = `wrapper-${message.resultSliderId}`;
-          var marginLeft = parseInt($("#" + id).css('margin-left'));
-          var offset = RESULT_MESSAGE_WIDTH_TRANS;
-          marginLeft += offset;
-          if (marginLeft >= 0) {
-            marginLeft = 0;
-            $(a_left).hide();
-          }
+      
+      var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
+      list.forEach(function (element) {
+        sliderContainer.appendChild(element);
+      })
+      sliderContainer.setAttribute("max-width", list.length * 310);
+      var a_left = $('<div class="carousel-prev"></div>')[0]
+      var a_right = $('<div class="carousel-next"></div>')[0]
+      var left = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path> <path d="M0-.5h24v24H0z" fill="none"></path></svg>')[0]
+      var right = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path> <path d="M0-.25h24v24H0z" fill="none"></path></svg>')[0]
+      a_left.append(left)
+      a_right.append(right)
+      var mask = document.getElementById(`mask-${message.resultSliderId}`);
+      // console.log(a_left)
+      $(a_left).hide();
+      $(a_right).click(() => {
+        var id = `wrapper-${message.resultSliderId}`;
+        var wrapperWidth = parseInt($("#" + id).attr("max-width"));
+        var marginLeft = parseInt($("#" + id).css('margin-left'));
+        var offset = RESULT_MESSAGE_WIDTH_TRANS;
+        marginLeft -= offset;
+        if (marginLeft >= (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
           var str = marginLeft + "px !important";
           $("#" + id).attr('style', 'margin-left: ' + str);
-          $(a_right).show();
-        })
-        mask.appendChild(a_left);
-        mask.appendChild(a_right);
+          if (marginLeft - offset < (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
+            $(a_right).hide();
+          }
+        }
+        $(a_left).show();
+      })
+      $(a_left).click(() => {
+        var id = `wrapper-${message.resultSliderId}`;
+        var marginLeft = parseInt($("#" + id).css('margin-left'));
+        var offset = RESULT_MESSAGE_WIDTH_TRANS;
+        marginLeft += offset;
+        if (marginLeft >= 0) {
+          marginLeft = 0;
+          $(a_left).hide();
+        }
+        var str = marginLeft + "px !important";
+        $("#" + id).attr('style', 'margin-left: ' + str);
+        $(a_right).show();
+      })
+      mask.appendChild(a_left);
+      mask.appendChild(a_right);
       // }
       if (!message.isTyping) {
         delete (that.next_line);
@@ -1302,6 +1399,28 @@ var Botkit = {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
       s4() + '-' + s4() + s4() + s4();
   },
+  renderInformEditTable: function(result) {
+    var title = `<div class="tittle">Thông tin đã cung cấp:</div></marquee>`
+
+    var list_row = '';
+    
+    for (var slot in result){
+      if ( Array.isArray(result[slot]) && result[slot].length > 0){
+        var value = result[slot].join(", ");
+
+        list_row += `<tr><th>${AGENT_INFORM_OBJECT[slot]}</th><td><textarea>${value}</textarea></td></tr>`;
+
+      }
+      else {
+        continue;
+      }
+    }
+    
+    var table = `<table>${list_row}</table>`
+    
+    var li = $('<div class="message-result" style="overflow-x: scroll;">' + title + table  + '</div>')[0]
+    return li;
+  },
   renderResultMessages: function (results) {
     var elements = [];
     var len = Math.min(10, results.length);
@@ -1448,7 +1567,7 @@ var Botkit = {
 
       that.renderMessage(message);
       that.renderResults(message);
-      // that.renderEditInform(message);
+      that.renderEditInform(message);
     });
 
     that.on('message', function (message) {

@@ -6,8 +6,10 @@ var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
-const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform_empty"
+
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_matchfound"
 
 
@@ -272,35 +274,67 @@ module.exports = function (controller) {
         var enableEditInform = null;
 
         if (body.agent_action.inform_slots[slot] != 'no match available'){
-            enableResponseToConfirm = [
-                {
-                    title: 'Đồng ý',
-                    payload: {
-                        'userResponeToInform': {
-                            'acceptInform': true,
-                            'userAction': body.agent_action
+
+            if (body.agent_action.inform_slots[slot].length == 0){
+                var enableEditInformWhenDenied = null;
+                if (body.current_informs != 'null')
+                    enableEditInformWhenDenied = body.current_informs;
+                enableResponseToConfirm = [
+                    
+                    {
+                        title: 'Đồng ý',
+                        payload: {
+                            'userResponeToInform': {
+                                'anything': true,
+                                'userAction': body.agent_action
+                            }
                         }
                     },
-                },
-                {
-                    title: 'Sao cũng được',
-                    payload: {
-                        'userResponeToInform': {
-                            'anything': true,
-                            'userAction': body.agent_action
+                    {
+                        title: 'Không',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': false,
+                                'enableEditInform': enableEditInformWhenDenied,
+                                'userAction': body.agent_action
+                            }
                         }
                     }
-                },
-                {
-                    title: 'Không',
-                    payload: {
-                        'userResponeToInform': {
-                            'acceptInform': false,
-                            'userAction': body.agent_action
+                ]
+            } else {
+                
+                enableResponseToConfirm = [
+                    {
+                        title: 'Đồng ý',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': true,
+                                'userAction': body.agent_action
+                            }
+                        },
+                    },
+                    {
+                        title: 'Sao cũng được',
+                        payload: {
+                            'userResponeToInform': {
+                                'anything': true,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    },
+                    {
+                        title: 'Không',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': false,
+                                'userAction': body.agent_action
+                            }
                         }
                     }
-                }
-            ]
+                ]
+            }
+            
+
             console.log("RESPONSE CONFIRM")
         } else {
             if (body.current_informs != 'null')
@@ -677,11 +711,18 @@ module.exports = function (controller) {
                     delete userAction.speaker;
                     messageBack = userAction;
                 } else {
+                    var enableEditInform = null;
                     userAction = message.userResponeToInform.userAction;
                     slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]];
                     var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`;
+                    if (message.userResponeToInform.enableEditInform != null){
+                        enableEditInform = message.userResponeToInform.enableEditInform;
+                        msg = `Vậy bạn điều chỉnh lại thông tin giúp mình nhé!`;
+                    }
+                    
                     bot.reply(message, {
-                            text: msg
+                            text: msg,
+                            enableEditInform : enableEditInform
                         });
                     return;
                     
@@ -689,7 +730,7 @@ module.exports = function (controller) {
             }
             if (message.userResponeToMatchfound != null){
                 if (message.userResponeToMatchfound.acceptMatchfound){
-                    messageBack = {intent: "thanks", inform_slots:{}, request_slots: {}}
+                    messageBack = {intent: "done", inform_slots:{}, request_slots: {}}
                 } else {
                     messageBack = {intent: "reject", inform_slots:{}, request_slots: {}}
                 }

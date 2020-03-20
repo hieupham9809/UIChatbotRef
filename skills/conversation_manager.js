@@ -1,13 +1,27 @@
 resp = require("../response/response.js");
 request = require("request");
 sync = require('sync-request');
-var UserController=require("../utils/usercontroller.js")
-const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
-const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
 
+var UserController = require("../utils/usercontroller.js")
+// const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform_empty"
+
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_matchfound"
+
+
+const RATING_CONVERSATION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-save-rating-conversation"
+const IS_QUESTION_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/classify-message"
+const SAVE_MESSAGE_TO_DB = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager/messages";
 const ATTR_LIST = ["interior_floor", "interior_room", "legal", "orientation", "position", "realestate_type", "surrounding_characteristics", "surrounding_name", "surrounding", "transaction_type"];
 const ENTITY_LIST = ["area", "location", "potential", "price", "addr_district"]
 const LOCATION_ATTR_LIST = ["addr_city", "addr_street", "addr_ward", "addr_district"]
+const AGREE_THRESHOLD = 0.5;
+const NUM_ASK_THRESHOLD = 1;
+const NUM_ASW_THRESHOLD = 3;
 var userController = new UserController();
 module.exports = function (controller) {
 
@@ -37,7 +51,9 @@ module.exports = function (controller) {
 
         bot.startConversation(message, function (err, convo) {
             var id = message.user
-            console.log(id)
+            // console.log("id "+ id);
+
+            // document.getElementById("user-id").innerHTML = id;
             // if (id) {
             //     var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);
             //     console.log("DELETE GRAPH CODE:" + delete_body.statusCode);
@@ -52,23 +68,27 @@ module.exports = function (controller) {
     function continueConversation(bot, message) {
 
         var id = message.user;
-        console.log("welcome back-------------------------" + id);
+        // console.log("id "+ id);
+        
+
         var user = userController.searchSession(id);
-        if (user != null){
+        if (user != null) {
+            console.log("welcome back-------------------------" + id);
+            
             // refresh at getIntent
-            if (!user.getIntent){
+            if (!user.getIntent) {
                 bot.reply(message, {
                     text: resp.hello
                 });
-            // refresh at getInfor
-            } else if (!user.getInfor){
+                // refresh at getInfor
+            } else if (!user.getInfor) {
                 bot.reply(message, {
                     text: resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)]
                 });
-            // refresh at confirm infor
+                // refresh at confirm infor
             } else {
                 var success = userController.deleteSession(id);
-                if (!success){
+                if (!success) {
                     console.log("Error in delete function");
                 } else {
                     console.log("Delete success");
@@ -78,7 +98,7 @@ module.exports = function (controller) {
                 });
 
             }
-            
+
         } else {
             bot.startConversation(message, function (err, convo) {
                 // var id = message.user
@@ -112,13 +132,13 @@ module.exports = function (controller) {
         isRating[id] = false;
         bot.reply(message, { graph: {}, text: resp.thank });
         var success = userController.deleteSession(id);
-        if (!success){
+        if (!success) {
             console.log("Error in delete function");
         } else {
             console.log("Delete success");
         }
 
-        console.log(id)
+        console.log("id "+ id);
         if (id) {
             conversation[id] = [];
             var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id);
@@ -132,6 +152,200 @@ module.exports = function (controller) {
 
     }
 
+    function saveToDatabase(user, bot, message) {
+        temp = {
+            message: user.data.message,
+            intent: user.data.intent,
+            is_correct: user.data.is_correct,
+            user_id: message.user
+        }
+        console.log(temp);
+        request.post(CONVERSATION_MANAGER_ENDPOINT + "/messages", {
+            json: {
+                message: user.data.message,
+                intent: user.data.intent,
+                is_correct: user.data.is_correct,
+                user_id: message.user
+            }
+
+        }, (error, res, body) => {
+            if (error) {
+                console.log(error);
+                conversation[message.user].push("bot: " + resp.err);
+                bot.reply(message, {
+                    graph: {},
+                    text: "có lỗi xảy ra khi lưu vào database"
+                })
+                return
+            }
+
+            console.log(body);
+
+            bot.reply(message, {
+                text: resp.thank,
+                force_result: [
+                    {
+                        title: 'Bắt đầu hội thoại mới',
+                        payload: {
+                            'restart_conversation': true
+                        }
+                    }
+                ]
+            });
+            var success = userController.deleteSession(message.user);
+            if (!success) {
+                console.log("Error in delete function");
+            } else {
+                console.log("Delete success");
+            }
+            return;
+
+        });
+    }
+    function saveMessageToDatabase(user, bot, message) {
+        temp = {
+            message: user.data.message,
+            intent: user.data.intent,
+            user_id: message.user,
+            is_correct: false
+        }
+        console.log(temp);
+        request.post(SAVE_MESSAGE_TO_DB, {
+            json: temp
+
+        }, (error, res, body) => {
+            if (error) {
+                console.log(error);
+                conversation[message.user].push("bot: " + resp.err);
+                bot.reply(message, {
+                    graph: {},
+                    text: "có lỗi xảy ra khi lưu vào database"
+                })
+                return
+            }
+
+            console.log(body);
+
+            return;
+
+        });
+    }
+    function handleMatchfoundResponse(bot, message, body){
+        var matchFoundSlot = 'activity';
+        var enableResponseToMathfound = null;
+        var enableEditInform = null;
+        var listResults = null;
+        if (body.agent_action.inform_slots[matchFoundSlot] != 'no match available'){
+            keyListResults = body.agent_action.inform_slots[matchFoundSlot]
+            listResults = body.agent_action.inform_slots[keyListResults]
+            enableResponseToMathfound = [
+                {
+                    title: 'Cảm ơn',
+                    payload: {
+                        'userResponeToMatchfound': {
+                            'acceptMatchfound': true,
+                            'userAction': body.agent_action
+                        }
+                    },
+                },
+                {
+                    title: 'Không thỏa mãn',
+                    payload: {
+                        'userResponeToMatchfound': {
+                            'acceptMatchfound': false,
+                            'userAction': body.agent_action
+                        }
+                    }
+                }
+            ]
+        } else {
+            enableEditInform = body.current_informs
+        }
+        bot.reply(message, {
+            text: body.message,
+            enableResponseToMathfound: enableResponseToMathfound,
+            listResults : listResults,
+            enableEditInform: enableEditInform
+        });
+    }
+    function handleInformResponse(bot, message, body){
+        var slot = Object.keys(body.agent_action.inform_slots)[0]
+        var enableResponseToConfirm = null;
+        var enableEditInform = null;
+
+        if (body.agent_action.inform_slots[slot] != 'no match available'){
+
+            if (body.agent_action.inform_slots[slot].length == 0){
+                var enableEditInformWhenDenied = null;
+                if (body.current_informs != 'null')
+                    enableEditInformWhenDenied = body.current_informs;
+                enableResponseToConfirm = [
+                    
+                    {
+                        title: 'Đồng ý',
+                        payload: {
+                            'userResponeToInform': {
+                                'anything': true,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    },
+                    {
+                        title: 'Không',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': false,
+                                'enableEditInform': enableEditInformWhenDenied,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    }
+                ]
+            } else {
+                
+                enableResponseToConfirm = [
+                    {
+                        title: 'Đồng ý',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': true,
+                                'userAction': body.agent_action
+                            }
+                        },
+                    },
+                    {
+                        title: 'Sao cũng được',
+                        payload: {
+                            'userResponeToInform': {
+                                'anything': true,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    },
+                    {
+                        title: 'Không',
+                        payload: {
+                            'userResponeToInform': {
+                                'acceptInform': false,
+                                'userAction': body.agent_action
+                            }
+                        }
+                    }
+                ]
+            }
+            
+
+            console.log("RESPONSE CONFIRM")
+        } else {
+            if (body.current_informs != 'null')
+                enableEditInform = body.current_informs;
+        }
+        bot.reply(message, {
+            text: body.message,
+            enableResponseToConfirm: enableResponseToConfirm,
+            enableEditInform : enableEditInform
+        });
+    }
     function callConversationManager(bot, message) {
 
         var isGetInfor = false;
@@ -145,10 +359,14 @@ module.exports = function (controller) {
         var filter_all = false;
         var isGetIntent = true;
 
+        var user = userController.searchSession(id);
+        if (user == null) {
+            user = userController.insertSession(id);
+        }
         console.log(message);
         if (raw_mesg) {
             if (conversation[message.user]) {
-                conversation[message.user].push("user: " + raw_mesg );
+                conversation[message.user].push("user: " + raw_mesg);
             } else {
                 conversation[message.user] = ["user: " + raw_mesg];
             }
@@ -199,45 +417,10 @@ module.exports = function (controller) {
             restartConversation(bot, message);
             return;
         }
-        // if (message.force_show) {
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.remove_more) {
-        //     remove_more = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.clearAttr) {
 
-        //     // sync.delete(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key, (error, res, body) => {
-        //     //     console.log(body)
-        //     // })
-        //     var delete_body = sync("DELETE", CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + "&new_node=" + message.clearAttr.key);
-        //     console.log("DELETE GRAPH KEY [" + message.clearAttr.key + "] CODE:" + delete_body.statusCode);
+       
 
-        //     showCustomButton = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.filterAttr) {
-        //     filter_attr = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        // if (message.filter_all) {
-        //     filter_all = true;
-        //     force_show = true;
-        //     raw_mesg = "";
-        // }
-        if (message.resubmit_infor){
-            userController.searchSession(id).getInfor = false;
-            bot.reply(message, {
-                text: resp.wrong[Math.floor(Math.random() * resp.wrong.length)]
-            });
-            return;
-        }
-
-        if (message.completed){
+        if (message.completed) {
             bot.reply(message, {
                 text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
                 force_result: [
@@ -250,14 +433,14 @@ module.exports = function (controller) {
                 ]
             });
             var success = userController.deleteSession(id);
-            if (!success){
+            if (!success) {
                 console.log("Error in delete function");
             } else {
                 console.log("Delete success");
             }
             return;
         }
-        if (message.restart_conversation){
+        if (message.restart_conversation) {
             bot.reply(message, {
                 text: resp.hello
             });
@@ -288,7 +471,7 @@ module.exports = function (controller) {
                 request.get(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + postfix_force_show, {}, (error, res, body) => {
                     // console.log(body)
                     if (error) {
-                        conversation[message.user].push("bot: "+ resp.err );
+                        conversation[message.user].push("bot: " + resp.err);
                         bot.reply(message, {
                             graph: graph,
                             text: resp.err
@@ -350,14 +533,14 @@ module.exports = function (controller) {
                                             })(mentioned_attributes[i]);
                                         }
                                         if (list && list.length > 0) {
-                                            conversation[message.user].push("bot: " +resp.cantfind );
+                                            conversation[message.user].push("bot: " + resp.cantfind);
                                             bot.reply(message, {
                                                 text: resp.cantfind,
                                                 attr_list: list,
                                                 graph: graph,
                                             })
                                         } else {
-                                            conversation[message.user].push("bot: " +resp.wetried );
+                                            conversation[message.user].push("bot: " + resp.wetried);
                                             bot.reply(message, { graph: graph, text: resp.wetried })
                                         }
 
@@ -365,7 +548,7 @@ module.exports = function (controller) {
                                         // for result_container != []
                                         // show kết quả 
                                         if (response_body.intent_values_container && !isEmpty(response_body.intent_values_container)) {
-                                            conversation[message.user].push("bot: " +resp.showall );
+                                            conversation[message.user].push("bot: " + resp.showall);
                                             bot.reply(message, {
                                                 text: resp.showall,
                                                 intent_dict: response_body.intent_values_container,
@@ -388,8 +571,8 @@ module.exports = function (controller) {
                                             })
                                         } else {
                                             console.log(response_body.result_container)
-                                            conversation[message.user].push("bot: " + (response_body.intent_response ? response_body.intent_response : "Kết quả của bạn: ") );
-                                            conversation[message.user].push("bot: " + "Bạn có muốn thêm yêu cầu gì không?" );
+                                            conversation[message.user].push("bot: " + (response_body.intent_response ? response_body.intent_response : "Kết quả của bạn: "));
+                                            conversation[message.user].push("bot: " + "Bạn có muốn thêm yêu cầu gì không?");
                                             bot.reply(message, {
                                                 text: [response_body.intent_response ? response_body.intent_response : "Kết quả của bạn: ", "Bạn có muốn thêm yêu cầu gì không?"],
                                                 show_results: response_body.result_container,
@@ -470,7 +653,7 @@ module.exports = function (controller) {
                                 }
                         }
                     } catch (e) {
-                        conversation[message.user].push("bot: "+ resp.err );
+                        conversation[message.user].push("bot: " + resp.err);
                         bot.reply(message, {
                             graph: graph,
                             text: resp.err
@@ -487,7 +670,7 @@ module.exports = function (controller) {
             // console.log("say hi")
             // console.log(isGetInfor);
             // console.log(isGetIntent);
-            if (raw_mesg == "bye"){
+            if (raw_mesg.trim().toLowerCase() == "bye") {
                 bot.reply(message, {
                     text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
                     force_result: [
@@ -499,229 +682,126 @@ module.exports = function (controller) {
                         }
                     ]
                 });
-                
+
                 var success = userController.deleteSession(id);
-                if (!success){
+                if (!success) {
                     console.log("Error in delete function");
                 } else {
                     console.log("Delete success");
                 }
                 return;
             }
-            var user = userController.searchSession(id);
-            
-            if (user == null){
-                user = userController.insertSession(id);
-            }
-            if (!user.getIntent){
-
-                console.log("get Intent");
-                request.post(CONVERSATION_MANAGER_ENDPOINT, {
-                    json: {
-                        message: raw_mesg
+            var messageBack = raw_mesg;
+            if (message.userResponeToInform != null){
+                if (message.userResponeToInform.anything){
+                    userAction = message.userResponeToInform.userAction;
+                    for (var prop in userAction.inform_slots){
+                        // if (userAction.inform_slots.hasOwnProperty(prop)){
+                        //     userAction.inform_slots.prop = 'anything'
+                        // }
+                        userAction.inform_slots[prop] = 'anything';
                     }
-                }, (error, res, body) => {
-                    if (error) {
-                        console.log(error);
-                        conversation[message.user].push("bot: "+ resp.err );
-                        bot.reply(message, {
-                            graph: {},
-                            text: resp.err
-                        })
-                        return
-                    }
-                    // console.log("type: " + typeof(res.activity));
-                    var responseSentence;
-                    switch (body.message){
-                        case "activity":
-                            responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
-                            break;
-                        case "joiner":
-                            responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
-                            break;
-                        case "work":
-                            responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
-                            break;
-                        case "contact":
-                            responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
-                            break;
-                        case "register":
-                            responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
-                            break;
-                        default:
-                            responseSentence = resp.err
-                    }
-                    console.log(responseSentence);
-                    bot.reply(message, {text: responseSentence});
-                    
-                    responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-                    bot.reply(message, 
-                        {
-                            text:responseSentence,
-                            // isGetInfor: true
-                        });
-                    
-                });
-                user.getIntent = true;
-            } else if (!user.getInfor){
-                request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-                    json: {
-                        message: raw_mesg
-                    }
-                }, (error, res, body) =>{
-                    if (error){
-                        console.log(error);
-                        conversation[message.user].push("bot: "+ resp.err );
-                        bot.reply(message, {
-                            graph: {},
-                            text: resp.err
-                        })  
-                        return
-                    }
-                    // console.log(body);
-                    if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
-                        bot.reply(message, {
-                            text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
-                        });
-                        userController.searchSession(id).getInfor = false;
-                        return;
-                    } else {
-                        bot.reply(message, {
-                                text:`${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]}\n 
-                        emails: ${body.emails.join(',')} \n 
-                        Số điện thoại: ${body.phones.join(',')}`,
-                                force_result: [
-                                {
-                                    title: 'Đúng rồi',
-                                    payload: {
-                                        'completed': true
-                                    }
-                                },
-                                {
-                                    title: 'Sai rồi',
-                                    payload: {
-                                        'resubmit_infor': true,
-                                    },
-                                },
-                            ]
-                        })
-
-                    }
-                });
-                user.getInfor = true;
-                // userController.deleteSession(id);
-
-            } else {
-                
-                var success = userController.deleteSession(id);
-                if (!success){
-                    console.log("Error in delete function");
+                    delete userAction.round;
+                    delete userAction.speaker;
+                    messageBack = userAction;
+                }
+                else if (message.userResponeToInform.acceptInform){
+                    userAction = message.userResponeToInform.userAction;
+                    delete userAction.round;
+                    delete userAction.speaker;
+                    messageBack = userAction;
                 } else {
-                    console.log("Delete success");
+                    var enableEditInform = null;
+                    userAction = message.userResponeToInform.userAction;
+                    slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]];
+                    var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`;
+                    if (message.userResponeToInform.enableEditInform != null){
+                        enableEditInform = message.userResponeToInform.enableEditInform;
+                        msg = `Vậy bạn điều chỉnh lại thông tin giúp mình nhé!`;
+                    }
+                    
+                    bot.reply(message, {
+                            text: msg,
+                            enableEditInform : enableEditInform
+                        });
+                    return;
+                    
                 }
             }
-            
-            // if (isGetInfor == true){
-            //     // console.log("isgetInfor");
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT + "/extract-information", {
-            //         json: {
-            //             message: raw_mesg
-            //         }
-            //     }, (error, res, body) =>{
-            //         if (error){
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })  
-            //             return
-            //         }
-            //         // console.log(body);
-            //         if (body.emails.length == 0 && body.names == '' && body.phones.length == 0){
-            //             bot.reply(message, {
-            //                 text: resp.confuse[Math.floor(Math.random() * resp.confuse.length)]
-            //             });
-            //         } else {
-            //             bot.reply(message, {
-            //                 text: `${resp.get_infor_confirm[Math.floor(Math.random() * resp.get_infor_confirm.length)]} \n
-            //                     emails: ${body.emails.join(',')} \n
-            //                     Số điện thoại: ${body.phones.join(',')}`
-            //                     ,
-            //                     force_result: [
-            //                     {
-            //                         title: 'Đúng rồi',
-            //                         payload: {
-                                        
-            //                         }
-            //                     },
-            //                     {
-            //                         title: 'Sai rồi',
-            //                         payload: {
-            //                             'resubmit_infor': true,
-            //                         },
-            //                     },
-            //                 ]
-            //             })
-            //             isGetInfor = false;
+            if (message.userResponeToMatchfound != null){
+                if (message.userResponeToMatchfound.acceptMatchfound){
+                    messageBack = {intent: "done", inform_slots:{}, request_slots: {}}
+                } else {
+                    messageBack = {intent: "reject", inform_slots:{}, request_slots: {}}
+                }
+            }
+            if (message.userEditedInformSlot != null){
+                userAction = {intent: "inform", request_slots: {}, inform_slots:message.userEditedInformSlot.userInform};
+                messageBack = userAction;
+            }
+            console.log("request action::#########")
+            console.log(messageBack)
+            request.post(CONVERSATION_MANAGER_ENDPOINT, {
+                json: {
+                    message: messageBack,
+                    state_tracker_id: id
+                }
+            }, (error, res, body) => {
+                intent = null;
+                if (error) {
+                    console.log(error);
+                    bot.reply(message, {
+                        text: resp.err
+                    });
+                    return;
+                }
+                if (body != null && body.agent_action != null){
+                    console.log(body.agent_action)
+                    switch (body.agent_action.intent){
+                        case "inform":
+                            handleInformResponse(bot, message, body);
+                            break;
+                        case "match_found":
+                            console.log(body.agent_action.inform_slots[body.agent_action.inform_slots['activity']])
 
-            //         }
-            //     });
-            // }
-            // if (isGetIntent){
-            //     console.log("get Intent");
-            //     request.post(CONVERSATION_MANAGER_ENDPOINT, {
-            //         json: {
-            //             message: raw_mesg
-            //         }
-            //     }, (error, res, body) => {
-            //         if (error) {
-            //             console.log(error);
-            //             conversation[message.user].push("bot: "+ resp.err );
-            //             bot.reply(message, {
-            //                 graph: {},
-            //                 text: resp.err
-            //             })
-            //             return
-            //         }
-            //         // console.log("type: " + typeof(res.activity));
-            //         var responseSentence;
-            //         switch (body.message){
-            //             case "activity":
-            //                 responseSentence = resp.activity[Math.floor(Math.random() * resp.activity.length)];
-            //                 break;
-            //             case "joiner":
-            //                 responseSentence = resp.joiner[Math.floor(Math.random() * resp.joiner.length)];
-            //                 break;
-            //             case "work":
-            //                 responseSentence = resp.work[Math.floor(Math.random() * resp.work.length)];
-            //                 break;
-            //             case "contact":
-            //                 responseSentence = resp.contact[Math.floor(Math.random() * resp.contact.length)];
-            //                 break;
-            //             case "register":
-            //                 responseSentence = resp.register[Math.floor(Math.random() * resp.register.length)];
-            //                 break;
-            //             default:
-            //                 responseSentence = resp.err
-            //         }
-            //         console.log(responseSentence);
-            //         bot.reply(message, {text: responseSentence});
-                    
-            //         responseSentence = resp.ask_infor[Math.floor(Math.random() * resp.ask_infor.length)];
-            //         bot.reply(message, 
-            //             {
-            //                 text:responseSentence,
-            //                 // isGetInfor: true
-            //             });
-                    
-            //     });
-            //     isGetInfor = true;
-                
-            //     isGetIntent = false;
+                            handleMatchfoundResponse(bot, message, body);
+                            break;
+                        default:
+                            bot.reply(message, {
+                                text: body.message
+                            })
+                    }
 
-            // }
-            
+                    return;
+                }
+                // console.log("agent: " + body)
+                // bot.reply(message, {
+                //     text: body.message
+                // })
+               
+
+
+            });
+
+            // bot.reply(message, {
+            //     text: response_body.question,
+            //     graph: graph,
+            //     force_result: [
+            //         {
+            //             title: 'Bỏ tiếp yêu cầu',
+            //             payload: {
+            //                 'remove_more': true
+            //             },
+            //         },
+            //         {
+            //             title: 'In luôn kết quả',
+            //             payload: {
+            //                 'force_show': true
+            //             }
+            //         }
+            //     ]
+            // })
+
         }
     }
     controller.on('hello', conductOnboarding);

@@ -1,5 +1,7 @@
 var converter = new showdown.Converter();
 converter.setOption('openLinksInNewWindow', true);
+
+
 const RESULT_MESSAGE_WIDTH_TRANS = 310;
 const price_formatter = new Intl.NumberFormat('it-IT', {
   style: 'currency',
@@ -279,7 +281,20 @@ const norm2vn = {
   "mo phong kham":"mở phòng khám",
   "mo tiem":"mở tiệm"
 }
-
+const AGENT_INFORM_OBJECT = {
+  "name_activity": "tên hoạt động",
+  "type_activity": "loại hoạt động",
+  "holder": "ban tổ chức",
+  "time": "thời gian",
+  "address": "địa chỉ",
+  "name_place": "tên địa điểm",
+  "works": "các công việc trong hoạt động",
+  "reward": "lợi ích",
+  "contact": "liên hệ",
+  "register": "đăng ký",
+  "joiner": "đối tượng tham gia",
+  "activity": "hoạt động"
+}
 const MAX_ATTR = 5;
 
 var Botkit = {
@@ -366,7 +381,7 @@ var Botkit = {
     return false;
   },
   sendCustom: function (text, payload, e) {
-    console.log("here" + text)
+    
     var that = this;
     if (e) e.preventDefault();
     if (!text) {
@@ -379,6 +394,35 @@ var Botkit = {
 
     this.clearReplies();
     that.renderMessage(message);
+
+    that.deliverMessage({
+      ...payload,
+      type: 'message',
+      text: text,
+      user: this.guid,
+      channel: this.options.use_sockets ? 'socket' : 'webhook'
+    });
+
+    this.input.value = '';
+
+    this.trigger('sent', message);
+
+    return false;
+  },
+  sendCustomAction: function (text, payload, e) {
+    
+    var that = this;
+    if (e) e.preventDefault();
+    if (!text) {
+      return;
+    }
+    var message = {
+      type: 'outgoing',
+      text: text
+    };
+
+    this.clearReplies();
+  
 
     that.deliverMessage({
       ...payload,
@@ -438,7 +482,7 @@ var Botkit = {
 
       user.timezone_offset = new Date().getTimezoneOffset();
       that.current_user = user;
-      // console.log('CONNECT WITH USER', user);
+      console.log('CONNECT WITH USER', user);
     }
 
     // connect to the chat server!
@@ -459,6 +503,7 @@ var Botkit = {
       Botkit.setCookie('botkit_guid', that.guid, 1);
     }
 
+    setId(that.guid);
     that.getHistory();
 
     // connect immediately
@@ -484,6 +529,8 @@ var Botkit = {
       Botkit.setCookie('botkit_guid', that.guid, 1);
     }
 
+    setId(that.guid);
+    
     that.getHistory();
 
     // Connection opened
@@ -538,6 +585,160 @@ var Botkit = {
   focus: function () {
     this.input.focus();
   },
+  renderEditInform: function(message){
+    var that = this;
+    if (message.enableEditInform != null){
+      
+      if (!that.next_line) {
+        that.next_line = document.createElement('div');
+        that.message_list.appendChild(that.next_line);
+      }
+      
+
+      message.resultSliderId = 'items-' + this.slider_message_count;
+      this.slider_message_count += 1;
+
+      that.next_line.className += " message-result-margin"
+      that.next_line.innerHTML = that.message_slider_template({
+        message: message
+      });
+
+      var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
+      var informEditTableContainer = this.renderInformEditTable(message.enableEditInform)
+      sliderContainer.appendChild(informEditTableContainer)
+      sliderContainer.setAttribute("max-width", 310);
+      
+      var list = document.createElement('ul');
+
+      var li = document.createElement('li');
+      var el = document.createElement('a');
+      el.innerHTML = "Áp dụng";
+      el.href = '#';
+
+      el.onclick = function () {
+        // that.sendCustom(reply.title, reply.payload);
+        var informEditTable = informEditTableContainer.getElementsByTagName('table')[0]
+        console.log("table length: " + informEditTable.rows.length)
+        var totalRows = informEditTable.rows.length;
+        var informObj = {};
+        for (var i = 0 ; i < totalRows; i++) {
+          
+          var currentRow = informEditTable.rows.item(i);
+          var currentSlot;
+          var currentValue;
+          for (var j = 0; j < currentRow.cells.length; j++) {
+            
+
+            if (currentRow.cells.item(j).getElementsByTagName("textarea").length > 0){
+              console.log(currentRow.cells.item(j).getElementsByTagName("textarea")[0].value);
+              currentValue = that.getInformValueHelper(currentRow.cells.item(j).getElementsByTagName("textarea")[0].value);
+            } else {
+              currentSlot = Object.keys(AGENT_INFORM_OBJECT).find(key => AGENT_INFORM_OBJECT[key] === currentRow.cells.item(j).innerHTML);
+              console.log("title: " + currentRow.cells.item(j).innerHTML)
+            }
+          }
+          informObj[currentSlot] = currentValue;
+        }
+        
+        that.sendCustom(el.innerHTML, {userEditedInformSlot:{userInform:informObj}})
+      }
+
+      li.appendChild(el);
+      list.appendChild(li);
+      that.replies.appendChild(list);
+      
+      if (!message.isTyping) {
+        delete (that.next_line);
+      }
+    }
+  },
+  getInformValueHelper: function(rawValue){
+    rawValue = rawValue.trim()
+    if (rawValue !== ""){
+      listValue = rawValue.split(",")
+      for (var i = 0; i < listValue.length; i++){
+        listValue[i] = listValue[i].trim()
+      }
+
+      return listValue
+    } else {
+      return "anything"
+    }
+  }
+  ,
+  renderResults: function(message){
+    var that = this;
+    if (message.enableResponseToMathfound)
+    {
+      if (!that.next_line) {
+        that.next_line = document.createElement('div');
+        that.message_list.appendChild(that.next_line);
+      }
+      // if (message.show_results) {
+
+      message.resultSliderId = 'items-' + this.slider_message_count;
+      this.slider_message_count += 1;
+      // }
+      that.next_line.className += " message-result-margin"
+      that.next_line.innerHTML = that.message_slider_template({
+        message: message
+      });
+      
+      var list = this.renderResultMessages(message.listResults);
+
+      
+      var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
+      list.forEach(function (element) {
+        sliderContainer.appendChild(element);
+      })
+      sliderContainer.setAttribute("max-width", list.length * 310);
+      var a_left = $('<div class="carousel-prev"></div>')[0]
+      var a_right = $('<div class="carousel-next"></div>')[0]
+      var left = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path> <path d="M0-.5h24v24H0z" fill="none"></path></svg>')[0]
+      var right = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path> <path d="M0-.25h24v24H0z" fill="none"></path></svg>')[0]
+      a_left.append(left)
+      a_right.append(right)
+      var mask = document.getElementById(`mask-${message.resultSliderId}`);
+      // console.log(a_left)
+      $(a_left).hide();
+      $(a_right).click(() => {
+        var id = `wrapper-${message.resultSliderId}`;
+        var wrapperWidth = parseInt($("#" + id).attr("max-width"));
+        var marginLeft = parseInt($("#" + id).css('margin-left'));
+        var offset = RESULT_MESSAGE_WIDTH_TRANS;
+        marginLeft -= offset;
+        if (marginLeft >= (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
+          var str = marginLeft + "px !important";
+          $("#" + id).attr('style', 'margin-left: ' + str);
+          if (marginLeft - offset < (-wrapperWidth + RESULT_MESSAGE_WIDTH_TRANS)) {
+            $(a_right).hide();
+          }
+        }
+        $(a_left).show();
+      })
+      $(a_left).click(() => {
+        var id = `wrapper-${message.resultSliderId}`;
+        var marginLeft = parseInt($("#" + id).css('margin-left'));
+        var offset = RESULT_MESSAGE_WIDTH_TRANS;
+        marginLeft += offset;
+        if (marginLeft >= 0) {
+          marginLeft = 0;
+          $(a_left).hide();
+        }
+        var str = marginLeft + "px !important";
+        $("#" + id).attr('style', 'margin-left: ' + str);
+        $(a_right).show();
+      })
+      mask.appendChild(a_left);
+      mask.appendChild(a_right);
+      // }
+      if (!message.isTyping) {
+        delete (that.next_line);
+      }
+    }
+  }
+  ,
+
   renderMessage: function (message) {
     var that = this;
     // console.log(message)
@@ -1156,6 +1357,7 @@ var Botkit = {
         break;
       case 'connect':
         Botkit.connect(event.data.user);
+        console.log("event data user " + event.data.user);
         break;
       default:
     }
@@ -1197,47 +1399,105 @@ var Botkit = {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
       s4() + '-' + s4() + s4() + s4();
   },
-  renderResultMessages: function (results, concerned_attributes) {
+  renderInformEditTable: function(result) {
+    var title = `<div class="tittle">Thông tin đã cung cấp:</div></marquee>`
+
+    var list_row = '';
+    
+    for (var slot in result){
+      if ( Array.isArray(result[slot]) && result[slot].length > 0){
+        var value = result[slot].join(", ");
+
+        list_row += `<tr><th>${AGENT_INFORM_OBJECT[slot]}</th><td><textarea>${value}</textarea></td></tr>`;
+
+      }
+      else {
+        continue;
+      }
+    }
+    
+    var table = `<table>${list_row}</table>`
+    
+    var li = $('<div class="message-result" style="overflow-x: scroll;">' + title + table  + '</div>')[0]
+    return li;
+  },
+  renderResultMessages: function (results) {
     var elements = [];
     var len = Math.min(10, results.length);
-    console.log("RESULT");
-    console.log(results);
-    console.log(concerned_attributes);
+    // console.log("RESULT");
+    // console.log(results);
+    // console.log(concerned_attributes);
     for (var r = 0; r < len; r++) {
       (function (result) {
 
-        var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+        // var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+        var title = `<div class="tittle">ID: ${result['_id']}</div></marquee>`
+
         var list_row = '';
         var count = 0;
-        for (var i = 0; i < concerned_attributes.length; i++)
-          if (result[concerned_attributes[i]] && count < MAX_ATTR) {
-            let raw_key = concerned_attributes[i] + "_raw";
-            if (concerned_attributes[i] === "interior_floor" || concerned_attributes[i] === "interior_room") {
-              raw_key = concerned_attributes[i];
-            }
-            if (concerned_attributes[i] === "orientation" & result[concerned_attributes[i]] === "Không xác định") {
-              continue;
-            }
-            if (concerned_attributes[i] === "addr_district" || concerned_attributes[i] === "potential") {
-              continue;
-            }
-            count += 1;
-            var val = result[raw_key] ? result[raw_key] : result[concerned_attributes[i]]
-            var row = `<tr><th>${key2vn[concerned_attributes[i]]}</th><td>: ${val}</td></tr>`;
-            list_row += row;
+        for (var slot in result){
+          if ( Array.isArray(result[slot]) && result[slot].length > 0){
+            var value = "<li>" + result[slot].join("</li><li>") + "</li>";
+            list_row += `<tr><th>${AGENT_INFORM_OBJECT[slot]}</th><td>${value}</td></tr>`;
+
+          } else {
+            continue;
           }
-        list_row += `<tr><th>Địa chỉ</th><td>: ${result["address"]}</td></tr>`;
-        list_row += `<tr><th>Ngày đăng</th><td>: ${result["publish_date"]}</td></tr>`;
+        }
+        
         var table = `<table>${list_row}</table>`
 
-        var li = $('<div class="message-result">' + title + table + '</div>')[0]
+        var li = $('<div class="message-result" style="overflow-x: scroll;">' + title + table + '</div>')[0]
         elements.push(li);
       })(results[r]);
     }
     return elements;
   },
+  // renderResultMessages: function (results, concerned_attributes) {
+  //   var elements = [];
+  //   var len = Math.min(10, results.length);
+  //   // console.log("RESULT");
+  //   // console.log(results);
+  //   // console.log(concerned_attributes);
+  //   for (var r = 0; r < len; r++) {
+  //     (function (result) {
+
+  //       var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+  //       var list_row = '';
+  //       var count = 0;
+  //       for (var i = 0; i < concerned_attributes.length; i++)
+  //         if (result[concerned_attributes[i]] && count < MAX_ATTR) {
+  //           let raw_key = concerned_attributes[i] + "_raw";
+  //           if (concerned_attributes[i] === "interior_floor" || concerned_attributes[i] === "interior_room") {
+  //             raw_key = concerned_attributes[i];
+  //           }
+  //           if (concerned_attributes[i] === "orientation" & result[concerned_attributes[i]] === "Không xác định") {
+  //             continue;
+  //           }
+  //           if (concerned_attributes[i] === "addr_district" || concerned_attributes[i] === "potential") {
+  //             continue;
+  //           }
+  //           count += 1;
+  //           var val = result[raw_key] ? result[raw_key] : result[concerned_attributes[i]]
+  //           var row = `<tr><th>${key2vn[concerned_attributes[i]]}</th><td>: ${val}</td></tr>`;
+  //           list_row += row;
+  //         }
+  //       list_row += `<tr><th>Địa chỉ</th><td>: ${result["address"]}</td></tr>`;
+  //       list_row += `<tr><th>Ngày đăng</th><td>: ${result["publish_date"]}</td></tr>`;
+  //       var table = `<table>${list_row}</table>`
+
+  //       var li = $('<div class="message-result">' + title + table + '</div>')[0]
+  //       elements.push(li);
+  //     })(results[r]);
+  //   }
+  //   return elements;
+  // },
+  setId: function(userId){
+    document.getElementById("user-id").innerHTML = userId;
+  },
   boot: function (user) {
 
+    this.setId(this.guid);
     var that = this;
 
     that.message_window = document.getElementById("message_window");
@@ -1306,7 +1566,8 @@ var Botkit = {
     that.on('message', function (message) {
 
       that.renderMessage(message);
-
+      that.renderResults(message);
+      that.renderEditInform(message);
     });
 
     that.on('message', function (message) {
@@ -1315,6 +1576,45 @@ var Botkit = {
       }
     });
 
+
+    
+    // that.on('message', function (message) {
+    //   that.clearReplies();
+    //   if (message.quick_replies) {
+
+    //     var list = document.createElement('ul');
+
+    //     var elements = [];
+    //     for (var r = 0; r < message.quick_replies.length; r++) {
+    //       (function (reply) {
+
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
+
+    //         el.onclick = function () {
+    //           that.quickReply(reply.payload);
+    //         }
+
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
+
+    //       })(message.quick_replies[r]);
+    //     }
+
+    //     that.replies.appendChild(list);
+
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
 
     // that.on('message', function (message) {
     //   that.clearReplies();
@@ -1361,53 +1661,18 @@ var Botkit = {
     //     that.input.disabled = false;
     //   }
     // });
-    that.on('message', function (message) {
-      that.clearReplies();
-      if (message.quick_replies) {
+    that.on('message', function (message){
+      
+
+      if (message.enableResponseToConfirm){
+        that.clearReplies();
 
         var list = document.createElement('ul');
 
         var elements = [];
-        for (var r = 0; r < message.quick_replies.length; r++) {
+        for (var r = 0; r < message.enableResponseToConfirm.length; r++) {
           (function (reply) {
-
-            var li = document.createElement('li');
-            var el = document.createElement('a');
-            el.innerHTML = reply.title;
-            el.href = '#';
-
-            el.onclick = function () {
-              that.quickReply(reply.payload);
-            }
-
-            li.appendChild(el);
-            list.appendChild(li);
-            elements.push(li);
-
-          })(message.quick_replies[r]);
-        }
-
-        that.replies.appendChild(list);
-
-        if (message.disable_input) {
-          that.input.disabled = true;
-        } else {
-          that.input.disabled = false;
-        }
-      } else {
-        that.input.disabled = false;
-      }
-    });
-
-    that.on('message', function (message) {
-      that.clearReplies();
-      if (message.force_result) {
-
-        var list = document.createElement('ul');
-
-        var elements = [];
-        for (var r = 0; r < message.force_result.length; r++) {
-          (function (reply) {
+            console.log("create element confirm")
 
             var li = document.createElement('li');
             var el = document.createElement('a');
@@ -1422,7 +1687,7 @@ var Botkit = {
             list.appendChild(li);
             elements.push(li);
 
-          })(message.force_result[r]);
+          })(message.enableResponseToConfirm[r]);
         }
 
         that.replies.appendChild(list);
@@ -1432,10 +1697,84 @@ var Botkit = {
         } else {
           that.input.disabled = false;
         }
-      } else {
-        that.input.disabled = false;
       }
     });
+    that.on('message', function (message){
+      
+
+      if (message.enableResponseToMathfound){
+        that.clearReplies();
+
+        var list = document.createElement('ul');
+
+        var elements = [];
+        for (var r = 0; r < message.enableResponseToMathfound.length; r++) {
+          (function (reply) {
+            console.log("create element match found")
+
+            var li = document.createElement('li');
+            var el = document.createElement('a');
+            el.innerHTML = reply.title;
+            el.href = '#';
+
+            el.onclick = function () {
+              that.sendCustom(reply.title, reply.payload);
+            }
+
+            li.appendChild(el);
+            list.appendChild(li);
+            elements.push(li);
+
+          })(message.enableResponseToMathfound[r]);
+        }
+
+        that.replies.appendChild(list);
+
+        if (message.disable_input) {
+          that.input.disabled = true;
+        } else {
+          that.input.disabled = false;
+        }
+      }
+    });
+    // that.on('message', function (message) {
+    //   console.log("FORCE")
+    //   if (message.force_result) {
+    //     that.clearReplies();
+
+    //     var list = document.createElement('ul');
+
+    //     var elements = [];
+    //     for (var r = 0; r < message.force_result.length; r++) {
+    //       (function (reply) {
+
+    //         var li = document.createElement('li');
+    //         var el = document.createElement('a');
+    //         el.innerHTML = reply.title;
+    //         el.href = '#';
+
+    //         el.onclick = function () {
+    //           that.sendCustom(reply.title, reply.payload);
+    //         }
+
+    //         li.appendChild(el);
+    //         list.appendChild(li);
+    //         elements.push(li);
+
+    //       })(message.force_result[r]);
+    //     }
+
+    //     that.replies.appendChild(list);
+
+    //     if (message.disable_input) {
+    //       that.input.disabled = true;
+    //     } else {
+    //       that.input.disabled = false;
+    //     }
+    //   } else {
+    //     that.input.disabled = false;
+    //   }
+    // });
 
     that.on('history_loaded', function (history) {
       if (history) {
@@ -1465,9 +1804,13 @@ var Botkit = {
   }
 };
 
+var setId = function(id){
+  document.getElementById("user-id").innerHTML = id;
+};
 
 (function () {
   Botkit.boot();
+  // Botkit.setId();
 })();
 
 

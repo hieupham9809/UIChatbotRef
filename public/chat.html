@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>CSE Assistant 1.0.0</title>
+  <title>CSE Assistant 1.1.0</title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,6 +20,8 @@
   <script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.4/dist/showdown.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.7.0/tiny-slider.css">
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/chatui.css" />
+
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 </head>
 
@@ -29,112 +31,77 @@
   background-size: cover;">
     <div class="row p-0 h-100">
       <div class="d-none d-lg-block col-lg-7 col-xl-8 p-0">
-        <!-- <div class="cnt-name" id="cnt-name">
-          Demo intent
-        </div> -->
+
+        <!-- <div style="background-color: aliceblue;"> -->
+
+        <!-- </div> -->
+        <div class="cards">
+          <div class="card_info" id="info">
+            <div class="cnt">
+              <div class="text-bot-1">
+                Xin chào! 👋 Mình có thể giúp gì được bạn?
+              </div>
+              <div class="text-user n1" id="n1">
+                Cho mình hỏi Hội trại sắp tới muốn tham gia thì đăng ký sao vậy?
+              </div>
+              <div class="text-bot b1" id="b1">
+                Form đăng ký trên Ban truyền thông nhé: https://www.facebook.com/BKCSE.Multimedia
+              </div>
+              <div class="text-user n2" id="n2">
+                Mình là nữ thì có được đi Mùa hè xanh khoa Máy tính không ad?
+              </div>
+              <div class="text-bot b2" id="b2">
+                Nam hay nữ đều được nhé bạn!
+              </div>
+              <div class="text-user n3" id="n3">
+                Đi Mùa hè xanh ngoài làm đường ra thì mình còn làm gì nữa bạn?
+              </div>
+              <div class="text-bot b3" id="b3">
+                Mình sẽ dạy học cho trẻ em nghèo nữa bạn nhé!
+              </div>
+              <div class="text-user n4" id="n4">
+                Mình muốn đăng ký thi Hậu duệ Pascal thì làm sao vậy bạn?
+              </div>
+              <div class="text-bot b4" id="b4">
+                Bạn có thể đến văn phòng 602H6 để ghi danh, hoặc liên hệ số điện thoại này nhé: ...
+              </div>
+              <div class="text-user n5" id="n5">
+                Cho mình xin thông tin liên hệ của Ban tổ chức Đêm hội trăng rằm với?
+              </div>
+              <div class="text-bot b5" id="b5">
+                Bạn có thể liên hệ bạn ... , link facebook của bạn đó đây: ...
+              </div>
+            </div>
+            
+          </div>
+          
+        </div>
+        <div class="cnt-name" id="cnt-name">
+            <!-- <h2 style="padding:1%;">HƯỚNG DẪN SỬ DỤNG CSE ASSISTANT 1.1.0</h2>
+            <ul style="padding: 3%;font-size: 15px;text-align: left;">
+                <li>Chatbot hiện có thể hỏi/trả lời tin nhắn người dùng đồng thời lưu lại tất cả tin nhắn của người dùng để học.</li>
+                <li>Nếu người dùng nhập vào một câu hỏi về  hoạt động chung chung, đối tượng tham gia, các công việc cụ thể trong hoạt động, thông tin liên hệ ban tổ chức hoạt động, thông tin đăng ký hoạt động, chatbot có thể hiểu được và trả lời</li>
+                <li>Nếu người dùng nhập vào không phải câu hỏi, chatbot sẽ chủ động đặt câu hỏi gợi ý cho người dùng trả lời.</li>
+                <li>Trong khi hội thoại diễn ra, nếu người dùng hay chatbot hỏi quá 3 lần liên tục thì chatbot sẽ chủ động đề nghị đổi vai trò người hỏi - trả lời.</li>
+                <li>Bất kỳ lúc nào trong hội thoại, người dùng có thể nhập "bye" để kết thúc trò chuyện với chatbot.</li>
+                <li>Nếu được bạn hãy nhập đầy đủ tiếng Việt có dấu để bot dễ hiểu hơn nhé! </li>
+            </ul> -->
+        </div>
         <!-- <div class="animated_pointer">>></div> -->
         <!-- <div class="graph_name" id="switch_btn">Conceptual Graph</div> -->
         
-        <div class="graph-wrapper" id="whole_graph">
-          <!-- Top Four -->
-          <div class="entity" id="area">
-            <div class="name">Area</div>
-            <div class="content"></div>
-          </div>
-          <div class="entity" id="potential">
-            <div class="name">Potential</div>
-            <div class="content"></div>
-          </div>
-          <div class="entity" id="price">
-            <div class="name">Price</div>
-            <div class="content"></div>
-          </div>
-          <div class="entity" id="location">
-            <div class="name">Location</div>
-            <div class="content"></div>
-          </div>
-          <div id="top_four"></div>
-          <div id="top_four_location"></div>
-          <div id="top_four_three_left"></div>
-          <div id="top_four_price"></div>
-          <div id="top_four_potential"></div>
-          <div id="top_four_area"></div>
-          <!-- End Top Four -->
-          <div class="entity" id="real_estate">
-            <div class="name">Real Estate</div>
-            <div class="content"></div>
-          </div>
-          <!-- Bottom Four -->
-          <div id="bottom_four"></div>
-          <div id="bottom_four_position"></div>
-          <div id="bottom_four_interior_room"></div>
-          <div id="bottom_four_interior_floor"></div>
-          <div id="bottom_four_surrounding_characteristics"></div>
-          <div class="attribute" id="position">
-            <div class="name">Position</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="surrounding_characteristics">
-            <div class="name">Surrounding Characteristic</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="interior_floor">
-            <div class="name">Floor</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="interior_room">
-            <div class="name">Room</div>
-            <div class="content"></div>
-          </div>
-          <!-- End Bottom Four -->
-
-          <div class="attribute" id="transaction_type">
-            <div class="name">Transaction Type</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="surrounding_place">
-            <div class="name">Surounding Place</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="realestate_type">
-            <div class="name">Type</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="orientation">
-            <div class="name">Orientation</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="legal">
-            <div class="name">Legal</div>
-            <div class="content"></div>
-          </div>
-          <div class="entity" id="addr_district">
-            <div class="name">District</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="addr_city">
-            <div class="name">City</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="addr_street">
-            <div class="name">Street</div>
-            <div class="content"></div>
-          </div>
-          <div class="attribute" id="addr_ward">
-            <div class="name">Ward</div>
-            <div class="content"></div>
-          </div>
-        </div>
+        
       </div>
       <div class="col-12 col-lg-5 col-xl-4 p-0">
         <div class="wrapper">
 
           <div id="message_window">
             <div class="header">
-              <span>
+              <div>
                 <img src="cse.png" class="avt">
-              </span>
-              <div class="name">CSE Assistant 1.0.0</div>
+              </div>
+              <div id="user-id" class="name">CSE Assistant 1.1.0</div>
+              
             </div>
             <div class="disconnected">
               Disconnected... reconnecting!
@@ -247,18 +214,22 @@
   </script>
   <script src="leader-line.min.js"></script>
   <script type="text/javascript"> 
-    // setTimeout(() => { $("#n1").hide() }, 6400)
-    // setTimeout(() => { $("#b1").hide() }, 6400)
+    setTimeout(() => { $("#n1").hide() }, 6400)
+    setTimeout(() => { $("#b1").hide() }, 6400)
 
-    // setTimeout(() => { $("#n2").hide() }, 11400)
-    // setTimeout(() => { $("#b2").hide() }, 11400)
+    setTimeout(() => { $("#n2").hide() }, 11400)
+    setTimeout(() => { $("#b2").hide() }, 11400)
 
-    // setTimeout(() => { $("#n3").hide() }, 16400)
-    // setTimeout(() => { $("#b3").hide() }, 16400)
+    setTimeout(() => { $("#n3").hide() }, 16400)
+    setTimeout(() => { $("#b3").hide() }, 16400)
 
-    // setTimeout(() => { $("#n4").hide() }, 21400)
-    // setTimeout(() => { $("#b4").hide() }, 21400)
+    setTimeout(() => { $("#n4").hide() }, 21400)
+    setTimeout(() => { $("#b4").hide() }, 21400)
 
+    setTimeout(() => {
+          $(".cards").show();
+          $("#cnt-name").show();
+        }, 500)
     // var graph_show = false;
     // $("#switch_btn").click(() => {
     //   if (graph_show === false) {
@@ -499,6 +470,9 @@
     // }
   </script>
   <script src="client.js"></script>
+  <!-- <script type="text/javascript" src="../utils/jquery-3.4.1.min.js"></script> -->
+  <!-- <script src="setId.js" type="module"></script> -->
+
 </body>
 
 </html>

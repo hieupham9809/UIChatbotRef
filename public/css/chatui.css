@@ -1,0 +1,16 @@
+#user-id {
+    
+    font-size: 13px;
+    width: 75%;
+    height: 100%;
+    word-break: break-word !important;
+    overflow: auto !important;
+    text-overflow: unset;
+    
+}
+.header div{
+    float: left;
+}
+.header {
+    padding-top: 15px !important;
+}

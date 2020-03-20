@@ -12,7 +12,18 @@ this.searchSession=function (inUserid){
 }
 
 this.insertSession=function (inUserid){
-    newSession={userId:inUserid,getInfo:false,getIntent:false};
+    newSession={userId:inUserid,
+        getInfo:false,
+        getIntent:false,
+        data:{
+            message:null,
+            intent:null,
+            is_correct:null,
+            ask_count:0,
+            asw_count:0,
+            prev_bot_ask:null
+        }
+    };
     this.listSession.push(newSession)
     return newSession
 }

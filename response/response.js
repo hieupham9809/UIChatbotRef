@@ -129,11 +129,9 @@ module.exports = {
         "OK 😘😘.",
         "Uhm",
         "Oh vậy à :3",
-
         "Hihihi. OK :3",
         "I got it =)))))",
-        "Trời đang mưa thì phải hic hic :'("
-
+        "Trời đang mưa thì phải hic hic :'(",
         "Ồ thế à :3",
         "Ồ :3 :3 :3",
         "Ra là vậy. :3"
@@ -153,7 +151,7 @@ module.exports = {
     bot_wants_to_answer: [
         "Bạn có muốn hỏi gì mình nữa không ? ",
         "Bạn có thể hỏi mình câu gì cũng được, mình sẽ cố gắng trả lời bạn. ^_^",
-        "Bạn hỏi mình đi, nếu biết mình sẽ trả lời cho bạn!"
+        "Bạn hỏi mình đi, nếu biết mình sẽ trả lời cho bạn!",
         
 
         "Bây giờ mình hỏi bạn vài câu nha :3. Chứ nãy giờ bị hỏi nhiều quá hic hic."
@@ -179,7 +177,7 @@ module.exports = {
 
                 "Từ lúc mới vào trường đến giờ bạn thích hoạt động nào nhất? Hoạt động đó của khoa nào vậy 🤔?",
                 "Kể cho mình tên một vài cuộc thi học thuật mà bạn biết. Bạn có dự định tham gia những cuộc thi đó không nè :3 ?",
-                "Bạn đã từng tham gia vào những sự kiện nào rồi ? có thể kể cho mình biết với nha ^_^"
+                "Bạn đã từng tham gia vào những sự kiện nào rồi ? có thể kể cho mình biết với nha ^_^",
 
                 "Từ lúc mới vào trường đến giờ bạn thích hoạt động nào nhất? Hoạt động đó của khoa nào vậy?"
 
@@ -190,7 +188,7 @@ module.exports = {
                 "Bạn thích tham gia những loại hoạt động gì nhỉ (tình nguyện, cuộc thi, hội thảo kỹ năng mềm,...)?🤔🤔🤔",
 
                 "Bạn đã từng tham gia những loại hoạt động nào khi còn là học sinh nhỉ 🤔🤔?",
-                "Bạn sẵn sàng tham gia những loại hoạt động (tình nguyện, cuộc thi, hội thảo, ...) nào 🤔🤔?"
+                "Bạn sẵn sàng tham gia những loại hoạt động (tình nguyện, cuộc thi, hội thảo, ...) nào 🤔🤔?",
 
                 "Bạn đã từng tham gia những loại hoạt động nào khi còn là học sinh nhỉ 🤔🤔?"
 
@@ -205,7 +203,7 @@ module.exports = {
                 "Bạn sẽ dự định tham gia những câu lạc bộ, hội nhóm nào của trường mình nhỉ? 😚😚😚😚😚😚",
                 "Bạn có thể kể tên một số câu lạc bộ, hội nhóm của trường mình mà bạn biết không 🤔🤔?",
                 "Câu lạc bộ học thuật yêu thích của bạn là gì?",
-                "Kể tên một vài đội nhóm ở trường mình mà bạn biết cho mình nghe với :3."
+                "Kể tên một vài đội nhóm ở trường mình mà bạn biết cho mình nghe với :3.",
 
                 "Bạn sẽ dự định tham gia những câu lạc bộ, hội nhóm nào của trường mình nhỉ? 😚😚😚😚😚😚"
 
@@ -220,8 +218,7 @@ module.exports = {
                 "Hôm nay bạn ăn sáng lúc mấy giờ :D ? Bữa sáng là vô cùng quan trọng đó nha.",
                 "Bữa trưa cũng rất chi là quan trọng. Hôm nay bạn định mấy giờ bạn ăn trưa 🤔🤔? Mình giới thiệu 1 bạn đi ăn chung với bạn nha :3 :3 .",
                 "Bạn hay ăn tối lúc mấy giờ? Để mình nói crush đi ăn với bạn nè 😘",
-                "Bây giờ là mấy giờ rồi ta ? :'( tự dưng thấy đói bụng ghê."
-
+                "Bây giờ là mấy giờ rồi ta ? :'( tự dưng thấy đói bụng ghê.",
                 "Hôm nay bạn ăn sáng lúc mấy giờ :D ?",
                 "Đố bạn tiết 1 của Bách Khoa bắt đầu với kết thúc khi nào?"
 
@@ -286,7 +283,7 @@ module.exports = {
                 "Bạn kể cho mình tên một số trường cấp 2 ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
                 "Bạn kể cho mình tên một số trường tiểu học ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
                 "Bạn kể cho mình tên một số trường đại học hoặc cao đẳng/trung cấp nghề ở quê bạn được không :3 Cảm ơn bạn nhiều. ",
-                "Ở TPHCM hoặc Bình Dương bạn đã biết những trường đại học nào nè :D . Kể mình biết với nha. Cảm ơn bạn nhiều."
+                "Ở TPHCM hoặc Bình Dương bạn đã biết những trường đại học nào nè :D . Kể mình biết với nha. Cảm ơn bạn nhiều.",
 
                 "Làng đại học có nhiều trường lắm, bạn đã từng đến những trường nào ngoài trường Bách Khoa mình chưa 🤔🤔🤔🤔?",
                 "Bạn ở kí túc xá đúng không? Phòng bạn gồm những sinh viên của trường nào nhỉ ? 🤔🤔🤔🤔"
@@ -312,7 +309,7 @@ module.exports = {
                 "Tuần này bạn học những môn gì ? có nhớ số phòng hem :3 ? Nói mình biết với, có gì mình vô học chui chung nè. ",
                 "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?",
                 "Bạn đã từng học những phòng học nào ở trường mình rồi :3 kể cho mình biết với. Mình cảm ơn nhiều nè.",
-                "Bạn học các môn mà có tiết thực hành ở những phòng nào nhỉ :3 kể cho mình nghe được hemm. cảm ơn bạn nhiều nè."
+                "Bạn học các môn mà có tiết thực hành ở những phòng nào nhỉ :3 kể cho mình nghe được hemm. cảm ơn bạn nhiều nè.",
 
 
                 "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?"
@@ -326,8 +323,7 @@ module.exports = {
                 "Đố bạn trường Bách Khoa cơ sở 1 nằm trên mấy con đường? Đó là những đường nào ? :3",
                 "Bạn và bạn bè bạn có hay đi ăn hay đi chơi ở đâu đó không ? Ở đường nào vậy, giới thiệu để mình dẫn bạn đi với ^_^ Tại mình cũng mới năm nhất hà.",
                 "Bạn có thể kể cho mình một số tên đường ở quê bạn được không ^^ . cảm ơn bạn nhiều nha.",
-                "Từ lúc mới lên đây bạn biết được tên những con đường nào rồi nè ? ^^ kể cho mình biết với nha. cảm ơn bạn nhiều nè."
-
+                "Từ lúc mới lên đây bạn biết được tên những con đường nào rồi nè ? ^^ kể cho mình biết với nha. cảm ơn bạn nhiều nè.",
                 "Theo bạn thì ở cơ sở 1 thì tòa nhà nào là đẹp nhất nhỉ :3 ??",
                 "Theo bạn ở trường mình thì chỗ nào là nơi tự học lý tưởng nhất nhỉ 🤔🤔🤔🤔?",
 
@@ -343,8 +339,7 @@ module.exports = {
                 "Nếu đi xuân tình nguyện thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
                 "Nếu đi tiếp sức mùa thi thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
                 "Nếu đi đêm hội trăng rằm thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
-                "Nếu đi các sự kiện tư vấn của các doanh nghiệp thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ "
-
+                "Nếu đi các sự kiện tư vấn của các doanh nghiệp thì bạn muốn được bao nhiêu ngày CTXH hoặc điểm rèn luyện ? Trả lời cụ thể giúp mình với nha. Cảm ơn bạn nè.^_^ ",
                 "Điểm rèn luyện rất quan trọng ở mỗi học kì. Đi những sự kiện của Khoa thì bạn muốn mình được nhận bao nhiêu điểm rèn luyện 🤔🤔?"
 
             ]
@@ -362,7 +357,7 @@ module.exports = {
                 "Thầy đẹp trai nào dạy bạn môn Hóa đại cương vậy :3?",
                 "Kể cho mình tên một số ca sĩ nổi tiếng mà bạn biết được không :3 ? cảm ơn bạn nhiều nè.",
                 "Kể cho mình tên một số cầu thủ đá bóng nổi tiếng mà bạn biết được không :3 ? cảm ơn bạn nhiều nè.",
-                "Kể cho mình tên các thầy cô trường mình mà bạn biết được không :3 ? cảm ơn bạn nhiều nè."
+                "Kể cho mình tên các thầy cô trường mình mà bạn biết được không :3 ? cảm ơn bạn nhiều nè.",
 
                 "Bạn hâm mộ ca sĩ thần tượng nào 🤔🤔?"
 
@@ -374,7 +369,7 @@ module.exports = {
 
                 "Bạn muốn đăng ký tham gia các hoạt động theo hình thức nào 🤔🤔?",
                 "Bạn hay xem tin tức ở trang web nào vậy :3 share link cho mình với nha. cảm ơn bạn nè ^^",
-                "Bạn hay giải trí ở những trang web nào vậy :3 share link cho mình với nha. cảm ơn bạn nè ^^"
+                "Bạn hay giải trí ở những trang web nào vậy :3 share link cho mình với nha. cảm ơn bạn nè ^^",
 
                 "Bạn muốn đăng ký tham gia các hoạt động theo hình thức nào 🤔🤔?"
 
@@ -387,7 +382,7 @@ module.exports = {
 
                 "Chỉ mình các bước để tỏ tình với 1 bạn nữ với :( ? Mình bị nhát gái đó hic hic.",
                 "Theo bạn thì một hoạt động tình nguyện thì nên có những công việc cụ thể nào ? ",
-                "Hãy kể cho mình những công việc mà bạn hay làm trong 1 ngày. Mình muốn nghe lắm ^^. Cảm ơn bạn nhiều."
+                "Hãy kể cho mình những công việc mà bạn hay làm trong 1 ngày. Mình muốn nghe lắm ^^. Cảm ơn bạn nhiều.",
 
                 "Chỉ mình các bước để chinh phục 1 bạn nữ với 🤔🤔🤔🤔?"
 
@@ -504,9 +499,7 @@ module.exports = {
         {
             joiner: [
                 "mình nghĩ nên để mọi người đều được tham gia thì sẽ tốt hơn!",
-                "nên vậy :D"
-                
-
+                "nên vậy :D",
                 "Theo bạn thì một hoạt động tình nguyện nên hướng đến những đối tượng nào 🤔🤔?",
                 "Đố bạn Mùa hè xanh là dành cho ai tham gia nè 😅😅😅😅?",
 

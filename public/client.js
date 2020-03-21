@@ -1493,7 +1493,7 @@ var Botkit = {
   //   return elements;
   // },
   setId: function(userId){
-    document.getElementById("user-id").innerHTML = userId;
+    document.getElementById("user-id").innerHTML = "CSE Assistant Beta";
   },
   boot: function (user) {
 
@@ -1805,7 +1805,7 @@ var Botkit = {
 };
 
 var setId = function(id){
-  document.getElementById("user-id").innerHTML = id;
+  document.getElementById("user-id").innerHTML = "CSE Assistant Beta";
 };
 
 (function () {

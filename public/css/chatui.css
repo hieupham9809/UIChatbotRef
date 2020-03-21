@@ -1,8 +1,9 @@
 #user-id {
     
-    font-size: 13px;
+    font-size: 25px;
     width: 75%;
     height: 100%;
+    padding: 1px;
     word-break: break-word !important;
     overflow: auto !important;
     text-overflow: unset;

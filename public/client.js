@@ -3,6 +3,8 @@ converter.setOption('openLinksInNewWindow', true);
 
 
 const RESULT_MESSAGE_WIDTH_TRANS = 310;
+const RESULT_SUB_TABLE_WIDTH_TRANS = 280;
+
 const price_formatter = new Intl.NumberFormat('it-IT', {
   style: 'currency',
   currency: 'VND'
@@ -294,6 +296,13 @@ const AGENT_INFORM_OBJECT = {
   "register": "đăng ký",
   "joiner": "đối tượng tham gia",
   "activity": "hoạt động"
+}
+const AGENT_INFORM_SUB_OBJECT = {
+  
+  "name_place": "tên địa điểm",
+  "works": "công việc",
+  "time": "thời gian",
+  "address": "địa chỉ"
 }
 const MAX_ATTR = 5;
 
@@ -683,8 +692,8 @@ var Botkit = {
       that.next_line.innerHTML = that.message_slider_template({
         message: message
       });
-      
-      var list = this.renderResultMessages(message.listResults);
+           
+      var list = that.renderResultMessages(message.listResults);
 
       
       var sliderContainer = document.getElementById(`wrapper-${message.resultSliderId}`);
@@ -1422,8 +1431,11 @@ var Botkit = {
     return li;
   },
   renderResultMessages: function (results) {
+    var that = this;
     var elements = [];
     var len = Math.min(10, results.length);
+    var count = 1;
+    
     // console.log("RESULT");
     // console.log(results);
     // console.log(concerned_attributes);
@@ -1432,11 +1444,21 @@ var Botkit = {
 
         // var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
         var title = `<div class="tittle">ID: ${result['_id']}</div></marquee>`
-
+        var compositeContainer;
         var list_row = '';
-        var count = 0;
         for (var slot in result){
+          
           if ( Array.isArray(result[slot]) && result[slot].length > 0){
+            
+            if (slot === 'time_works_place_address_mapping'){
+              // console.log(this)
+              // this.Botkit.createCompositeContainer.bind(Botkit);
+              console.log(that)
+
+              compositeContainer = that.createCompositeContainer(result[slot], count);
+              count++;
+              continue;
+            }
             var value = "<li>" + result[slot].join("</li><li>") + "</li>";
             list_row += `<tr><th>${AGENT_INFORM_OBJECT[slot]}</th><td>${value}</td></tr>`;
 
@@ -1446,12 +1468,116 @@ var Botkit = {
         }
         
         var table = `<table>${list_row}</table>`
-
-        var li = $('<div class="message-result" style="overflow-x: scroll;">' + title + table + '</div>')[0]
-        elements.push(li);
+        
+        var el = $('<div class="message-result" style="overflow-x: scroll;">' + title + table + '</div>')[0]
+        if (compositeContainer != null){
+          el.appendChild(compositeContainer);
+        }
+        elements.push(el);
       })(results[r]);
     }
     return elements;
+  },
+  renderSubTable: function (results) {
+    var that = this;
+    var elements = [];
+    var len = Math.min(10, results.length);
+    // console.log("RESULT");
+    // console.log(results);
+    // console.log(concerned_attributes);
+    for (var r = 0; r < len; r++) {
+      (function (result) {
+
+        // var title = `<div class="tittle"><a href="${result.url}" target="#">${result.tittle}</div></marquee>`
+        var title = `<div class="tittle">Chi tiết:</div></marquee>`
+        var compositeContainer;
+        var list_row = '';
+        
+        for (var slot in result){
+          
+          if ( Array.isArray(result[slot]) && result[slot].length > 0){
+            
+            var value = "<li>" + result[slot].join("</li><li>") + "</li>";
+            list_row += `<tr><th>${AGENT_INFORM_SUB_OBJECT[slot]}</th><td>${value}</td></tr>`;
+
+          } else {
+            continue;
+          }
+        }
+        
+        var table = `<table>${list_row}</table>`
+        
+        var el = $('<div class="sub-message-result" style="overflow-x: scroll;">' + title + table + '</div>')[0]
+        if (compositeContainer != null){
+          el.appendChild(compositeContainer);
+        }
+        elements.push(el);
+      })(results[r]);
+    }
+    return elements;
+  },
+  createCompositeContainer : function(compoElementList, count){
+    var that = this;
+    var sliderInit = {}
+    sliderInit.resultSliderId = `child-slider-${this.slider_message_count}-${count}`
+    
+    var compositeContainer = $(that.message_slider_template({
+      message: sliderInit
+    }))[0];
+    var sliderCompositeContainer = compositeContainer.children[0];
+    
+
+    var list = that.renderSubTable(compoElementList);
+
+    list.forEach(function (element) {
+      sliderCompositeContainer.appendChild(element);
+    })
+    sliderCompositeContainer.setAttribute("max-width", list.length * RESULT_SUB_TABLE_WIDTH_TRANS);
+    // sliderCompositeContainer.setAttribute("max-width", list.length * RESULT_SUB_TABLE_WIDTH_TRANS);
+    
+    var a_left = $('<div class="carousel-prev"></div>')[0]
+    var a_right = $('<div class="carousel-next"></div>')[0]
+    var left = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"></path> <path d="M0-.5h24v24H0z" fill="none"></path></svg>')[0]
+    var right = $('<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"></path> <path d="M0-.25h24v24H0z" fill="none"></path></svg>')[0]
+    a_left.append(left)
+    a_right.append(right)
+    // var mask = document.getElementById(`mask-${message.resultSliderId}`);
+    // console.log(a_left)
+
+    $(a_left).hide();
+    $(a_right).click(() => {
+      var id = `wrapper-${sliderInit.resultSliderId}`;
+      var wrapperWidth = parseInt($("#" + id).attr("max-width"));
+      var marginLeft = parseInt($("#" + id).css('margin-left'));
+      var offset = RESULT_SUB_TABLE_WIDTH_TRANS;
+      marginLeft -= offset;
+      if (marginLeft >= (-wrapperWidth + RESULT_SUB_TABLE_WIDTH_TRANS)) {
+        var str = marginLeft + "px !important";
+        $("#" + id).attr('style', 'margin-left: ' + str);
+        if (marginLeft - offset < (-wrapperWidth + RESULT_SUB_TABLE_WIDTH_TRANS)) {
+          $(a_right).hide();
+        }
+      }
+      $(a_left).show();
+    })
+    $(a_left).click(() => {
+      var id = `wrapper-${sliderInit.resultSliderId}`;
+      var marginLeft = parseInt($("#" + id).css('margin-left'));
+      var offset = RESULT_MESSAGE_WIDTH_TRANS;
+      marginLeft += offset;
+      if (marginLeft >= 0) {
+        marginLeft = 0;
+        $(a_left).hide();
+      }
+      var str = marginLeft + "px !important";
+      $("#" + id).attr('style', 'margin-left: ' + str);
+      $(a_right).show();
+    })
+    compositeContainer.appendChild(a_left);
+    compositeContainer.appendChild(a_right);
+    console.log('compositeContainer: ')
+    console.log(compositeContainer)
+    return compositeContainer;
   },
   // renderResultMessages: function (results, concerned_attributes) {
   //   var elements = [];

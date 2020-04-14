@@ -671,27 +671,27 @@ module.exports = function (controller) {
             // console.log("say hi")
             // console.log(isGetInfor);
             // console.log(isGetIntent);
-            if (raw_mesg.trim().toLowerCase() == "bye") {
-                bot.reply(message, {
-                    text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
-                    force_result: [
-                        {
-                            title: 'Bắt đầu hội thoại mới',
-                            payload: {
-                                'restart_conversation': true
-                            }
-                        }
-                    ]
-                });
+            // if (raw_mesg.trim().toLowerCase() == "bye") {
+            //     bot.reply(message, {
+            //         text: resp.goodbye[Math.floor(Math.random() * resp.goodbye.length)],
+            //         force_result: [
+            //             {
+            //                 title: 'Bắt đầu hội thoại mới',
+            //                 payload: {
+            //                     'restart_conversation': true
+            //                 }
+            //             }
+            //         ]
+            //     });
 
-                var success = userController.deleteSession(id);
-                if (!success) {
-                    console.log("Error in delete function");
-                } else {
-                    console.log("Delete success");
-                }
-                return;
-            }
+            //     var success = userController.deleteSession(id);
+            //     if (!success) {
+            //         console.log("Error in delete function");
+            //     } else {
+            //         console.log("Delete success");
+            //     }
+            //     return;
+            // }
             var messageBack = raw_mesg;
             if (message.userResponeToInform != null){
                 if (message.userResponeToInform.anything){

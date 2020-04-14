@@ -26,12 +26,14 @@
 </head>
 
 <body>
-  <div class="container-fluid h-100" style="background: url('./bg2.jpg');
+  <div class="container-fluid h-100" id="main-container" style="background: url('./bg2.jpg');
   background-repeat: no-repeat;
   background-size: cover;">
+    <canvas class="d-none d-sm-inline-block col-sm-5 col-md-6 col-lg-7 p-0" id="canvas-animation"></canvas>
+    
     <div class="row p-0 h-100">
-      <div class="d-none d-lg-block col-lg-7 col-xl-8 p-0">
 
+      <div class="d-none d-sm-inline-block col-sm-5 col-md-6 col-lg-7 p-0">
         <!-- <div style="background-color: aliceblue;"> -->
 
         <!-- </div> -->
@@ -78,22 +80,14 @@
           
         </div>
         <div class="cnt-name" id="cnt-name">
-            <!-- <h2 style="padding:1%;">HƯỚNG DẪN SỬ DỤNG CSE ASSISTANT 1.1.0</h2>
-            <ul style="padding: 3%;font-size: 15px;text-align: left;">
-                <li>Chatbot hiện có thể hỏi/trả lời tin nhắn người dùng đồng thời lưu lại tất cả tin nhắn của người dùng để học.</li>
-                <li>Nếu người dùng nhập vào một câu hỏi về  hoạt động chung chung, đối tượng tham gia, các công việc cụ thể trong hoạt động, thông tin liên hệ ban tổ chức hoạt động, thông tin đăng ký hoạt động, chatbot có thể hiểu được và trả lời</li>
-                <li>Nếu người dùng nhập vào không phải câu hỏi, chatbot sẽ chủ động đặt câu hỏi gợi ý cho người dùng trả lời.</li>
-                <li>Trong khi hội thoại diễn ra, nếu người dùng hay chatbot hỏi quá 3 lần liên tục thì chatbot sẽ chủ động đề nghị đổi vai trò người hỏi - trả lời.</li>
-                <li>Bất kỳ lúc nào trong hội thoại, người dùng có thể nhập "bye" để kết thúc trò chuyện với chatbot.</li>
-                <li>Nếu được bạn hãy nhập đầy đủ tiếng Việt có dấu để bot dễ hiểu hơn nhé! </li>
-            </ul> -->
+            
         </div>
         <!-- <div class="animated_pointer">>></div> -->
         <!-- <div class="graph_name" id="switch_btn">Conceptual Graph</div> -->
         
         
       </div>
-      <div class="col-12 col-lg-5 col-xl-4 p-0">
+      <div class="col-xs-8 col-sm-7 col-md-6 col-lg-5">
         <div class="wrapper">
 
           <div id="message_window">
@@ -104,13 +98,13 @@
               <div id="user-id" class="name">CSE Assistant 1.1.0</div>
               
             </div>
-            <div class="disconnected">
+            <div class="disconnected" id="disconnected">
               Disconnected... reconnecting!
             </div>
             <div class="offline">
               Offline! Reload to reconnect.
             </div>
-            <section>
+            <section class="message-wrapper">
               <div id="message_list">
                 <div id="message_template">
 
@@ -227,250 +221,19 @@
     setTimeout(() => { $("#n4").hide() }, 21400)
     setTimeout(() => { $("#b4").hide() }, 21400)
 
+    setTimeout(() => { $("#n4").hide() }, 26400)
+    setTimeout(() => { $("#b4").hide() }, 26400)
+
     setTimeout(() => {
           $(".cards").show();
           $("#cnt-name").show();
         }, 500)
-    // var graph_show = false;
-    // $("#switch_btn").click(() => {
-    //   if (graph_show === false) {
-    //     $(".cards").hide();
-    //     $("#cnt-name").hide();
-    //     $("#switch_btn").css("opacity", "1");
-    //     $("#whole_graph").css("opacity", "1");
-    //     $("body>svg").css("opacity", "1");
-    //   } else {
-    //     setTimeout(() => {
-    //       $(".cards").show();
-    //       $("#cnt-name").show();
-    //     }, 500)
-    //     $("#switch_btn").css("opacity", ".5");
-    //     $("#whole_graph").css("opacity", "0");
-    //     $("body>svg").css("opacity", "0");
-    //   }
-    //   graph_show = !graph_show;
-
-    // })
-
-    // function activateLine(key) {
-    //   if (line_list[key]) {
-    //     if (key === "area") {
-    //       $("#top_four_area").css("top", "50px");
-    //     }
-    //     if (key === "potential") {
-    //       $("#top_four_potential").css("top", "130px");
-    //     }
-    //     if (key === "price") {
-    //       $("#top_four_price").css("top", "210px");
-    //     }
-    //     if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
-    //       var offset = $("#" + key).width() / 2;
-    //       var id = "#bottom_four_" + key
-    //       var curLen = parseInt($("#" + key).css("left"));
-    //       curLen += offset
-    //       // console.log(offset)
-    //       // console.log($(id).css("left"))
-    //       // console.log(curLen)
-    //       $(id).css("left", curLen + "px")
-    //     }
-    //     for (var i = 0; i < line_list[key].length; i++) {
-    //       (function (line) {
-    //         if (key === "area") // console.log(myLine[line])
-    //         myLine[line].color = "var(--primary-color)"
-    //         myLine[line].size = 3
-    //         myLine[line].position()
-    //       })(line_list[key][i])
-    //     }
-    //   }
-    // }
-    // function deactivateLine(key) {
-    //   if (line_list[key]) {
-    //     if (key === "area") {
-    //       $("#top_four_area").css("top", "37.5px");
-    //     }
-    //     if (key === "potential") {
-    //       $("#top_four_potential").css("top", "117.5px");
-    //     }
-    //     if (key === "price") {
-    //       $("#top_four_price").css("top", "197.5px");
-    //     }
-    //     if (BOTTOM_FOUR_ATTR.indexOf(key) > -1) {
-    //       var offset = $("#" + key).width() / 2;
-    //       var id = "#bottom_four_" + key
-    //       var curLen = parseInt($("#" + key).css("left"));
-    //       curLen += offset
-    //       $(id).css("left", curLen + "px")
-
-    //     }
-    //     for (var i = 0; i < line_list[key].length; i++) {
-    //       (function (line) {
-    //         myLine[line].color = "var(--primary-color-disabled)"
-    //         myLine[line].size = 2
-    //         myLine[line].position()
-    //       })(line_list[key][i])
-    //     }
-    //   }
-    // }
-    // var myLine = {}
-    // var line_list = {}
-    // const TOP_FOUR_ATTR = ['price', 'location', 'potential', 'area']
-    // myLine["top_four"] = new LeaderLine({
-    //   start: document.getElementById('real_estate'),
-    //   end: document.getElementById('top_four'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["top_four_location"] = new LeaderLine({
-    //   start: document.getElementById('top_four'),
-    //   end: document.getElementById('top_four_location'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["top_four_three_left"] = new LeaderLine({
-    //   start: document.getElementById('top_four'),
-    //   end: document.getElementById('top_four_three_left'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["top_four_price"] = new LeaderLine({
-    //   start: document.getElementById('top_four_three_left'),
-    //   end: document.getElementById('top_four_price'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["top_four_potential"] = new LeaderLine({
-    //   start: document.getElementById('top_four_price'),
-    //   end: document.getElementById('top_four_potential'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["top_four_area"] = new LeaderLine({
-    //   start: document.getElementById('top_four_potential'),
-    //   end: document.getElementById('top_four_area'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // for (var i = 0; i < TOP_FOUR_ATTR.length; i++) {
-    //   myLine[TOP_FOUR_ATTR[i]] = new LeaderLine({
-    //     start: document.getElementById('top_four_' + TOP_FOUR_ATTR[i]),
-    //     end: document.getElementById(TOP_FOUR_ATTR[i]),
-    //     path: 'straight',
-    //     size: 2,
-    //     color: "var(--primary-color-disabled)"
-    //   });
-    //   line_list[TOP_FOUR_ATTR[i]] = [];
-    //   line_list[TOP_FOUR_ATTR[i]].push("top_four");
-    //   if (TOP_FOUR_ATTR[i] != "location") line_list[TOP_FOUR_ATTR[i]].push("top_four_three_left");
-    //   line_list[TOP_FOUR_ATTR[i]].push("top_four_" + TOP_FOUR_ATTR[i]);
-    //   line_list[TOP_FOUR_ATTR[i]].push(TOP_FOUR_ATTR[i]);
-    // }
-    // line_list["potential"].push("top_four_price")
-    // line_list["area"].push("top_four_price")
-    // line_list["area"].push("top_four_potential")
-
-    // const BOTTOM_FOUR_ATTR = ['position', 'interior_room', 'interior_floor', 'surrounding_characteristics']
-    // myLine["bottom_four"] = new LeaderLine({
-    //   start: document.getElementById('real_estate'),
-    //   end: document.getElementById('bottom_four'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["bottom_four_interior_room"] = new LeaderLine({
-    //   start: document.getElementById('bottom_four'),
-    //   end: document.getElementById('bottom_four_interior_room'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["bottom_four_position"] = new LeaderLine({
-    //   start: document.getElementById('bottom_four_interior_room'),
-    //   end: document.getElementById('bottom_four_position'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["bottom_four_interior_floor"] = new LeaderLine({
-    //   start: document.getElementById('bottom_four'),
-    //   end: document.getElementById('bottom_four_interior_floor'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // myLine["bottom_four_surrounding_characteristics"] = new LeaderLine({
-    //   start: document.getElementById('bottom_four_interior_floor'),
-    //   end: document.getElementById('bottom_four_surrounding_characteristics'),
-    //   path: 'straight',
-    //   size: 2,
-    //   color: "var(--primary-color-disabled)",
-    //   endPlug: 'behind'
-    // });
-    // for (var i = 0; i < BOTTOM_FOUR_ATTR.length; i++) {
-    //   myLine[BOTTOM_FOUR_ATTR[i]] = new LeaderLine({
-    //     start: document.getElementById('bottom_four_' + BOTTOM_FOUR_ATTR[i]),
-    //     end: document.getElementById(BOTTOM_FOUR_ATTR[i]),
-    //     path: 'straight',
-    //     size: 2,
-    //     color: "var(--primary-color-disabled)"
-    //   });
-    //   line_list[BOTTOM_FOUR_ATTR[i]] = [];
-    //   line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four");
-    //   line_list[BOTTOM_FOUR_ATTR[i]].push("bottom_four_" + BOTTOM_FOUR_ATTR[i]);
-    //   line_list[BOTTOM_FOUR_ATTR[i]].push(BOTTOM_FOUR_ATTR[i]);
-    // }
-    // line_list["position"].push("bottom_four_interior_room")
-    // line_list["surrounding_characteristics"].push("bottom_four_interior_floor")
-
-    // const FIVE_ATTR = ['realestate_type', 'orientation', 'legal', 'transaction_type', 'surrounding_place']
-    // for (var i = 0; i < FIVE_ATTR.length; i++) {
-    //   myLine[FIVE_ATTR[i]] = new LeaderLine({
-    //     start: document.getElementById('real_estate'),
-    //     end: document.getElementById(FIVE_ATTR[i]),
-    //     path: 'straight',
-    //     size: 2,
-    //     color: "var(--primary-color-disabled)"
-    //   });
-    //   line_list[FIVE_ATTR[i]] = [];
-    //   line_list[FIVE_ATTR[i]].push(FIVE_ATTR[i]);
-    // }
-    // const LOCATION_ATTR = ['addr_ward', 'addr_city', 'addr_district', 'addr_street']
-    // for (var i = 0; i < LOCATION_ATTR.length; i++) {
-    //   myLine[LOCATION_ATTR[i]] = new LeaderLine({
-    //     start: document.getElementById('location'),
-    //     end: document.getElementById(LOCATION_ATTR[i]),
-    //     path: 'straight',
-    //     size: 2,
-    //     color: "var(--primary-color-disabled)"
-    //   });
-    //   line_list[LOCATION_ATTR[i]] = [];
-    //   line_list[LOCATION_ATTR[i]].push(LOCATION_ATTR[i]);
-    // }
-    // for (var key in myLine) {
-    //   if (!myLine.hasOwnProperty(key)) continue;
-    //   var obj = myLine[key];
-    //   obj.position();
-    // }
-    // if (graph_show === false) {
-    //   $("body>svg").css("opacity", "0.0")
-    // }
+    
   </script>
   <script src="client.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/TweenLite.min.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/EasePack.min.js"></script>
+  <script src="background_animation.js"></script>
   <!-- <script type="text/javascript" src="../utils/jquery-3.4.1.min.js"></script> -->
   <!-- <script src="setId.js" type="module"></script> -->
 

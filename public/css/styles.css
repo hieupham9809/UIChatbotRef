@@ -178,7 +178,7 @@ a.button:hover {
   -webkit-font-smoothing: subpixel-antialiased;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
   height: 100%;
-  width: 100%;
+  width: 350px;
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', 'helvetica', sans-serif;
@@ -984,7 +984,7 @@ td {
 }
 
 .cards {
-  position: absolute;
+  
   width: 100%;
   padding: 10px;
   height: 50%;
@@ -1000,7 +1000,7 @@ td {
 
 #info {
   
-  height: 90%;
+  
   padding: 0;
   position: relative;
 }
@@ -1020,7 +1020,7 @@ td {
 }
 
 #info>.cnt {
-  position: absolute;
+  
   z-index: 100;
   top: 30px;
   left: 25%;
@@ -1070,6 +1070,7 @@ td {
 }
 
 .text-bot-1 {
+  position: relative;
   font-size: 13px;
   width: 260px;
   color: #18191a;
@@ -1079,7 +1080,7 @@ td {
   z-index: 1;
   border-radius: 15px;
   background: #ffffff;
-  margin-bottom: 20px;
+  margin: 10px;
   border: 1px transparent solid;
 }
 
@@ -1095,7 +1096,7 @@ td {
   z-index: 1;
   border-radius: 15px;
   background: #0538e0;
-  margin-bottom: 20px;
+  /*margin: 10px 10px;*/
   border: 1px transparent solid;
 }
 
@@ -1155,8 +1156,8 @@ td {
 
 .text-bot {
   font-size: 13px;
-  position: absolute;
-  top: 150px;
+  position: relative;
+  top: 80px;
   width: 260px;
   color: #18191a;
   padding: 10px;
@@ -1165,7 +1166,7 @@ td {
   z-index: 1;
   border-radius: 15px;
   background: #ffffff;
-  margin-bottom: 20px;
+  margin: 10px;
   border: 1px transparent solid;
 }
 

@@ -1,11 +1,11 @@
 #user-id {
     
-    font-size: 25px;
+    font-size: 20px;
     width: 75%;
     height: 100%;
     padding: 1px;
     word-break: break-word !important;
-    overflow: auto !important;
+    overflow: hidden !important;
     text-overflow: unset;
     
 }
@@ -13,7 +13,7 @@
     float: left;
 }
 .header {
-    padding-top: 15px !important;
+    padding: 15px !important;
 }
 .message-wrapper{
 	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);

@@ -28,57 +28,111 @@
 <body>
   <div class="main-container-background h-100">
     <!-- <canvas class="d-none d-sm-inline-block col-sm-5 col-md-6 col-lg-7 p-0" id="canvas-animation"></canvas> -->
-     
-    <div class="row p-0 h-100">
+     <div id="background-img"></div>
+    <div class="row p-0 h-100 row-wrapper">
     <!-- <div class="canvas-animation"></div> -->
 
       <div class="d-none d-sm-inline-block col-sm-5 col-md-6 col-lg-7 p-0">
         <!-- <div style="background-color: aliceblue;"> -->
     <div class="canvas-animation"></div>
-
-        <!-- </div> -->
-        <div class="cards">
-          <div class="card_info" id="info">
+      <!-- <div class="cards"> -->
+          <div class="card-layout card-box-1">
             <!-- <div class="cnt"> -->
-              <div class="text-bot-1">
-                Xin chào! Mình là CSE Assistant! Mình có thể giúp gì bạn nhỉ ^^ ?
+              <div id="title-project">
+                Dự án 
+                "Chatbot tư vấn hoạt động xã hội cho học sinh - sinh viên"
               </div>
-              <div class="text-user n1" id="n1">
-                cho mình hỏi ban tổ chức của hoạt động an toàn thực phẩm và an ninh lương thực là ai nhỉ ?
-              </div>
-              <div class="text-bot b1" id="b1">
-                Đây là thông tin bạn cần: "trung tâm phát triển khoa học ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ .
-              </div>
-              <div class="text-user n2" id="n2">
-                cho mình hỏi công việc khi tham dự hoạt động bát cháo đêm đông với bạn ?
-              </div>
-              <div class="text-bot b2" id="b2">
-                Đây là thông tin bạn cần: "nấu cháo ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ .
-              </div>
-              <div class="text-user n3" id="n3">
-                mình muốn đăng kí chương trình dấu ấn lịch sử iv của đội công tác xã hội nha
-              </div>
-              <div class="text-bot b3" id="b3">
-                Đây là thông tin bạn cần: "lệ phí là ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ .
-              </div>
-              <div class="text-user n4" id="n4">
-                đi đêm hội trăng rằm thì được 1 ngày ctxh hả bạn ?
-              </div>
-              <div class="text-bot b4" id="b4">
-                Đây là thông tin bạn cần: "2 ngày ctxh" . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ .
-                Sai rồi! Lợi ích không là "1 ngày ctxh".
-              </div>
-              <div class="text-user n5" id="n5">
-                cho mình hỏi địa điểm diễn ra hoạt động gia sư tình bạn - hóa đại cương 2 với bạn ơi ?
-              </div>
-              <div class="text-bot b5" id="b5">
-                Đây là thông tin bạn cần: "phòng d.101 lvs" . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ .
-              </div>
+              <!-- <div id="title-name">
+                CSE Assistant (beta)
+              </div> -->
+              
             <!-- </div> -->
             
           </div>
+          <!-- <div class="card-layout card-box-2"></div> -->
+          <div class="card-layout card-box-3">
+            <div class="slideshow-container">
+
+  <!-- Full-width images with number and caption text -->
+              <div class="mySlides fade-slide">
+                
+                <img src="./images/slide_image_pic10.jpg" style="width:100%; height: 100%; border-radius: 10px;">
+                <!-- <div class="text">Caption Text</div> -->
+              </div>
+
+              <div class="mySlides fade-slide">
+                
+                <img src="./images/slide_pic_1.jpg" style="width:100%; height: 100%; border-radius: 10px;">
+                <!-- <div class="text">Caption Two</div> -->
+              </div>
+
+              <div class="mySlides fade-slide">
+                
+                <img src="./images/slide_pic_2.jpg" style="width:100%; height: 100%; border-radius: 10px;">
+                <!-- <div class="text">Caption Three</div> -->
+              </div>
+
+              <!-- Next and previous buttons -->
+              <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+              <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+            
+
+            <!-- The dots/circles -->
+            <div style="text-align:center; z-index: 10;">
+              <span class="dot" onclick="selectSlide(1)"></span>
+              <span class="dot" onclick="selectSlide(2)"></span>
+              <span class="dot" onclick="selectSlide(3)"></span>
+            </div>
+
+
+          </div>
           
-        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- <div class="cards"> -->
+          <!-- <div class="card_info" id="info"> -->
+            <!-- <div class="cnt"> -->
+              <!-- <div class="text-bot-1"> -->
+                <!-- Xin chào! Mình là CSE Assistant! Mình có thể giúp gì bạn nhỉ ^^ ? -->
+              <!-- </div> -->
+              <!-- <div class="text-user n1" id="n1"> -->
+                <!-- cho mình hỏi ban tổ chức của hoạt động an toàn thực phẩm và an ninh lương thực là ai nhỉ ? -->
+              <!-- </div> -->
+              <!-- <div class="text-bot b1" id="b1"> -->
+                <!-- Đây là thông tin bạn cần: "trung tâm phát triển khoa học ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ . -->
+              <!-- </div> -->
+              <!-- <div class="text-user n2" id="n2"> -->
+                <!-- cho mình hỏi công việc khi tham dự hoạt động bát cháo đêm đông với bạn ? -->
+              <!-- </div> -->
+              <!-- <div class="text-bot b2" id="b2"> -->
+                <!-- Đây là thông tin bạn cần: "nấu cháo ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ . -->
+              <!-- </div> -->
+              <!-- <div class="text-user n3" id="n3"> -->
+                <!-- mình muốn đăng kí chương trình dấu ấn lịch sử iv của đội công tác xã hội nha -->
+              <!-- </div> -->
+              <!-- <div class="text-bot b3" id="b3"> -->
+                <!-- Đây là thông tin bạn cần: "lệ phí là ..." . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ . -->
+              <!-- </div> -->
+              <!-- <div class="text-user n4" id="n4"> -->
+                <!-- đi đêm hội trăng rằm thì được 1 ngày ctxh hả bạn ? -->
+              <!-- </div> -->
+              <!-- <div class="text-bot b4" id="b4"> -->
+                <!-- Đây là thông tin bạn cần: "2 ngày ctxh" . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ . -->
+                <!-- Sai rồi! Lợi ích không là "1 ngày ctxh". -->
+              <!-- </div> -->
+              <!-- <div class="text-user n5" id="n5"> -->
+                <!-- cho mình hỏi địa điểm diễn ra hoạt động gia sư tình bạn - hóa đại cương 2 với bạn ơi ? -->
+              <!-- </div> -->
+              <!-- <div class="text-bot b5" id="b5"> -->
+                <!-- Đây là thông tin bạn cần: "phòng d.101 lvs" . Dưới đây là các hoạt động thỏa yêu cầu nhé ^^ . -->
+              <!-- </div> -->
+            <!-- </div> -->
+            
+          <!-- </div> -->
+          
+        <!-- </div> -->
+
         <div class="cnt-name" id="cnt-name">
             
         </div>
@@ -184,9 +238,10 @@
 
 
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script> -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
     crossorigin="anonymous"></script>
@@ -209,32 +264,26 @@
   </script>
   <script src="leader-line.min.js"></script>
   <script type="text/javascript"> 
-    setTimeout(() => { $("#n1").hide() }, 6400)
-    setTimeout(() => { $("#b1").hide() }, 6400)
+    // setTimeout(() => { $("#n1").hide() }, 6400)
+    
 
-    setTimeout(() => { $("#n2").hide() }, 11400)
-    setTimeout(() => { $("#b2").hide() }, 11400)
-
-    setTimeout(() => { $("#n3").hide() }, 16400)
-    setTimeout(() => { $("#b3").hide() }, 16400)
-
-    setTimeout(() => { $("#n4").hide() }, 21400)
-    setTimeout(() => { $("#b4").hide() }, 21400)
-
-    setTimeout(() => { $("#n4").hide() }, 26400)
-    setTimeout(() => { $("#b4").hide() }, 26400)
-
-    setTimeout(() => {
-          $(".cards").show();
-          $("#cnt-name").show();
-        }, 500)
+    $(document).ready(function(){
+        $("#title-project").fadeIn(1000);
+        $("#title-name").slideDown(1000);
+      });
+    
+    // setTimeout(() => {
+    //       $(".card-layout").show();
+          
+    //     }, 500)
     
   </script>
   <script src="client.js"></script>
   <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="slide_show.js"></script>
 
-  <script src="background_animation.js"></script>
+  <!-- <script src="background_animation.js"></script> -->
   <!-- <script type="text/javascript" src="../utils/jquery-3.4.1.min.js"></script> -->
   <!-- <script src="setId.js" type="module"></script> -->
 

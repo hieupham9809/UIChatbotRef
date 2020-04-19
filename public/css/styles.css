@@ -3,10 +3,10 @@
 * {
   box-sizing: border-box;
   /* --primary-color: rgb(0, 108, 255); */
-  --primary-color: rgb(42, 39, 106);
+  --primary-color: #3980c0;
   /* --primary-color-disabled: #a3c9ff;
   --primary-color-super-disabled: #afd1ff; */
-  --primary-color-disabled: #8780fc;
+  --primary-color-disabled: #3980c0;
   --primary-color-super-disabled: #b6b2ff;
   --secondary-color: rgb(233, 238, 244);
   --message-radius: 19px;
@@ -987,7 +987,7 @@ td {
 }
 
 .cards {
-  
+  display: none;
   width: 100%;
   padding: 10px;
   height: 50%;

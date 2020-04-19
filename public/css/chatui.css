@@ -38,7 +38,7 @@
 	left: 0;
 	right: 0;
 	z-index: 0;
-	/*background: url('../trans2.png') transparent;*/
+	background: url('../background_waterdrop.png');
 	background-repeat: no-repeat;
 	/*opacity: 0;*/
 
@@ -164,7 +164,7 @@
   width: auto;
   margin-top: -22px;
   padding: 16px;
-  color: white;
+  color: white !important;
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;

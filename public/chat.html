@@ -40,11 +40,10 @@
             <!-- <div class="cnt"> -->
               <div id="title-project">
                 Dự án 
+              </div>
+              <div id="title-name">
                 "Chatbot tư vấn hoạt động xã hội cho học sinh - sinh viên"
               </div>
-              <!-- <div id="title-name">
-                CSE Assistant (beta)
-              </div> -->
               
             <!-- </div> -->
             
@@ -52,7 +51,9 @@
           <!-- <div class="card-layout card-box-2"></div> -->
           <div class="card-layout card-box-3">
             <div class="slideshow-container">
-
+              <div class="slide-background">
+                <img src="./background_waterdrop.png" style="webkit-filter: blur(3px);">
+              </div>
   <!-- Full-width images with number and caption text -->
               <div class="mySlides fade-slide">
                 
@@ -152,21 +153,24 @@
         <div class="wrapper">
 
           <div id="message_window">
-            <div class="header">
+            <div class="header main-elements">
               <div>
                 <img src="cse.png" class="avt">
               </div>
               <div id="user-id" class="name">CSE Assistant 1.1.0</div>
               
             </div>
-            <div class="disconnected" id="disconnected">
+            <div class="disconnected main-elements" id="disconnected">
               Disconnected... reconnecting!
             </div>
-            <div class="offline">
+            <div class="offline main-elements">
               Offline! Reload to reconnect.
             </div>
             <section class="message-wrapper">
-              <div id="message_list">
+              <div id="logo-wrapper">
+                <img src="./hcmuttrans.png" id="background-logo">
+              </div>
+              <div class="main-elements" id="message_list">
                 <div id="message_template">
 
                   <div class="message {{message.type}}">
@@ -200,26 +204,26 @@
 
               </div>
 
-              <div id="message_slider_template">
+              <div class="main-elements" id="message_slider_template">
                 <div class="carousel-mask" id="mask-{{{message.resultSliderId}}}">
                   <div class="carousel-items" id="wrapper-{{{message.resultSliderId}}}">
                   </div>
                 </div>
               </div>
 
-              <div id="message_list_template">
+              <div class="main-elements" id="message_list_template">
                 <div class="list-mask" id="list-mask-{{{message.attrListId}}}">
                 </div>
               </div>
 
-              <div id="message_intent_template">
+              <div class="main-elements" id="message_intent_template">
                 <div class="list-mask" id="intent-mask-{{{message.intentListId}}}">
                 </div>
               </div>
             </section>
             <div id="message_replies">
             </div>
-            <footer>
+            <footer class="main-elements">
               <form id="form_mesg" onsubmit="Botkit.send(Botkit.input.value, event)">
                 <input type="text" autocomplete="off" id="messenger_input" placeholder="Nhập tin nhắn ở đây"
                   onkeyup="stoppedTyping()" />

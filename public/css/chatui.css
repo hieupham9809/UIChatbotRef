@@ -1,3 +1,6 @@
+*{
+  --message-wrapper-background: linear-gradient(-45deg, #b0c5da, #f8f9fa);
+}
 #user-id {
     
     font-size: 2vw;
@@ -17,10 +20,12 @@
 }
 .message-wrapper{
 	position: relative;
-	background: linear-gradient(-45deg, #b0c5da, #f8f9fa);
+  overflow-x: hidden;
+	background: var(--message-wrapper-background);
 	background-size: 400% 400%;
 	animation: gradient 5s ease infinite;
 }
+
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
@@ -276,3 +281,38 @@
   	z-index: -1;
 
 }
+
+.typing-indicator-custom{
+  display: flex;
+  align-items: stretch;
+  height: 7px;
+  position: relative;
+}
+.wrapper-typing-indicator{
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  background-color: #f3f3f100;
+  
+}
+.iball {
+
+  background: purple;
+  border-radius: 50%;
+  margin-right: 3px;
+  /*flex: 0 0 2px;*/
+  width: 7px;
+  height: 7px;
+
+}
+.iball:nth-child(2){
+    background: green;
+  }
+.iball:nth-child(3){
+    background: pink;
+  }
+.iball:nth-child(4){
+    background: blue;
+  }

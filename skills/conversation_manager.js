@@ -5,8 +5,10 @@ sync = require('sync-request');
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
-const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
+
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform_empty"
@@ -273,8 +275,40 @@ module.exports = function (controller) {
         var slot = Object.keys(body.agent_action.inform_slots)[0]
         var enableResponseToConfirm = null;
         var enableEditInform = null;
+        // handle show current results send from server
+        if ('current_results' in body && body.current_results.length > 0){
+            var enableResponseToCurrentResults = [
+                {
+                    title: 'Đã thỏa mãn',
+                    payload: {
+                        'userResponeToMatchfound': {
+                            'acceptMatchfound': true,
+                            'userAction': null
+                        }
+                    }
+                },
+                {
+                    title: 'Chưa, tiếp tục tư vấn',
+                    payload: {
+                        'continueToConversation': {
+                            'message': body.message,
+                            'agent_action': body.agent_action,
+                            'current_informs': body.current_informs    
+                        }
+                        
 
-        if (body.agent_action.inform_slots[slot] != 'no match available'){
+                    }
+                }
+
+            ];
+            bot.reply(message, {
+                text: 'Đây là thông tin mình tìm được theo yêu cầu hiện tại của bạn',
+                listResults: body.current_results,
+                enableResponseToCurrentResults: enableResponseToCurrentResults
+            });
+            return;
+        }
+        else if (body.agent_action.inform_slots[slot] != 'no match available'){
 
             if (body.agent_action.inform_slots[slot].length == 0){
                 var enableEditInformWhenDenied = null;
@@ -693,6 +727,10 @@ module.exports = function (controller) {
             //     return;
             // }
             var messageBack = raw_mesg;
+            if (message.continueToConversation != undefined && message.continueToConversation != null){
+                handleInformResponse(bot, message, message.continueToConversation);
+                return;
+            }
             if (message.userResponeToInform != null){
                 if (message.userResponeToInform.anything){
                     userAction = message.userResponeToInform.userAction;
@@ -715,7 +753,7 @@ module.exports = function (controller) {
                     var enableEditInform = null;
                     userAction = message.userResponeToInform.userAction;
                     slot = resp.AGENT_INFORM_OBJECT[Object.keys(userAction.inform_slots)[0]];
-                    var msg = `Mời bạn cung cấp lại thông tin ${slot} nhé!`;
+                    var msg = `Vậy ${slot} là gì bạn?`;
                     if (message.userResponeToInform.enableEditInform != null){
                         enableEditInform = message.userResponeToInform.enableEditInform;
                         msg = `Vậy bạn điều chỉnh lại thông tin giúp mình nhé!`;

@@ -3,6 +3,7 @@ var timeout = null;
 var isAddedSuggestPanel = false;
 var ableToSuggest = true;
 var suggestPanel = null;
+var suggestSpinner = null;
 const SUGGEST_API = 'http://127.0.0.1:5000/api/cse-assistant-conversation-manager/suggest-question';
 var deleteElement = ()=> {
   $(suggestPanel).animate({
@@ -17,7 +18,8 @@ var renderSuggest = (data) => {
   var list = document.createElement('ul');
   var replyList = document.getElementById('message_replies');
   if (suggestPanel != null){
-    suggestPanel.empty();
+    $("#suggest-panel ul").remove();
+    
   }
   // replyList.innerHTML = '';
   // var elements = [];
@@ -59,6 +61,10 @@ var loadSuggest = (input) => {
   //   console.log(data);
   // });
   if (input != ""){
+    if (suggestSpinner != null){
+      
+      suggestSpinner.css("display", "block");
+    }
     $.ajax({
       type: 'post',
       url: SUGGEST_API,
@@ -68,6 +74,12 @@ var loadSuggest = (input) => {
       success: function (data) {
           console.log(data.result);
           renderSuggest(data.result);
+          suggestSpinner.css("display", "none");
+
+      },
+      error: function(jqXHR, textStatus, errorThrown){
+          suggestSpinner.css("display", "none");
+          console.log('error: ' + errorThrown);
       }
     });
   }
@@ -82,7 +94,14 @@ $("#messenger_input").on('input',function(e){
       suggestPanel = $('<div />', { 
           id: 'suggest-panel'
         });
+      
+      suggestSpinner = $('<div/>', {
+        id: 'suggest-loader-spinner'
+      });
+      suggestSpinner.appendTo(suggestPanel);
+      
       suggestPanel.appendTo(messageList);
+      
       suggestPanel.animate({
         height : '170px'
       }, 300, function(){

@@ -820,7 +820,9 @@ var Botkit = {
 
   renderMessage: function (message) {
     var that = this;
-    
+    if (message.intent == "done"){
+      ableToSuggest = true;
+    }
 
     if (!that.next_line) {
       that.next_line = that.createNextLine();

@@ -4,10 +4,10 @@ sync = require('sync-request');
 
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
-// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
-const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
 
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
@@ -382,7 +382,7 @@ module.exports = function (controller) {
         });
     }
     function callConversationManager(bot, message) {
-
+        
         var isGetInfor = false;
 
         var id = message.user;
@@ -488,218 +488,7 @@ module.exports = function (controller) {
         var pLoading = { value: true };
         bucket.push(pLoading)
 
-        function requestGET() {
-            pLoading.value = false;
-            if (bucket.every(ele => { return ele.value === false })) {
-                // + "&force_get_results=true"
-                var postfix_force_show = "";
-                // if (force_show === true) {
-                //     postfix_force_show = "&force_get_results=true"
-                // }
-                // if (filter_attr === true) {
-                //     postfix_force_show += "&key_filter=" + message.filterAttr.key + "&value_filter=" + message.filterAttr.value
-                // }
-                // if (filter_all === true) {
-                //     postfix_force_show += "&key_filter=all";
-                // }
-                console.log(postfix_force_show)
-                request.get(CONVERSATION_MANAGER_ENDPOINT + "?graph_id=" + id + postfix_force_show, {}, (error, res, body) => {
-                    // console.log(body)
-                    if (error) {
-                        conversation[message.user].push("bot: " + resp.err);
-                        bot.reply(message, {
-                            graph: graph,
-                            text: resp.err
-                        })
-                        return
-                    }
-                    try {
-                        response_body = JSON.parse(body);
-                        console.log("***")
-                        console.log(JSON.stringify(response_body));
-                        var graph = response_body.graph;
-                        // bot.reply(message, {
-                        //     graph: graph
-                        // })
-                        console.log("***")
-                        if (promiseBucket[id].every(ele => { return ele.value === false })) {
-                            bucket = []
-                            promiseBucket[id] = []
-                            if (response_body.initial_fill == false) {
-                                conversation[message.user].push("bot: " + response_body.question);
-                                bot.reply(message, {
-                                    text: response_body.question
-                                })
-                            } else
-                                if (response_body.has_results === true) {
-                                    // có kết quả, trả lời được rồi
-                                    if (response_body.result_container.length == 0 || remove_more === true) {
-                                        // nếu container không có gì hoặc người dùng muốn xóa bớt attr
-                                        // show các attr đang có để xóa
-                                        var list = []
-                                        var mentioned_attributes = response_body.mentioned_attributes;
-
-                                        for (var i = 0; i < mentioned_attributes.length; i++) {
-                                            (function (ele) {
-                                                if (ATTR_LIST.indexOf(ele) != -1 || (ele !== "addr_district" && ele !== "location" && ENTITY_LIST.indexOf(ele) != -1)) {
-                                                    if (graph[ele] && graph[ele].value_raw) {
-                                                        var arr = graph[ele].value_raw;
-                                                        if (arr.length > 0) {
-                                                            var value = arr[0]
-                                                            for (var j = 1; j < arr.length; j++) {
-                                                                value += ", " + arr[j]
-                                                            }
-                                                            list.push({ value: value, key: ele });
-                                                        }
-                                                    }
-                                                }
-                                                if (LOCATION_ATTR_LIST.indexOf(ele) != -1) {
-                                                    if (graph["location"][ele] && graph["location"][ele].value_raw) {
-                                                        var arr = graph["location"][ele].value_raw;
-                                                        if (arr.length > 0) {
-                                                            var value = arr[0]
-                                                            for (var j = 1; j < arr.length; j++) {
-                                                                value += ", " + arr[j]
-                                                            }
-                                                            list.push({ value: value, key: ele });
-                                                        }
-                                                    }
-                                                }
-                                            })(mentioned_attributes[i]);
-                                        }
-                                        if (list && list.length > 0) {
-                                            conversation[message.user].push("bot: " + resp.cantfind);
-                                            bot.reply(message, {
-                                                text: resp.cantfind,
-                                                attr_list: list,
-                                                graph: graph,
-                                            })
-                                        } else {
-                                            conversation[message.user].push("bot: " + resp.wetried);
-                                            bot.reply(message, { graph: graph, text: resp.wetried })
-                                        }
-
-                                    } else {
-                                        // for result_container != []
-                                        // show kết quả 
-                                        if (response_body.intent_values_container && !isEmpty(response_body.intent_values_container)) {
-                                            conversation[message.user].push("bot: " + resp.showall);
-                                            bot.reply(message, {
-                                                text: resp.showall,
-                                                intent_dict: response_body.intent_values_container,
-                                                graph: graph,
-                                                force_result: [
-                                                    {
-                                                        title: 'Được rồi, cảm ơn!',
-                                                        payload: {
-                                                            'start_rating': true,
-                                                            'catched_intents': graph.current_intents
-                                                        }
-                                                    },
-                                                    {
-                                                        title: 'Có',
-                                                        payload: {
-                                                            'filter_all': true,
-                                                        },
-                                                    },
-                                                ]
-                                            })
-                                        } else {
-                                            console.log(response_body.result_container)
-                                            conversation[message.user].push("bot: " + (response_body.intent_response ? response_body.intent_response : "Kết quả của bạn: "));
-                                            conversation[message.user].push("bot: " + "Bạn có muốn thêm yêu cầu gì không?");
-                                            bot.reply(message, {
-                                                text: [response_body.intent_response ? response_body.intent_response : "Kết quả của bạn: ", "Bạn có muốn thêm yêu cầu gì không?"],
-                                                show_results: response_body.result_container,
-                                                concerned_attributes: response_body.concerned_attributes,
-                                                graph: graph,
-                                                force_result: [
-                                                    {
-                                                        title: 'Có',
-                                                        payload: {
-                                                            'continue': true
-                                                        },
-                                                    },
-                                                    {
-                                                        title: 'Được rồi, cảm ơn!',
-                                                        payload: {
-                                                            'start_rating': true,
-                                                            'catched_intents': graph.current_intents
-                                                        }
-                                                    }
-                                                ]
-                                            })
-                                        }
-                                    }
-
-                                } else {
-                                    // chưa trả lời được do số doc còn nhiều
-                                    if (showCustomButton) { // show nút bấm cho người dùng
-                                        conversation[message.user].push("bot: " + response_body.question);
-                                        bot.reply(message, {
-                                            text: response_body.question,
-                                            graph: graph,
-                                            force_result: [
-                                                {
-                                                    title: 'Bỏ tiếp yêu cầu',
-                                                    payload: {
-                                                        'remove_more': true
-                                                    },
-                                                },
-                                                {
-                                                    title: 'In luôn kết quả',
-                                                    payload: {
-                                                        'force_show': true
-                                                    }
-                                                }
-                                            ]
-                                        })
-                                    }
-                                    else {
-                                        // lấy câu hỏi lại rồi hỏi người dùng
-                                        if (userMessageCount[id] > 3) {
-                                            conversation[message.user].push("bot: " + response_body.question);
-                                            bot.reply(message, {
-                                                graph: graph,
-                                                text: response_body.question,
-                                                force_result: [
-                                                    {
-                                                        title: 'In luôn kết quả',
-                                                        payload: {
-                                                            'force_show': true
-                                                        }
-                                                    }
-                                                ]
-                                            })
-                                        } else {
-                                            if (userMessageCount[id]) {
-                                                userMessageCount[id] += 1;
-                                            } else {
-                                                userMessageCount[id] = 1;
-                                            }
-                                            console.log("userMessageCount: ", userMessageCount[id])
-                                            conversation[message.user].push("bot: " + response_body.question);
-                                            bot.reply(message, {
-                                                graph: graph,
-                                                text: response_body.question
-                                            })
-                                        }
-                                    }
-                                }
-                        }
-                    } catch (e) {
-                        conversation[message.user].push("bot: " + resp.err);
-                        bot.reply(message, {
-                            graph: graph,
-                            text: resp.err
-                        })
-                    }
-                })
-            } else {
-                console.log(bucket)
-                console.log(JSON.stringify(promiseBucket))
-            }
-        }
+        
 
         if (raw_mesg && raw_mesg.length > 0) {
             // console.log("say hi")
@@ -787,7 +576,8 @@ module.exports = function (controller) {
                 }
             }, (error, res, body) => {
                 intent = null;
-                if (error) {
+                
+                if (error || res.statusCode != 200) {
                     console.log(error);
                     bot.reply(message, {
                         text: resp.err
@@ -807,7 +597,8 @@ module.exports = function (controller) {
                             break;
                         default:
                             bot.reply(message, {
-                                text: body.message
+                                text: body.message,
+                                intent: body.agent_action.intent
                             })
                     }
 

@@ -1,6 +1,7 @@
 
 var timeout = null;
 var isAddedSuggestPanel = false;
+var ableToSuggest = true;
 var suggestPanel = null;
 const SUGGEST_API = 'http://127.0.0.1:5000/api/cse-assistant-conversation-manager/suggest-question';
 var deleteElement = ()=> {
@@ -22,7 +23,7 @@ var renderSuggest = (data) => {
   // var elements = [];
   for (var r = 0; r < data.length; r++) {
     (function (reply) {
-      console.log("create element suggest")
+      
 
       var li = document.createElement('li');
       var el = document.createElement('a');
@@ -31,7 +32,11 @@ var renderSuggest = (data) => {
 
       el.onclick = function () {
         // that.sendCustom(reply.title, reply.payload);
-        console.log('clicked');
+        
+        if (Botkit != null){
+          Botkit.sendCustom(el.innerHTML, {});
+          ableToSuggest = false;
+        }
       }
 
       li.appendChild(el);
@@ -71,25 +76,26 @@ var loadSuggest = (input) => {
 
 
 $("#messenger_input").on('input',function(e){
-  if (!isAddedSuggestPanel){
-    var messageList = $("#message_list");
-    suggestPanel = $('<div />', { 
-        id: 'suggest-panel'
-      });
-    suggestPanel.appendTo(messageList);
-    suggestPanel.animate({
-      height : '170px'
-    }, 300, function(){
+  if (ableToSuggest){
+    if (!isAddedSuggestPanel){
+      var messageList = $("#message_list");
+      suggestPanel = $('<div />', { 
+          id: 'suggest-panel'
+        });
+      suggestPanel.appendTo(messageList);
+      suggestPanel.animate({
+        height : '170px'
+      }, 300, function(){
 
-    });
-    isAddedSuggestPanel = true
+      });
+      isAddedSuggestPanel = true
+    }
+    if (e.target.value.trim() == ""){
+      deleteElement();
+    }
+    if (timeout != null){
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(()=>{loadSuggest(e.target.value.trim())}, 1000);
   }
-  if (e.target.value.trim() == ""){
-    deleteElement();
-  }
-  if (timeout != null){
-    clearTimeout(timeout);
-  }
-  timeout = setTimeout(()=>{loadSuggest(e.target.value.trim())}, 1000);
-  
 });

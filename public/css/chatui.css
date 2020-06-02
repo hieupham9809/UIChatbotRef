@@ -339,3 +339,29 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/*#feedback-panel {
+  width: 150px;
+  height: 50px;
+  background: radial-gradient(circle, red, green, blue) !important;
+  background-size: 400% 400% !important;
+  -webkit-animation: feedbackAnimation 5s ease infinite !important;
+  -moz-animation: feedbackAnimation 5s ease infinite !important;
+  animation: feedbackAnimation 5s ease infinite !important;
+  color: white;
+}
+#feedback-panel a {
+  color: white;
+}
+@keyframes feedbackAnimation {
+  from {background-color: red;}
+  to {background-color: blue;}
+}
+@-webkit-keyframes feedbackAnimation {
+  from {background-color: red;}
+  to {background-color: blue;}
+}
+@-moz-keyframes feedbackAnimation {
+  from {background-color: red;}
+  to {background-color: blue;}
+}*/

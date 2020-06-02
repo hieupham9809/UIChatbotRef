@@ -4,14 +4,17 @@ var isAddedSuggestPanel = false;
 var ableToSuggest = true;
 var suggestPanel = null;
 var suggestSpinner = null;
-const SUGGEST_API = 'http://127.0.0.1:5000/api/cse-assistant-conversation-manager/suggest-question';
+const SUGGEST_API = 'http://34.87.121.62/api/cse-assistant-conversation-manager/suggest-question';
 var deleteElement = ()=> {
-  $(suggestPanel).animate({
-    height: '0px'
-  }, 300, function(){
-    $(suggestPanel).remove();
-  });
-  isAddedSuggestPanel = false;
+  if (isAddedSuggestPanel){
+    // debugger
+    $(suggestPanel).animate({
+      height: '0px'
+    }, 300, function(){
+      $(suggestPanel).remove();
+    });
+    isAddedSuggestPanel = false;
+  }
 }
 
 var renderSuggest = (data) => {
@@ -37,7 +40,7 @@ var renderSuggest = (data) => {
         
         if (Botkit != null){
           Botkit.sendCustom(el.innerHTML, {});
-          ableToSuggest = false;
+          // ableToSuggest = false;
         }
       }
 
@@ -88,8 +91,10 @@ var loadSuggest = (input) => {
 
 
 $("#messenger_input").on('input',function(e){
+  var value = $("#messenger_input").val()
+  console.log(value)
   if (ableToSuggest){
-    if (!isAddedSuggestPanel){
+    if (!isAddedSuggestPanel && value.trim().length > 0 && value.includes(" ")){
       var messageList = $("#message_list");
       suggestPanel = $('<div />', { 
           id: 'suggest-panel'
@@ -109,8 +114,9 @@ $("#messenger_input").on('input',function(e){
       });
       isAddedSuggestPanel = true
     }
-    if (e.target.value.trim() == ""){
+    if (!value.includes(" ")){
       deleteElement();
+      // debugger
     }
     if (timeout != null){
       clearTimeout(timeout);

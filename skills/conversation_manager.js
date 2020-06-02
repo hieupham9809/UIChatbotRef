@@ -4,7 +4,7 @@ sync = require('sync-request');
 
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
-const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/cse-assistant-conversation-manager"
+const CONVERSATION_MANAGER_ENDPOINT = "http://34.87.121.62/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
@@ -233,6 +233,12 @@ module.exports = function (controller) {
 
         });
     }
+    function handleDoneResponse(bot, message, body){
+        bot.reply(message, {
+                                text: body.message + 'Vui lòng đánh giá giúp mình tại <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7EXwLojON1DqocOU9RDkw1RILjK9jcCeXxZsLgqi7162NCw/viewform" target="_blank">đây</a> nhé! Cảm ơn bạn',
+                                intent: body.agent_action.intent
+                            })
+    }
     function handleMatchfoundResponse(bot, message, body){
         var matchFoundSlot = 'activity';
         var enableResponseToMathfound = null;
@@ -276,7 +282,7 @@ module.exports = function (controller) {
         var enableResponseToConfirm = null;
         var enableEditInform = null;
         // handle show current results send from server
-        if ('current_results' in body && body.current_results.length > 0){
+        if ('current_results' in body && body.current_results.length > 0 && body.agent_action.round > 2){
             var enableResponseToCurrentResults = [
                 {
                     title: 'Đã thỏa mãn',
@@ -594,6 +600,9 @@ module.exports = function (controller) {
                             console.log(body.agent_action.inform_slots[body.agent_action.inform_slots['activity']])
 
                             handleMatchfoundResponse(bot, message, body);
+                            break;
+                        case "done":
+                            handleDoneResponse(bot, message, body);
                             break;
                         default:
                             bot.reply(message, {

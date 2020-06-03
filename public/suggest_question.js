@@ -4,7 +4,7 @@ var isAddedSuggestPanel = false;
 var ableToSuggest = true;
 var suggestPanel = null;
 var suggestSpinner = null;
-const SUGGEST_API = 'https://34.87.121.62/api/cse-assistant-conversation-manager/suggest-question';
+const SUGGEST_API = 'http://34.87.121.62/api/cse-assistant-conversation-manager/suggest-question';
 var deleteElement = ()=> {
   if (isAddedSuggestPanel){
     // debugger

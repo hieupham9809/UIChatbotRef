@@ -72,6 +72,7 @@ var loadSuggest = (input) => {
       type: 'post',
       url: SUGGEST_API,
       data: JSON.stringify({message : input}),
+      dataType: "jsonp",
       contentType: "application/json; charset=utf-8",
       traditional: true,
       success: function (data) {

@@ -72,7 +72,7 @@ var loadSuggest = (input) => {
       type: 'post',
       url: SUGGEST_API,
       data: JSON.stringify({message : input}),
-      
+      crossDomain: true,
       contentType: "application/json; charset=utf-8",
       traditional: true,
       success: function (data) {

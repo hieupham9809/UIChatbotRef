@@ -551,7 +551,7 @@ var Botkit = {
 
   renderMessage: function (message) {
     var that = this;
-    if (message.intent == "done"){
+    if (message.isAbleToSuggest){
       ableToSuggest = true;
     } 
 

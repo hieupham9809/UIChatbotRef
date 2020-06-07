@@ -7,7 +7,7 @@ var UserController = require("../utils/usercontroller.js")
 const CONVERSATION_MANAGER_ENDPOINT = "http://34.87.121.62/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
-// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_inform"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test-noname"
 
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"
@@ -42,6 +42,9 @@ module.exports = function (controller) {
     var catched_intents = {}; //arr type
     var edited_intents = {}; // arr type
     var conversation = {}; // arr type
+    var previousNonameRound = 0;
+    var currentRound = 0;
+    var nonameStreak = 0;
     function isEmpty(obj) {
         for (var key in obj) {
             if (obj.hasOwnProperty(key))
@@ -238,6 +241,30 @@ module.exports = function (controller) {
                                 text: body.message + 'Vui lòng đánh giá giúp mình tại <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7EXwLojON1DqocOU9RDkw1RILjK9jcCeXxZsLgqi7162NCw/viewform" target="_blank">đây</a> nhé! Cảm ơn bạn',
                                 intent: body.agent_action.intent
                             })
+    }
+    function handleHelloResponse(bot, message, body){
+        bot.reply(message, {
+            text: body.message,
+            isAbleToSuggest: true
+        })
+    }
+    function handleNonameResponse(bot, message, body){
+        if (currentRound - previousNonameRound == 1){
+            nonameStreak += 1;
+        } else {
+            nonameStreak = 0;
+            
+        }
+        previousNonameRound = currentRound;
+        var text = body.message;
+        if (nonameStreak > 2) {
+            text = "Có vẻ như có vấn đề với tên hoạt động mà bạn cung cấp. Vui lòng kiểm tra lại chính xác tên hoặc thử hỏi cách khác bạn nhé!";
+            nonameStreak = 0;
+        }
+        bot.reply(message, {
+            text: text,
+            isAbleToSuggest: true
+        })
     }
     function handleMatchfoundResponse(bot, message, body){
         var matchFoundSlot = 'activity';
@@ -592,6 +619,7 @@ module.exports = function (controller) {
                 }
                 if (body != null && body.agent_action != null){
                     console.log(body.agent_action)
+                    currentRound += 1;
                     switch (body.agent_action.intent){
                         case "inform":
                             handleInformResponse(bot, message, body);
@@ -604,10 +632,15 @@ module.exports = function (controller) {
                         case "done":
                             handleDoneResponse(bot, message, body);
                             break;
+                        case "hello":
+                            handleHelloResponse(bot, message, body);
+                            break;
+                        case "no_name":
+                            handleNonameResponse(bot, message, body);
+                            break;
                         default:
                             bot.reply(message, {
-                                text: body.message,
-                                intent: body.agent_action.intent
+                                text: body.message
                             })
                     }
 

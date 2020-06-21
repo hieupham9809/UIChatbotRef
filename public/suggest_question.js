@@ -58,7 +58,7 @@ var renderSuggest = (data) => {
   // replyList.appendChild(list);
 }
 var loadSuggest = (input) => {
-  console.log(input);
+  
   // $.post(SUGGEST_API, JSON.stringify({message : input}), function(data, status, xhr){
   //   console.log(status);
   //   console.log(data);
@@ -78,8 +78,9 @@ var loadSuggest = (input) => {
       success: function (data) {
           console.log(data.result);
           renderSuggest(data.result);
-          suggestSpinner.css("display", "none");
-
+          if (suggestSpinner != null){
+            suggestSpinner.css("display", "none");
+          }
       },
       error: function(jqXHR, textStatus, errorThrown){
           suggestSpinner.css("display", "none");
@@ -93,8 +94,8 @@ var loadSuggest = (input) => {
 
 $("#messenger_input").on('input',function(e){
   var value = $("#messenger_input").val()
-  console.log(value)
-  if (ableToSuggest){
+  var isTyping = $("#message_list .real-message .typing-indicator-custom").length == 1;
+  if (ableToSuggest && !isTyping){
     if (!isAddedSuggestPanel && value.trim().length > 0 && value.includes(" ")){
       var messageList = $("#message_list");
       suggestPanel = $('<div />', { 

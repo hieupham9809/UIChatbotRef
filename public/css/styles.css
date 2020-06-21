@@ -88,7 +88,7 @@ section::-webkit-scrollbar-thumb {
 }
 
 footer {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .hero {
@@ -252,32 +252,33 @@ a.button:hover {
 #message_window footer input[type="text"] {
   flex-grow: 1;
   background: none;
-  padding: 0 0 4px 25px;
-  /* height: 100%; */
+  padding: 0px 10px 0px 10px;
+   height: 40px; 
   font-size: 14px;
   outline: none;
   border: none;
 }
 
 #message_window footer button {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: 0;
   cursor: pointer;
-  padding: 16px 9px;
+  /*padding: 16px 9px;*/
   outline: none;
 }
 
 #message_window footer .send {
   display: block;
-  width: 27px;
-  height: 27px;
-  float: left;
+  width: 25px;
+  height: 25px;
+  float: right;
 }
 
 #message_window form {
   display: flex;
+  height: 35px;
   margin: 0;
   padding: 0;
 }
@@ -287,7 +288,7 @@ a.button:hover {
 }
 
 #message_window .message {
-  margin: 5px 20px;
+  margin: 5px 10px;
   font-size: 14px;
   line-height: 1.3;
   padding: 7px 14px;
@@ -424,8 +425,9 @@ a.button:hover {
   text-align: center;
   overflow-x: auto;
   flex-shrink: 0;
-  min-height: 10px;
+  min-height: 1px;
   -webkit-overflow-scrolling: touch;
+  background: var(--message-wrapper-background);
   /* Lets it scroll lazy */
 }
 

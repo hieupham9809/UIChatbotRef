@@ -4,9 +4,9 @@ sync = require('sync-request');
 
 var UserController = require("../utils/usercontroller.js")
 // const CONVERSATION_MANAGER_ENDPOINT = "https://nameless-basin-64349.herokuapp.com/api/LT-conversation-manager"
-// const CONVERSATION_MANAGER_ENDPOINT = "http://34.87.121.62/api/cse-assistant-conversation-manager"
+const CONVERSATION_MANAGER_ENDPOINT = "http://34.87.121.62/api/cse-assistant-conversation-manager"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://80.211.56.55/api/cse-assistant-conversation-manager"
-const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
+// const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_matchfound"
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test-noname"
 
 // const CONVERSATION_MANAGER_ENDPOINT = "http://127.0.0.1:5000/api/test_edit_inform_inform"

@@ -178,10 +178,11 @@ a.button:hover {
   background: #FFFFFF;
   border-radius: 10px;
   outline: none;
+  z-index: 20;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-font-smoothing: subpixel-antialiased;
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
-  height: 90%;
+  height: 85%;
   width: 350px;
   display: flex;
   flex-direction: column;

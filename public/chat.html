@@ -33,7 +33,7 @@
     <div class="row p-0 h-100 row-wrapper">
     <!-- <div class="canvas-animation"></div> -->
 
-      <div class="d-none d-sm-inline-block col-sm-5 col-md-6 col-lg-7 p-0">
+      <div class="d-none d-sm-inline-block col-sm-6 col-md-6 col-lg-6 p-0">
         <!-- <div style="background-color: aliceblue;"> -->
       <!-- <div class="canvas-animation"></div> -->
       <!-- <div class="cards"> -->
@@ -45,18 +45,22 @@
               <div id="title-name">
                 "Chatbot tư vấn hoạt động xã hội cho học sinh - sinh viên"
               </div>
+              <div>
+                <img src="./images/bot_icon.png" style="width:40%;border-radius: 10px; margin-right: 15%;">
+              </div>
               
               
             <!-- </div> -->
             
           </div>
-          <div style="text-align: center;">
-            <a href="https://docs.google.com/document/d/1S03-e24_Z-w6sHQ0AlTMauyE1xProtEucHxn9MU4Mek/edit" target="_blank">Hướng dẫn sử dụng nhanh</a>
-            
+          <div id="bottom-info">
+            <a style="color: white;"href="https://docs.google.com/document/d/1S03-e24_Z-w6sHQ0AlTMauyE1xProtEucHxn9MU4Mek/edit" target="_blank">Hướng dẫn sử dụng nhanh</a>
+            <div>Phạm Minh Hiếu - Cao Chánh Dương</div>
+            <div>Khoa Khoa học và Kỹ thuật Máy tính - Trường Đại học Bách Khoa - ĐHQG-HCM </div>
           </div>
-          <div style="text-align: center;">
+          <!-- <div style="text-align: center;">
             <a href="https://docs.google.com/forms/d/1mt95jaWNynJA4ap_8JhLxE6nR0UDejVfRGZeS9AlJ5k/edit#responses" target="_blank">Góp ý đánh giá (nhóm sẽ gửi tặng một món quà nhỏ để cảm ơn các bạn ^^)</a>
-          </div>
+          </div> -->
          <!-- slider start -->
           <!-- <div class="card-layout card-box-3"> -->
             <!-- <div class="slideshow-container"> -->
@@ -116,9 +120,9 @@
         
         
       </div>
-      <div class="col-xs-8 col-sm-7 col-md-6 col-lg-5">
+      <div class="col-sm-6 col-md-6 col-lg-6">
         <div class="wrapper">
-
+          <div id="circle-background"></div>
           <div id="message_window">
             <div class="header main-elements">
               <div>
@@ -217,6 +221,14 @@
                     </svg>
                   </div>
                 </button>
+                <button id="about_btn" class="tool-bar-btn" title="Về chúng tôi" onclick="toggleAboutPanel()">
+                  <div class="send about_icon">
+
+                    <svg class="svg-toolbar-icon" viewBox="0 0 20 20">
+                      <path stroke="null" id="svg_1" d="m16.56253,11.39924c0.66734,-0.60361 1.11262,-1.53933 1.11262,-2.54955c0,-1.73001 -1.30178,-3.24409 -2.78566,-3.24409s-2.78566,1.51534 -2.78566,3.24409c0,1.01023 0.44528,1.94721 1.11144,2.54955c-0.29725,0.11239 -0.58274,0.25256 -0.85532,0.41925c-0.87294,-1.13398 -2.05018,-1.98636 -3.3966,-2.41318c1.03038,-0.77029 1.74589,-2.10379 1.74589,-3.55094c0,-2.26038 -1.73766,-4.24168 -3.715,-4.24168s-3.71264,1.98131 -3.71264,4.24168c0,1.44715 0.71433,2.78065 1.74589,3.55094c-2.88318,0.91552 -4.99563,3.78582 -4.99563,7.17891c0,0.27529 0.20913,0.50006 0.46408,0.50006l19.03671,0c0.25612,0 0.46526,-0.22478 0.46526,-0.50006c0,-2.39802 -1.43806,-4.43741 -3.43537,-5.18498m-3.53054,-2.66869c-0.11084,-0.45944 -0.2964,-0.09781 -0.32324,0.3787c-0.02686,0.4765 2.87596,4.76089 3.62164,3.68871s0.41543,-4.98629 0.41543,-3.94828s-0.80833,2.24649 -1.85633,2.24649s-1.8575,-1.20848 -1.8575,-2.24649m-8.9319,-2.99531c0.77588,-2.96132 -1.24711,1.04461 0.34721,1.04461c1.5955,0 5.33495,-2.57763 5.33495,-1.04461s-1.19016,3.24409 -2.78566,3.24409c-1.5955,0 3.97549,2.22023 2.75626,-4.79278m7.96257,12.25627c0.23733,-3.34511 -13.4465,-0.0316 -10.49715,-0.26985s5.55994,-3.55178 5.7961,-0.20666l-6.07319,-0.05957l-3.0366,-0.02978l-0.37957,0.11541l-0.37958,-0.00372l-0.37957,-0.00371l-0.37957,-0.00372l-0.37958,-0.00372l-0.37957,-0.00372l-0.37958,-0.00371m12.6985,-0.00372c-0.03936,-0.6295 1.17851,-1.14882 1.80629,-1.51853c0.62779,-0.36972 0.66551,-0.58983 -1.73414,-0.62094c-4.7993,-0.06223 -6.92799,1.84087 -5.00197,2.19826c1.92601,0.35739 3.03506,-1.94409 3.26652,0.29861l1.66331,-0.35739z"/>
+                    </svg>
+                  </div>
+                </button>
                 <button class="tool-bar-btn" type="submit" id="send_btn">
                   <div class="send">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -248,7 +260,37 @@
 
   </div>
 
-
+  <div class="about-popup-panel" id="about-popup-panel" tabindex="100">
+    <div class="about-popup-content">
+      <span class="about-popup-close">&times;</span>
+      <div class="about-main-authors"> 
+        <div class="about-author-dev"></div>
+        <div class="about-author-dev"></div>
+      </div>
+      <div class="table-collaborator">
+        <span>Chân thành cảm ơn sự giúp sức của các bạn khóa 2019 CSE trong khâu chuẩn bị dữ liệu:</span>
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col">Tên</th>
+              <th scope="col">MSSV</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td></td>
+              <td></td>
+              
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>            
+  </div>
 
   <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -309,6 +351,7 @@
   <!-- <script src="background_animation.js"></script> -->
   <script src="suggest_question.js"></script>
   <script src="latest_activities.js"></script>
+  <script src="about_panel.js"></script>
   <script>
   
 

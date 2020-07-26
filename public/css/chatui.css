@@ -473,7 +473,25 @@
   width: 80%;
   height: 75%;
 }
+.latest-item-name_activity {
 
+  font-size: 3.5vw;
+
+}
+.latest-item-holder {
+
+  font-size: 3.2vw;
+
+}
+.latest-item-reward {
+
+  font-size: 3.2vw;
+
+}
+.latest-item-time{
+
+  font-size: 3.2vw;
+}
 @media only screen and (min-width: 600px) {
   .about-main-authors {
     width: 85%;
@@ -490,6 +508,25 @@
   }
   .table-collaborator{
     height: 70%;
+  }
+  .latest-item-name_activity {
+
+  font-size: 2.2vw;
+
+  }
+  .latest-item-holder {
+
+    font-size: 1.9vw;
+
+  }
+  .latest-item-reward {
+
+    font-size: 1.9vw;
+
+  }
+  .latest-item-time{
+ 
+    font-size: 1.9vw;
   }
 }
 
@@ -526,7 +563,25 @@
     border-radius: 25px;
 
   }
-  
+  .latest-item-name_activity {
+
+  font-size: 1.5vw;
+
+  }
+  .latest-item-holder {
+
+    font-size: 1.2vw;
+
+  }
+  .latest-item-reward {
+
+    font-size: 1.2vw;
+
+  }
+  .latest-item-time{
+ 
+    font-size: 1.2vw;
+  }
 }
 
 
@@ -688,19 +743,19 @@
 .latest-item-name_activity {
   min-height: 20px;
   text-align: left;
-  font-size: 1.5vw;
+  /*font-size: 1.5vw;*/
 
 }
 .latest-item-holder {
   min-height: 10px;
   text-align: left;
-  font-size: 1.2vw;
+  /*font-size: 1.2vw;*/
 
 }
 .latest-item-reward {
   height: 20px;
   text-align: left;
-  font-size: 1.2vw;
+  /*font-size: 1.2vw;*/
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -710,7 +765,7 @@
   min-height: 10px;
   float: right;
   text-align: right;
-  font-size: 1.2vw;
+  /*font-size: 1.2vw;*/
 }
 
 /*#feedback-panel {
